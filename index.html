@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Vietnam Festival Map</title>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+
+<style>
+
+body{
+font-family:Arial;
+margin:0;
+background:#f5f5f5;
+}
+
+header{
+background:#b71c1c;
+color:white;
+padding:20px;
+text-align:center;
+}
+
+nav{
+background:#333;
+padding:10px;
+text-align:center;
+}
+
+nav a{
+color:white;
+margin:15px;
+text-decoration:none;
+font-weight:bold;
+}
+
+section{
+padding:40px;
+}
+
+#map{
+height:500px;
+border-radius:10px;
+}
+
+.card{
+background:white;
+padding:20px;
+margin:15px;
+border-radius:10px;
+box-shadow:0 2px 5px rgba(0,0,0,0.2);
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:20px;
+}
+
+footer{
+background:#222;
+color:white;
+text-align:center;
+padding:20px;
+margin-top:40px;
+}
+
+button{
+background:#c62828;
+color:white;
+border:none;
+padding:10px 15px;
+border-radius:5px;
+cursor:pointer;
+}
+
+button:hover{
+background:#e53935;
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+
+<h1>Khám Phá Lễ Hội Việt Nam</h1>
+
+<p>Số hoá văn hoá truyền thống Việt Nam</p>
+
+</header>
+
+<nav>
+
+<a href="#about">Giới thiệu</a>
+<a href="#mapSection">Bản đồ lễ hội</a>
+<a href="#festivals">Lễ hội nổi bật</a>
+<a href="#routes">Tuyến du lịch</a>
+
+</nav>
+
+<section id="about">
+
+<h2>Giới thiệu dự án</h2>
+
+<p>
+
+Dự án xây dựng một nền tảng giúp người dùng khám phá các lễ hội truyền thống trên khắp Việt Nam thông qua bản đồ số.
+
+</p>
+
+<ul>
+
+<li>Lễ hội đang và sắp diễn ra theo vị trí</li>
+
+<li>Lịch sử và ý nghĩa lễ hội</li>
+
+<li>Trang phục và nghi lễ truyền thống</li>
+
+<li>Hình ảnh và video</li>
+
+<li>Gợi ý hành trình du lịch văn hoá</li>
+
+</ul>
+
+</section>
+
+<section id="mapSection">
+
+<h2>Bản đồ Lễ Hội Việt Nam</h2>
+
+<div id="map"></div>
+
+</section>
+
+<section id="festivals">
+
+<h2>Lễ hội nổi bật</h2>
+
+<div class="grid">
+
+<div class="card">
+
+<h3>Lễ hội Đền Hùng</h3>
+
+<p>Địa điểm: Phú Thọ</p>
+
+<p>Tưởng nhớ công lao dựng nước của các Vua Hùng.</p>
+
+</div>
+
+<div class="card">
+
+<h3>Lễ hội Chùa Hương</h3>
+
+<p>Địa điểm: Hà Nội</p>
+
+<p>Hành hương Phật giáo lớn nhất miền Bắc.</p>
+
+</div>
+
+<div class="card">
+
+<h3>Hội Lim</h3>
+
+<p>Địa điểm: Bắc Ninh</p>
+
+<p>Lễ hội nổi tiếng với dân ca Quan Họ.</p>
+
+</div>
+
+</div>
+
+</section>
+
+<section id="routes">
+
+<h2>Gợi ý tuyến du lịch văn hoá</h2>
+
+<div class="grid">
+
+<div class="card">
+
+<h3>Tuyến Bắc Bộ</h3>
+
+<p>
+
+Đền Hùng → Chùa Hương → Hội Lim
+
+</p>
+
+</div>
+
+<div class="card">
+
+<h3>Tuyến Miền Trung</h3>
+
+<p>
+
+Huế Festival → Lễ hội Cầu Ngư → Hội An
+
+</p>
+
+</div>
+
+<div class="card">
+
+<h3>Tuyến Nam Bộ</h3>
+
+<p>
+
+Lễ hội Bà Chúa Xứ → Chợ nổi Cần Thơ
+
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+<footer>
+
+<p>Vietnam Festival Map Project</p>
+
+<p>Bảo tồn và lan tỏa văn hóa Việt Nam</p>
+
+</footer>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<script>
+
+var map = L.map('map').setView([16.047079,108.206230],6);
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+
+maxZoom:18
+
+}).addTo(map);
+
+
+
+var festivals=[
+
+{
+
+name:"Lễ hội Đền Hùng",
+
+location:"Phú Thọ",
+
+lat:21.395,
+
+lng:105.243,
+
+time:"10/3 Âm lịch",
+
+desc:"Tưởng nhớ các vua Hùng"
+
+},
+
+{
+
+name:"Lễ hội Chùa Hương",
+
+location:"Hà Nội",
+
+lat:20.345,
+
+lng:105.652,
+
+time:"Tháng Giêng - Tháng 3",
+
+desc:"Hành hương Phật giáo"
+
+},
+
+{
+
+name:"Hội Lim",
+
+location:"Bắc Ninh",
+
+lat:21.121,
+
+lng:106.061,
+
+time:"13 tháng Giêng",
+
+desc:"Lễ hội Quan họ"
+
+}
+
+];
+
+
+
+festivals.forEach(function(f){
+
+var marker=L.marker([f.lat,f.lng]).addTo(map);
+
+marker.bindPopup(
+
+"<h3>"+f.name+"</h3>"+
+
+"<p><b>Địa điểm:</b> "+f.location+"</p>"+
+
+"<p><b>Thời gian:</b> "+f.time+"</p>"+
+
+"<p>"+f.desc+"</p>"
+
+);
+
+});
+
+</script>
+
+</body>
+
+</html>
