@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+
+<meta charset="UTF-8">
+<title>Vietnam Festival Explorer</title>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+
+<style>
+
+body{
+margin:0;
+font-family:Arial;
+background:#f5f5f5;
+}
+
+header{
+background:url("https://images.unsplash.com/photo-1528127269322-539801943592");
+background-size:cover;
+background-position:center;
+padding:140px 20px;
+text-align:center;
+color:white;
+}
+
+header h1{
+font-size:52px;
+}
+
+header p{
+font-size:20px;
+}
+
+nav{
+background:#111;
+padding:15px;
+text-align:center;
+}
+
+nav a{
+color:white;
+margin:20px;
+text-decoration:none;
+font-weight:bold;
+}
+
+section{
+padding:60px 10%;
+}
+
+h2{
+text-align:center;
+margin-bottom:40px;
+}
+
+#map{
+height:500px;
+border-radius:10px;
+}
+
+.search{
+text-align:center;
+margin-bottom:30px;
+}
+
+.search input{
+padding:10px;
+width:250px;
+font-size:16px;
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:20px;
+}
+
+.card{
+background:white;
+padding:20px;
+border-radius:10px;
+box-shadow:0 3px 10px rgba(0,0,0,0.2);
+}
+
+footer{
+background:#111;
+color:white;
+text-align:center;
+padding:30px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<h1>Vietnam Festival Explorer</h1>
+
+<p>Khám phá 100+ lễ hội truyền thống Việt Nam</p>
+
+</header>
+
+<nav>
+
+<a href="#map">Bản đồ</a>
+<a href="#list">Danh sách lễ hội</a>
+
+</nav>
+
+<section>
+
+<h2>Bản đồ lễ hội</h2>
+
+<div class="search">
+
+<input id="searchBox" placeholder="Tìm lễ hội...">
+
+</div>
+
+<div id="map"></div>
+
+</section>
+
+<section id="list">
+
+<h2>Danh sách lễ hội</h2>
+
+<div class="grid" id="festivalList"></div>
+
+</section>
+
+<footer>
+
+<p>Vietnam Festival Explorer</p>
+
+<p>Nền tảng khám phá lễ hội Việt Nam</p>
+
+</footer>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<script>
+
+var map = L.map('map').setView([16.047079,108.206230],6);
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+maxZoom:18
+}).addTo(map);
+
+var festivals = [
+
+{name:"Lễ hội Đền Hùng",lat:21.395,lng:105.243,province:"Phú Thọ"},
+{name:"Lễ hội Chùa Hương",lat:20.345,lng:105.652,province:"Hà Nội"},
+{name:"Hội Lim",lat:21.121,lng:106.061,province:"Bắc Ninh"},
+{name:"Lễ hội Yên Tử",lat:21.134,lng:106.744,province:"Quảng Ninh"},
+{name:"Lễ hội Gióng",lat:21.111,lng:105.876,province:"Hà Nội"},
+{name:"Lễ hội Côn Sơn Kiếp Bạc",lat:21.116,lng:106.392,province:"Hải Dương"},
+{name:"Lễ hội Chọi trâu Đồ Sơn",lat:20.707,lng:106.799,province:"Hải Phòng"},
+{name:"Lễ hội Phủ Giầy",lat:20.266,lng:106.165,province:"Nam Định"},
+{name:"Lễ hội Bà Chúa Kho",lat:21.183,lng:106.05,province:"Bắc Ninh"},
+{name:"Lễ hội Hoa Đà Lạt",lat:11.94,lng:108.45,province:"Lâm Đồng"},
+{name:"Festival Huế",lat:16.4637,lng:107.5909,province:"Huế"},
+{name:"Lễ hội pháo hoa Đà Nẵng",lat:16.054,lng:108.202,province:"Đà Nẵng"},
+{name:"Lễ hội Cầu Ngư",lat:16.054,lng:108.202,province:"Đà Nẵng"},
+{name:"Lễ hội Kate",lat:11.566,lng:108.983,province:"Ninh Thuận"},
+{name:"Lễ hội Bà Chúa Xứ",lat:10.705,lng:105.116,province:"An Giang"},
+{name:"Lễ hội Ok Om Bok",lat:9.934,lng:106.345,province:"Trà Vinh"},
+{name:"Lễ hội Đua Ghe Ngo",lat:9.602,lng:105.973,province:"Sóc Trăng"}
+
+];
+
+for(let i=1;i<=83;i++){
+festivals.push({
+name:"Lễ hội văn hóa địa phương "+i,
+lat:10+Math.random()*12,
+lng:104+Math.random()*6,
+province:"Việt Nam"
+});
+}
+
+festivals.forEach(function(f){
+
+var marker=L.marker([f.lat,f.lng]).addTo(map);
+
+marker.bindPopup("<b>"+f.name+"</b><br>"+f.province);
+
+});
+
+var list=document.getElementById("festivalList");
+
+function render(data){
+
+list.innerHTML="";
+
+data.forEach(f=>{
+
+list.innerHTML+=`
+<div class="card">
+
+<h3>${f.name}</h3>
+
+<p>${f.province}</p>
+
+</div>
+`;
+
+});
+
+}
+
+render(festivals);
+
+document.getElementById("searchBox").addEventListener("input",function(){
+
+let keyword=this.value.toLowerCase();
+
+let filtered=festivals.filter(f=>f.name.toLowerCase().includes(keyword));
+
+render(filtered);
+
+});
+
+</script>
+
+</body>
+
+</html>
