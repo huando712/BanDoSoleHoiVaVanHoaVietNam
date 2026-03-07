@@ -26,11 +26,24 @@ color:white;
 }
 
 header h1{
-font-size:52px;
+font-size:50px;
+margin-bottom:10px;
 }
 
 header p{
 font-size:20px;
+}
+
+.search{
+margin-top:20px;
+}
+
+.search input{
+padding:12px;
+width:300px;
+font-size:16px;
+border:none;
+border-radius:5px;
 }
 
 nav{
@@ -60,17 +73,6 @@ height:500px;
 border-radius:10px;
 }
 
-.search{
-text-align:center;
-margin-bottom:30px;
-}
-
-.search input{
-padding:10px;
-width:250px;
-font-size:16px;
-}
-
 .grid{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
@@ -79,9 +81,19 @@ gap:20px;
 
 .card{
 background:white;
-padding:20px;
 border-radius:10px;
 box-shadow:0 3px 10px rgba(0,0,0,0.2);
+overflow:hidden;
+}
+
+.card img{
+width:100%;
+height:160px;
+object-fit:cover;
+}
+
+.card-content{
+padding:15px;
 }
 
 footer{
@@ -89,6 +101,15 @@ background:#111;
 color:white;
 text-align:center;
 padding:30px;
+}
+
+button{
+background:#e53935;
+color:white;
+border:none;
+padding:8px 12px;
+border-radius:5px;
+cursor:pointer;
 }
 
 </style>
@@ -99,15 +120,22 @@ padding:30px;
 
 <header>
 
-<h1>Vietnam Festival Explorer</h1>
+<h1>🇻🇳 Vietnam Festival Explorer</h1>
 
-<p>Khám phá 100+ lễ hội truyền thống Việt Nam</p>
+<p>Khám phá các lễ hội truyền thống Việt Nam</p>
+
+<div class="search">
+
+<input id="searchBox" placeholder="Tìm lễ hội hoặc tỉnh...">
+
+</div>
 
 </header>
 
 <nav>
 
 <a href="#map">Bản đồ</a>
+
 <a href="#list">Danh sách lễ hội</a>
 
 </nav>
@@ -115,12 +143,6 @@ padding:30px;
 <section>
 
 <h2>Bản đồ lễ hội</h2>
-
-<div class="search">
-
-<input id="searchBox" placeholder="Tìm lễ hội...">
-
-</div>
 
 <div id="map"></div>
 
@@ -152,42 +174,77 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
 maxZoom:18
 }).addTo(map);
 
-var festivals = [
+var festivals=[
 
-{name:"Lễ hội Đền Hùng",lat:21.395,lng:105.243,province:"Phú Thọ"},
-{name:"Lễ hội Chùa Hương",lat:20.345,lng:105.652,province:"Hà Nội"},
-{name:"Hội Lim",lat:21.121,lng:106.061,province:"Bắc Ninh"},
-{name:"Lễ hội Yên Tử",lat:21.134,lng:106.744,province:"Quảng Ninh"},
-{name:"Lễ hội Gióng",lat:21.111,lng:105.876,province:"Hà Nội"},
-{name:"Lễ hội Côn Sơn Kiếp Bạc",lat:21.116,lng:106.392,province:"Hải Dương"},
-{name:"Lễ hội Chọi trâu Đồ Sơn",lat:20.707,lng:106.799,province:"Hải Phòng"},
-{name:"Lễ hội Phủ Giầy",lat:20.266,lng:106.165,province:"Nam Định"},
-{name:"Lễ hội Bà Chúa Kho",lat:21.183,lng:106.05,province:"Bắc Ninh"},
-{name:"Lễ hội Hoa Đà Lạt",lat:11.94,lng:108.45,province:"Lâm Đồng"},
-{name:"Festival Huế",lat:16.4637,lng:107.5909,province:"Huế"},
-{name:"Lễ hội pháo hoa Đà Nẵng",lat:16.054,lng:108.202,province:"Đà Nẵng"},
-{name:"Lễ hội Cầu Ngư",lat:16.054,lng:108.202,province:"Đà Nẵng"},
-{name:"Lễ hội Kate",lat:11.566,lng:108.983,province:"Ninh Thuận"},
-{name:"Lễ hội Bà Chúa Xứ",lat:10.705,lng:105.116,province:"An Giang"},
-{name:"Lễ hội Ok Om Bok",lat:9.934,lng:106.345,province:"Trà Vinh"},
-{name:"Lễ hội Đua Ghe Ngo",lat:9.602,lng:105.973,province:"Sóc Trăng"}
+{
+name:"Lễ hội Đền Hùng",
+province:"Phú Thọ",
+lat:21.395,
+lng:105.243,
+desc:"Lễ hội tưởng nhớ công lao dựng nước của các Vua Hùng.",
+img:"https://upload.wikimedia.org/wikipedia/commons/5/56/Den_Hung.jpg"
+},
+
+{
+name:"Lễ hội Chùa Hương",
+province:"Hà Nội",
+lat:20.345,
+lng:105.652,
+desc:"Lễ hội hành hương Phật giáo lớn nhất miền Bắc.",
+img:"https://upload.wikimedia.org/wikipedia/commons/6/6b/Perfume_Pagoda.jpg"
+},
+
+{
+name:"Hội Lim",
+province:"Bắc Ninh",
+lat:21.121,
+lng:106.061,
+desc:"Lễ hội nổi tiếng với dân ca Quan Họ.",
+img:"https://upload.wikimedia.org/wikipedia/commons/7/71/Hoi_Lim.jpg"
+},
+
+{
+name:"Festival Huế",
+province:"Huế",
+lat:16.4637,
+lng:107.5909,
+desc:"Lễ hội văn hóa lớn nhất miền Trung.",
+img:"https://upload.wikimedia.org/wikipedia/commons/2/22/Hue_Festival.jpg"
+},
+
+{
+name:"Lễ hội Bà Chúa Xứ",
+province:"An Giang",
+lat:10.705,
+lng:105.116,
+desc:"Lễ hội tâm linh lớn của miền Tây Nam Bộ.",
+img:"https://upload.wikimedia.org/wikipedia/commons/d/d6/Ba_Chua_Xu.jpg"
+}
 
 ];
-
-for(let i=1;i<=83;i++){
-festivals.push({
-name:"Lễ hội văn hóa địa phương "+i,
-lat:10+Math.random()*12,
-lng:104+Math.random()*6,
-province:"Việt Nam"
-});
-}
 
 festivals.forEach(function(f){
 
 var marker=L.marker([f.lat,f.lng]).addTo(map);
 
-marker.bindPopup("<b>"+f.name+"</b><br>"+f.province);
+marker.bindPopup(
+
+`
+<h3>${f.name}</h3>
+
+<p><b>Địa điểm:</b> ${f.province}</p>
+
+<p>${f.desc}</p>
+
+<a href="https://www.google.com/maps/dir/?api=1&destination=${f.lat},${f.lng}" target="_blank">
+
+<button>Chỉ đường</button>
+
+</a>
+
+`
+
+);
 
 });
 
@@ -200,13 +257,23 @@ list.innerHTML="";
 data.forEach(f=>{
 
 list.innerHTML+=`
+
 <div class="card">
+
+<img src="${f.img}">
+
+<div class="card-content">
 
 <h3>${f.name}</h3>
 
 <p>${f.province}</p>
 
+<p>${f.desc}</p>
+
 </div>
+
+</div>
+
 `;
 
 });
@@ -219,7 +286,13 @@ document.getElementById("searchBox").addEventListener("input",function(){
 
 let keyword=this.value.toLowerCase();
 
-let filtered=festivals.filter(f=>f.name.toLowerCase().includes(keyword));
+let filtered=festivals.filter(f=>
+
+f.name.toLowerCase().includes(keyword) ||
+
+f.province.toLowerCase().includes(keyword)
+
+);
 
 render(filtered);
 
