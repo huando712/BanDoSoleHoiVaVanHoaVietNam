@@ -126,6 +126,9 @@ padding:30px;
 <nav>
 <a href="#map">Bản đồ</a>
 <a href="#list">Danh sách lễ hội</a>
+<a href="#entertainment">Khu vui chơi</a>
+<a href="#food">Ẩm thực</a>
+<a href="#utilities">Tiện ích</a>
 </nav>
 
 <section>
@@ -142,6 +145,33 @@ padding:30px;
 
 <div class="grid" id="festivalList"></div>
 
+</section>
+
+<section id="entertainment">
+<h2>Khu vui chơi</h2>
+<div class="grid" id="entertainmentList"></div>
+</section>
+
+<section id="food">
+<h2>Ẩm thực</h2>
+<div class="grid" id="foodList"></div>
+</section>
+
+<section id="utilities">
+<h2>Tiện ích</h2>
+<p>Các tiện ích hỗ trợ du lịch và tham quan.</p>
+
+<div class="util-nav">
+  <button onclick="showUtil('hotelList')">Khách sạn</button>
+  <button onclick="showUtil('medicalList')">Bệnh viện</button>
+  <button onclick="showUtil('storeList')">Cửa hàng tiện lợi</button>
+</div>
+
+<div id="util-content">
+  <div id="hotelList" class="util-list"></div>
+  <div id="medicalList" class="util-list" style="display:none"></div>
+  <div id="storeList" class="util-list" style="display:none"></div>
+</div>
 </section>
 
 <footer>
@@ -301,6 +331,141 @@ var festivals=[
 
 ];
 
+// khu vui chơi gần lễ hội
+var entertainments=[
+    {id:1,name:"Công viên nước Hồ Tây",province:"Hà Nội",lat:21.0733,lng:105.8010,desc:"Khu vui chơi mát mẻ gần Hà Nội",img:"https://source.unsplash.com/400x300/?waterpark"},
+    {id:2,name:"Công viên Văn hóa Đầm Sen",province:"TP.HCM",lat:10.7758,lng:106.6320,desc:"Khu giải trí lớn ở Sài Gòn",img:"https://source.unsplash.com/400x300/?themepark"},
+    {id:3,name:"Sun World Hạ Long",province:"Quảng Ninh",lat:20.9850,lng:107.0480,desc:"Công viên chủ đề tại Hạ Long",img:"https://source.unsplash.com/400x300/?universe"}
+];
+
+// điểm ẩm thực gần lễ hội
+var foods=[
+    {id:1,name:"Phở Bát Đàn",province:"Hà Nội",lat:21.0285,lng:105.8530,desc:"Phở truyền thống Hà Nội",img:"https://source.unsplash.com/400x300/?pho"},
+    {id:2,name:"Bánh mì Phượng",province:"Đà Nẵng",lat:16.0678,lng:108.2143,desc:"Bánh mì nổi tiếng tại Đà Nẵng",img:"https://source.unsplash.com/400x300/?bread"},
+    {id:3,name:"Hủ tiếu Nam Vang",province:"TP.HCM",lat:10.7868,lng:106.6990,desc:"Món hủ tiếu đặc sản Sài Gòn",img:"https://source.unsplash.com/400x300/?noodle"}
+];
+
+// tiện ích: khách sạn
+var hotels=[
+    {id:1,name:"Khách sạn Hà Nội - Elegance",province:"Hà Nội",lat:21.0280,lng:105.8542,desc:"Khách sạn 4 sao trung tâm Hà Nội",img:"https://source.unsplash.com/400x300/?hotel"},
+    {id:2,name:"Khách sạn Sài Gòn - Riverside",province:"TP.HCM",lat:10.7708,lng:106.6996,desc:"Khách sạn ven sông Sài Gòn",img:"https://source.unsplash.com/400x300/?building"}
+];
+
+// tiện ích: y tế
+var medicals=[
+    {id:1,name:"Bệnh viện Trung ương Huế",province:"Huế",lat:16.4546,lng:107.5790,desc:"Bệnh viện tuyến trung ương",img:"https://source.unsplash.com/400x300/?hospital"},
+    {id:2,name:"Phòng khám Đa khoa Quảng Ninh",province:"Quảng Ninh",lat:20.9600,lng:107.0482,desc:"Phòng khám y tế ở Hạ Long",img:"https://source.unsplash.com/400x300/?clinic"}
+];
+
+// tiện ích: cửa hàng tiện lợi
+var stores=[
+    {id:1,name:"Circle K Hà Nội",province:"Hà Nội",lat:21.0281,lng:105.8533,desc:"Chuỗi cửa hàng tiện lợi 24/7",img:"https://source.unsplash.com/400x300/?store"},
+    {id:2,name:"7-Eleven Đà Nẵng",province:"Đà Nẵng",lat:16.0544,lng:108.2022,desc:"Cửa hàng tiện lợi nổi tiếng tại ĐN",img:"https://source.unsplash.com/400x300/?convenience"}
+];
+
+function renderEntertainment(data){
+    var entList=document.getElementById("entertainmentList");
+    entList.innerHTML="";
+    data.forEach(e=>{
+        entList.innerHTML+=`
+        <div class="card">
+            <img src="${e.img}">
+            <div class="card-content">
+                <h3>${e.name}</h3>
+                <p>${e.desc}</p>
+            </div>
+        </div>`;
+    });
+}
+
+function renderFood(data){
+    var foodList=document.getElementById("foodList");
+    foodList.innerHTML="";
+    data.forEach(f=>{
+        foodList.innerHTML+=`
+        <div class="card">
+            <img src="${f.img}" onerror="this.src='https://via.placeholder.com/400x300?text=No+Image'">
+            <div class="card-content">
+                <h3>${f.name}</h3>
+                <p>${f.desc}</p>
+            </div>
+        </div>`;
+    });
+}
+
+function renderHotels(data){
+    var hotelList=document.getElementById("hotelList");
+    hotelList.innerHTML="";
+    data.forEach(h=>{
+        hotelList.innerHTML+=`
+        <div class="card">
+            <img src="${h.img}" onerror="this.src='https://via.placeholder.com/400x300?text=No+Image'">
+            <div class="card-content">
+                <h3>${h.name}</h3>
+                <p>${h.desc}</p>
+                <a href="https://www.google.com/maps/dir/?api=1&destination=${h.lat},${h.lng}" target="_blank">
+                    <button>Chỉ đường</button>
+                </a>
+            </div>
+        </div>`;
+    });
+}
+
+function renderMedical(data){
+    var medList=document.getElementById("medicalList");
+    medList.innerHTML="";
+    data.forEach(m=>{
+        medList.innerHTML+=`
+        <div class="card">
+            <img src="${m.img}" onerror="this.src='https://via.placeholder.com/400x300?text=No+Image'">
+            <div class="card-content">
+                <h3>${m.name}</h3>
+                <p>${m.desc}</p>
+                <a href="https://www.google.com/maps/dir/?api=1&destination=${m.lat},${m.lng}" target="_blank">
+                    <button>Chỉ đường</button>
+                </a>
+            </div>
+        </div>`;
+    });
+}
+
+function renderStores(data){
+    var storeList=document.getElementById("storeList");
+    storeList.innerHTML="";
+    data.forEach(s=>{
+        storeList.innerHTML+=`
+        <div class="card">
+            <img src="${s.img}" onerror="this.src='https://via.placeholder.com/400x300?text=No+Image'">
+            <div class="card-content">
+                <h3>${s.name}</h3>
+                <p>${s.desc}</p>
+                <a href="https://www.google.com/maps/dir/?api=1&destination=${s.lat},${s.lng}" target="_blank">
+                    <button>Chỉ đường</button>
+                </a>
+            </div>
+        </div>`;
+    });
+}
+
+// hiển thị ban đầu cho các danh mục mới
+renderEntertainment(entertainments);
+renderFood(foods);
+renderHotels(hotels);
+renderMedical(medicals);
+renderStores(stores);
+
+// utility tab switching
+function showUtil(id){
+    ['hotelList','medicalList','storeList'].forEach(function(el){
+        document.getElementById(el).style.display = (el===id?'grid':'none');
+    });
+}
+// hiển thị ban đầu cho các danh mục mới
+renderEntertainment(entertainments);
+renderFood(foods);
+renderHotels(hotels);
+renderMedical(medicals);
+
 /* HIỂN THỊ MARKER */
 
 festivals.forEach(function(f){
@@ -327,6 +492,54 @@ marker.bindPopup(
 
 markers.push(marker);
 
+});
+
+// đánh dấu khu vui chơi
+entertainments.forEach(function(e){
+    var m=L.marker([e.lat,e.lng]).addTo(map);
+    m.bindPopup(`
+    <h3>🎢 ${e.name}</h3>
+    <p>${e.desc}</p>
+    `);
+});
+
+// đánh dấu ẩm thực
+foods.forEach(function(f){
+    var m=L.marker([f.lat,f.lng]).addTo(map);
+    m.bindPopup(`
+    <h3>🍽️ ${f.name}</h3>
+    <p>${f.desc}</p>
+    `);
+});
+
+// đánh dấu khách sạn
+hotels.forEach(function(h){
+    var m=L.marker([h.lat,h.lng]).addTo(map);
+    m.bindPopup(`
+    <h3>🏨 ${h.name}</h3>
+    <p>${h.desc}</p>
+    <a href="https://www.google.com/maps/dir/?api=1&destination=${h.lat},${h.lng}" target="_blank"><button>Chỉ đường</button></a>
+    `);
+});
+
+// đánh dấu cửa hàng tiện lợi
+stores.forEach(function(s){
+    var m=L.marker([s.lat,s.lng]).addTo(map);
+    m.bindPopup(`
+    <h3>🛒 ${s.name}</h3>
+    <p>${s.desc}</p>
+    <a href="https://www.google.com/maps/dir/?api=1&destination=${s.lat},${s.lng}" target="_blank"><button>Chỉ đường</button></a>
+    `);
+});
+
+// đánh dấu y tế
+medicals.forEach(function(med){
+    var m=L.marker([med.lat,med.lng]).addTo(map);
+    m.bindPopup(`
+    <h3>🩺 ${med.name}</h3>
+    <p>${med.desc}</p>
+    <a href="https://www.google.com/maps/dir/?api=1&destination=${med.lat},${med.lng}" target="_blank"><button>Chỉ đường</button></a>
+    `);
 });
 
 /* HIỂN THỊ DANH SÁCH */
@@ -453,7 +666,44 @@ results.sort((a,b)=>a.distance-b.distance);
 
 let nearest=results.slice(0,10);
 
-showNearestFestivals(nearest);
+// tìm khu vui chơi và ẩm thực gần người dùng
+let entResults=entertainments.map(e=>{
+    let distance=getDistance(userLat,userLng,e.lat,e.lng);
+    return {...e,distance};
+});
+entResults.sort((a,b)=>a.distance-b.distance);
+entResults=entResults.slice(0,5);
+
+let foodResults=foods.map(f=>{
+    let distance=getDistance(userLat,userLng,f.lat,f.lng);
+    return {...f,distance};
+});
+foodResults.sort((a,b)=>a.distance-b.distance);
+foodResults=foodResults.slice(0,5);
+
+// tiện ích gần
+let hotelResults=hotels.map(h=>{
+    let distance=getDistance(userLat,userLng,h.lat,h.lng);
+    return {...h,distance};
+});
+hotelResults.sort((a,b)=>a.distance-b.distance);
+hotelResults=hotelResults.slice(0,5);
+
+let medicalResults=medicals.map(med=>{
+    let distance=getDistance(userLat,userLng,med.lat,med.lng);
+    return {...med,distance};
+});
+medicalResults.sort((a,b)=>a.distance-b.distance);
+medicalResults=medicalResults.slice(0,5);
+
+let storeResults=stores.map(s=>{
+    let distance=getDistance(userLat,userLng,s.lat,s.lng);
+    return {...s,distance};
+});
+storeResults.sort((a,b)=>a.distance-b.distance);
+storeResults=storeResults.slice(0,5);
+
+showNearestFestivals(nearest, entResults, foodResults, hotelResults, medicalResults, storeResults);
 
 });
 
@@ -461,44 +711,121 @@ showNearestFestivals(nearest);
 
 /* HIỂN THỊ 10 LỄ HỘI */
 
-function showNearestFestivals(listData){
-
-var html="<h2>10 lễ hội gần bạn</h2>";
-
-listData.forEach((f,i)=>{
-
-html+=`
-
-<div class="card">
-
-<img src="${f.img}">
-
-<div class="card-content">
-
-<h3>${i+1}. ${f.name}</h3>
-
-<p><b>${f.province}</b></p>
-
-<p>Khoảng cách: ${f.distance.toFixed(1)} km</p>
-
-<p>${f.desc}</p>
-
-<a href="https://www.google.com/maps/dir/?api=1&destination=${f.lat},${f.lng}" target="_blank">
-
-<button>Chỉ đường</button>
-
-</a>
-
-</div>
-
-</div>
-
+function showNearestFestivals(festivalsData, entertainData, foodData, hotelData, medicalData, storeData){
+    var html="<h2>10 lễ hội gần bạn</h2>";
+    festivalsData.forEach((f,i)=>{
+        html+=`\n
+<div class="card">\n
+<img src="${f.img}">\n
+<div class="card-content">\n
+<h3>${i+1}. ${f.name}</h3>\n
+<p><b>${f.province}</b></p>\n
+<p>Khoảng cách: ${f.distance.toFixed(1)} km</p>\n
+<p>${f.desc}</p>\n
+<a href="https://www.google.com/maps/dir/?api=1&destination=${f.lat},${f.lng}" target="_blank">\n
+<button>Chỉ đường</button>\n
+</a>\n
+</div>\n
+</div>\n
 `;
-
-});
-
-document.getElementById("festivalList").innerHTML=html;
-
+    });
+    
+    if(entertainData && entertainData.length){
+        html+="<h2>Khu vui chơi gần bạn</h2>";
+        entertainData.forEach((e,i)=>{
+            html+=`\n
+<div class="card">\n
+<img src="${e.img}" onerror="this.src='https://via.placeholder.com/400x300?text=No+Image'">\n
+<div class="card-content">\n
+<h3>${i+1}. ${e.name}</h3>\n
+<p>Khoảng cách: ${e.distance.toFixed(1)} km</p>\n
+<p>${e.desc}</p>\n
+<a href="https://www.google.com/maps/dir/?api=1&destination=${e.lat},${e.lng}" target="_blank">\n
+<button>Chỉ đường</button>\n
+</a>\n
+</div>\n
+</div>\n
+`;
+        });
+    }
+    
+    if(foodData && foodData.length){
+        html+="<h2>Ẩm thực gần bạn</h2>";
+        foodData.forEach((f,i)=>{
+            html+=`\n
+<div class="card">\n
+<img src="${f.img}" onerror="this.src='https://via.placeholder.com/400x300?text=No+Image'">\n
+<div class="card-content">\n
+<h3>${i+1}. ${f.name}</h3>\n
+<p>Khoảng cách: ${f.distance.toFixed(1)} km</p>\n
+<p>${f.desc}</p>\n
+<a href="https://www.google.com/maps/dir/?api=1&destination=${f.lat},${f.lng}" target="_blank">\n
+<button>Chỉ đường</button>\n
+</a>\n
+</div>\n
+</div>\n
+`;
+        });
+    }
+    
+    if(hotelData && hotelData.length){
+        html+="<h2>Khách sạn gần bạn</h2>";
+        hotelData.forEach((h,i)=>{
+            html+=`\n
+<div class="card">\n
+<img src="${h.img}" onerror="this.src='https://via.placeholder.com/400x300?text=No+Image'">\n
+<div class="card-content">\n
+<h3>${i+1}. ${h.name}</h3>\n
+<p>Khoảng cách: ${h.distance.toFixed(1)} km</p>\n
+<p>${h.desc}</p>\n
+<a href="https://www.google.com/maps/dir/?api=1&destination=${h.lat},${h.lng}" target="_blank">\n
+<button>Chỉ đường</button>\n
+</a>\n
+</div>\n
+</div>\n
+`;
+        });
+    }
+    
+    if(medicalData && medicalData.length){
+        html+="<h2>Cơ sở y tế gần bạn</h2>";
+        medicalData.forEach((m,i)=>{
+            html+=`\n
+<div class="card">\n
+<img src="${m.img}" onerror="this.src='https://via.placeholder.com/400x300?text=No+Image'">\n
+<div class="card-content">\n
+<h3>${i+1}. ${m.name}</h3>\n
+<p>Khoảng cách: ${m.distance.toFixed(1)} km</p>\n
+<p>${m.desc}</p>\n
+<a href="https://www.google.com/maps/dir/?api=1&destination=${m.lat},${m.lng}" target="_blank">\n
+<button>Chỉ đường</button>\n
+</a>\n
+</div>\n
+</div>\n
+`;
+        });
+    }
+    
+    if(storeData && storeData.length){
+        html+="<h2>Cửa hàng tiện lợi gần bạn</h2>";
+        storeData.forEach((s,i)=>{
+            html+=`\n
+<div class="card">\n
+<img src="${s.img}" onerror="this.src='https://via.placeholder.com/400x300?text=No+Image'">\n
+<div class="card-content">\n
+<h3>${i+1}. ${s.name}</h3>\n
+<p>Khoảng cách: ${s.distance.toFixed(1)} km</p>\n
+<p>${s.desc}</p>\n
+<a href="https://www.google.com/maps/dir/?api=1&destination=${s.lat},${s.lng}" target="_blank">\n
+<button>Chỉ đường</button>\n
+</a>\n
+</div>\n
+</div>\n
+`;
+        });
+    }
+    
+    document.getElementById("festivalList").innerHTML=html;
 }
 
 </script>
