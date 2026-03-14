@@ -12,7 +12,8 @@
 body{
 margin:0;
 font-family:Arial;
-background:#f5f5f5;
+background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%);
+min-height: 100vh;
 }
 
 header{
@@ -63,6 +64,10 @@ font-weight:bold;
 
 section{
 padding:50px 10%;
+background: rgba(255,255,255,0.9);
+margin: 20px auto;
+border-radius: 15px;
+box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }
 
 #map{
@@ -123,7 +128,7 @@ background:#d32f2f;
 
 <header>
 
-<h1>🇻🇳 Vietnam Festival Explorer</h1>
+<h1>Vietnam Festival Explorer</h1>
 
 <p>Khám phá 100 lễ hội truyền thống Việt Nam</p>
 
@@ -144,6 +149,7 @@ background:#d32f2f;
 <a href="#food">Ẩm thực</a>
 <a href="#utilities">Tiện ích</a>
 <a href="#history">Lịch sử</a>
+<a href="#collaboration">Hợp tác&quảng cáo</a>
 </nav>
 
 <section>
@@ -192,6 +198,36 @@ background:#d32f2f;
 <section id="history">
 <h2>Lịch sử tìm kiếm</h2>
 <div id="searchHistory"></div>
+</section>
+
+<section id="collaboration">
+<h2>Hợp tác & Quảng cáo</h2>
+<div class="grid">
+<div class="card">
+<div class="card-content">
+<h3>Đặt banner quảng cáo</h3>
+<p>Liên hệ để đặt banner quảng cáo trên trang web của chúng tôi.</p>
+</div>
+</div>
+<div class="card">
+<div class="card-content">
+<h3>Viết bài PR</h3>
+<p>Dịch vụ viết bài PR về lễ hội và văn hóa Việt Nam.</p>
+</div>
+</div>
+<div class="card">
+<div class="card-content">
+<h3>Hợp tác tour</h3>
+<p>Hợp tác tổ chức tour du lịch lễ hội truyền thống.</p>
+</div>
+</div>
+<div class="card">
+<div class="card-content">
+<h3>Affiliate</h3>
+<p>Chương trình affiliate cho đối tác kinh doanh.</p>
+</div>
+</div>
+</div>
 </section>
 
 <footer>
@@ -281,11 +317,11 @@ var festivals=[
 {id:34,name:"Lễ hội Dinh Thầy Thím",province:"Bình Thuận",lat:10.56,lng:107.73,desc:"Tín ngưỡng dân gian",img:"-festival-map-vietnam/image/lễ hội dim thầy thính.jpg"},
 {id:35,name:"Lễ hội Đua Bò",province:"An Giang",lat:10.36,lng:104.85,desc:"Lễ hội Khmer",img:"-festival-map-vietnam/image/lễ hội dim thầy thính.jpg"},
 
-{id:36,name:"Lễ hội Đua Ghe Ngo",province:"Sóc Trăng",lat:9.6,lng:105.97,desc:"Lễ hội sông nước",img:"https://source.unsplash.com/400x300/?boat"},
-{id:37,name:"Lễ hội Chol Chnam Thmay",province:"Nam Bộ",lat:10.2,lng:105.9,desc:"Tết Khmer",img:"https://source.unsplash.com/400x300/?festival"},
-{id:38,name:"Lễ hội Cồng Chiêng",province:"Tây Nguyên",lat:14.7,lng:108.0,desc:"Di sản văn hóa",img:"https://source.unsplash.com/400x300/?culture"},
-{id:39,name:"Lễ hội Đua Voi",province:"Đắk Lắk",lat:12.67,lng:108.04,desc:"Truyền thống Tây Nguyên",img:"https://source.unsplash.com/400x300/?elephant"},
-{id:40,name:"Lễ hội Đâm Trâu",province:"Kon Tum",lat:14.35,lng:108.0,desc:"Nghi lễ dân tộc",img:"https://source.unsplash.com/400x300/?tribe"},
+{id:36,name:"Lễ hội Đua Ghe Ngo",province:"Sóc Trăng",lat:9.6,lng:105.97,desc:"Lễ hội sông nước",img:"-festival-map-vietnam/image/lễ hội đua ghe go.jpg"},
+{id:37,name:"Lễ hội Chol Chnam Thmay",province:"Nam Bộ",lat:10.2,lng:105.9,desc:"Tết Khmer",img:"https://www.goindonesiatours.com/wp-content/uploads/Islamic-New-Year-is-a-significant-Indonesia-public-holiday-for-Muslims-420x280.jpg"},
+{id:38,name:"Lễ hội Cồng Chiêng",province:"Tây Nguyên",lat:14.7,lng:108.0,desc:"Di sản văn hóa",img:"-festival-map-vietnam/image/le_hoi_cong_chieng_tay_nguyen_-_gia_tri_van_hoa_ngan_doi_-_baodantocvn.jpg"},
+{id:39,name:"Lễ hội Đua Voi",province:"Đắk Lắk",lat:12.67,lng:108.04,desc:"Truyền thống Tây Nguyên",img:"-festival-map-vietnam/image/lễ hội đua voi.jpg"},
+{id:40,name:"Lễ hội Đâm Trâu",province:"Kon Tum",lat:14.35,lng:108.0,desc:"Nghi lễ dân tộc",img:"-festival-map-vietnam/image/lễ hội đâm trâu.jpg"},
 
 {id:41,name:"Lễ hội Hoa Đà Lạt",province:"Lâm Đồng",lat:11.94,lng:108.45,desc:"Festival hoa",img:"https://source.unsplash.com/400x300/?flower"},
 {id:42,name:"Lễ hội Cà Phê",province:"Đắk Lắk",lat:12.67,lng:108.04,desc:"Festival cà phê",img:"https://source.unsplash.com/400x300/?coffee"},
@@ -397,7 +433,7 @@ function renderEntertainment(data){
     entList.innerHTML="";
     data.forEach(e=>{
         entList.innerHTML+=`
-        <div class="card">
+        <div class="card" onclick="window.location.href='detail.html?type=entertainment&id=${e.id}'">
             <img src="${e.img}">
             <div class="card-content">
                 <h3>${e.name}</h3>
@@ -412,7 +448,7 @@ function renderFood(data){
     foodList.innerHTML="";
     data.forEach(f=>{
         foodList.innerHTML+=`
-        <div class="card">
+        <div class="card" onclick="window.location.href='detail.html?type=food&id=${f.id}'">
             <img src="${f.img}" onerror="this.src='https://via.placeholder.com/400x300?text=No+Image'">
             <div class="card-content">
                 <h3>${f.name}</h3>
@@ -427,7 +463,7 @@ function renderHotels(data){
     hotelList.innerHTML="";
     data.forEach(h=>{
         hotelList.innerHTML+=`
-        <div class="card">
+        <div class="card" onclick="window.location.href='detail.html?type=hotel&id=${h.id}'">
             <img src="${h.img}" onerror="this.src='https://via.placeholder.com/400x300?text=No+Image'">
             <div class="card-content">
                 <h3>${h.name}</h3>
@@ -445,7 +481,7 @@ function renderMedical(data){
     medList.innerHTML="";
     data.forEach(m=>{
         medList.innerHTML+=`
-        <div class="card">
+        <div class="card" onclick="window.location.href='detail.html?type=medical&id=${m.id}'">
             <img src="${m.img}" onerror="this.src='https://via.placeholder.com/400x300?text=No+Image'">
             <div class="card-content">
                 <h3>${m.name}</h3>
@@ -463,7 +499,7 @@ function renderStores(data){
     storeList.innerHTML="";
     data.forEach(s=>{
         storeList.innerHTML+=`
-        <div class="card">
+        <div class="card" onclick="window.location.href='detail.html?type=store&id=${s.id}'">
             <img src="${s.img}" onerror="this.src='https://via.placeholder.com/400x300?text=No+Image'">
             <div class="card-content">
                 <h3>${s.name}</h3>
@@ -583,7 +619,7 @@ data.forEach((f,index)=>{
 
 list.innerHTML+=`
 
-<div class="card" onclick="goToFestival(${index})">
+<div class="card" onclick="window.location.href='detail.html?type=festival&id=${f.id}'">
 
 <img src="${f.img}">
 

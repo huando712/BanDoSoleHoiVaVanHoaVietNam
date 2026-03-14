@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+<meta charset="UTF-8">
+<title>Chi tiết - Vietnam Festival Explorer</title>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+
+<style>
+
+body{
+margin:0;
+font-family:Arial;
+background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%);
+min-height: 100vh;
+}
+
+header{
+background:url("https://images.unsplash.com/photo-1528127269322-539801943592");
+background-size:cover;
+background-position:center;
+padding:60px 20px;
+text-align:center;
+color:white;
+}
+
+header h1{
+font-size:35px;
+}
+
+nav{
+background:#111;
+padding:15px;
+text-align:center;
+}
+
+nav a{
+color:white;
+margin:20px;
+text-decoration:none;
+font-weight:bold;
+}
+
+section{
+padding:50px 10%;
+background: rgba(255,255,255,0.9);
+margin: 20px auto;
+border-radius: 15px;
+box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+max-width: 800px;
+}
+
+.detail-card{
+text-align: center;
+}
+
+.detail-card img{
+width:100%;
+max-width:400px;
+border-radius:10px;
+margin-bottom:20px;
+}
+
+.detail-card h2{
+color:#e53935;
+}
+
+.detail-card p{
+line-height:1.6;
+}
+
+.back-button{
+background:#e53935;
+color:white;
+border:none;
+padding:10px 20px;
+border-radius:5px;
+cursor:pointer;
+margin-top:20px;
+}
+
+.back-button:hover{
+background:#d32f2f;
+}
+
+footer{
+background:#111;
+color:white;
+text-align:center;
+padding:30px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<h1>🇻🇳 Vietnam Festival Explorer</h1>
+
+<p>Chi tiết thông tin</p>
+
+</header>
+
+<nav>
+<a href="index.html#map">Bản đồ</a>
+<a href="index.html#list">Danh sách lễ hội</a>
+<a href="index.html#entertainment">Khu vui chơi</a>
+<a href="index.html#food">Ẩm thực</a>
+<a href="index.html#utilities">Tiện ích</a>
+<a href="index.html#history">Lịch sử</a>
+<a href="index.html#collaboration">Hợp tác</a>
+</nav>
+
+<section>
+
+<div class="detail-card" id="detailContent">
+
+<!-- Nội dung sẽ được load bởi JS -->
+
+</div>
+
+<button class="back-button" onclick="window.history.back()">Quay lại</button>
+
+</section>
+
+<footer>
+
+<p>Vietnam Festival Explorer</p>
+<p>Nền tảng khám phá lễ hội Việt Nam</p>
+
+</footer>
+
+<script>
+
+// Dữ liệu từ index.html - cần copy hoặc import, nhưng vì tĩnh, copy lại
+
+var festivals=[
+
+{id:1,name:"Lễ hội Đền Hùng",province:"Phú Thọ",lat:21.395,lng:105.243,desc:"Tưởng nhớ các Vua Hùng",img:"image/denhung.jpg"},
+{id:2,name:"Lễ hội Chùa Hương",province:"Hà Nội",lat:20.345,lng:105.652,desc:"Lễ hội hành hương Phật giáo",img:"image/chuahuongg.jpg"},
+{id:3,name:"Hội Lim",province:"Bắc Ninh",lat:21.121,lng:106.061,desc:"Lễ hội Quan họ",img:"image/hoilim.jpg"},
+{id:4,name:"Festival Huế",province:"Huế",lat:16.4637,lng:107.5909,desc:"Festival văn hóa Huế",img:"image/feshue.jpg"},
+{id:5,name:"Lễ hội Bà Chúa Xứ",province:"An Giang",lat:10.705,lng:105.116,desc:"Lễ hội tín ngưỡng Núi Sam",img:"image/le-hoi-ba-chua-xu-chau-doc-an-giang-2.webp"},
+
+{id:6,name:"Lễ hội Gióng",province:"Hà Nội",lat:21.083,lng:105.82,desc:"Tôn vinh Thánh Gióng",img:"image/hoi-giong-ha-noi-8.jpg"},
+{id:7,name:"Lễ hội Yên Tử",province:"Quảng Ninh",lat:21.17,lng:106.73,desc:"Hành hương Yên Tử",img:"image/trekking-yen-tu-2.png"},
+{id:8,name:"Lễ hội Côn Sơn Kiếp Bạc",province:"Hải Dương",lat:21.12,lng:106.38,desc:"Tưởng nhớ Trần Hưng Đạo",img:"image/con-son-kiep-bac-thumb.jpg"},
+{id:9,name:"Lễ hội Đền Trần",province:"Nam Định",lat:20.43,lng:106.16,desc:"Phát ấn đầu năm",img:"image/OIP.jpg"},
+{id:10,name:"Lễ hội Chọi Trâu",province:"Hải Phòng",lat:20.85,lng:106.68,desc:"Lễ hội truyền thống Đồ Sơn",img:"image/lechoitrau.jpg"},
+
+{id:11,name:"Lễ hội Hoa Ban",province:"Điện Biên",lat:21.38,lng:103.02,desc:"Lễ hội người Thái",img:"https://media.mia.vn/uploads/blog-du-lich/le-hoi-hoa-ban-muong-lo-va-nhung-tinh-hoa-mien-tay-bac-1646217729.jpg"},
+{id:12,name:"Lễ hội Lồng Tồng",province:"Tuyên Quang",lat:21.82,lng:105.22,desc:"Xuống đồng đầu năm",img:"https://gotrangtri.vn/wp-content/uploads/2018/10/LongtongBackan1JPG-copy-1024x686.jpg"},
+{id:13,name:"Lễ hội Đền Bà Triệu",province:"Thanh Hóa",lat:19.75,lng:105.78,desc:"Tưởng nhớ Bà Triệu",img:"https://truyenhinhthanhhoa.qltns.mediacdn.vn/458221966042468352/2023/3/2/le-hoi-den-ba-trieu-di-san-phi-vat-the-quoc-gia-16777202372901134506959.jpg"},
+{id:14,name:"Lễ hội Cầu Ngư",province:"Đà Nẵng",lat:16.05,lng:108.2,desc:"Lễ hội ngư dân",img:"https://static.vinwonders.com/production/le-hoi-nghinh-ong-phu-quoc-1.jpg"},
+{id:15,name:"Lễ hội Kate",province:"Ninh Thuận",lat:11.67,lng:108.86,desc:"Lễ hội lớn người Chăm",img:"https://static.vinwonders.com/production/le-hoi-kate-ninh-thuan-3.jpg"},
+
+{id:16,name:"Lễ hội Ok Om Bok",province:"Sóc Trăng",lat:9.6,lng:105.98,desc:"Cúng trăng Khmer",img:"https://cdn.tcdulichtphcm.vn/upload/4-2024/images/2024-11-14/-1731565736-134-width960height640.jpg"},
+{id:17,name:"Lễ hội Nghinh Ông",province:"Vũng Tàu",lat:10.34,lng:107.08,desc:"Cầu ngư ven biển",img:"https://media.vov.vn/sites/default/files/styles/large_watermark/public/2023-09/tu_sang_som_ngu_dan_vung_bien_vung_tau_da_dong_thuyen_ra_khoi_tien_hanh_nghi_thuc_don_ong_anh_luu_son.jpg"},
+{id:18,name:"Lễ hội Dinh Cô",province:"Vũng Tàu",lat:10.37,lng:107.1,desc:"Tín ngưỡng dân gian",img:"https://www.onsetbluesfestival.com/wp-content/uploads/2023/04/le-hoi-dinh-co-2-2048x1357.jpg"},
+{id:19,name:"Lễ hội Bà Thu Bồn",province:"Quảng Nam",lat:15.88,lng:108.33,desc:"Lễ hội tín ngưỡng",img:"-festival-map-vietnam/image/istockphoto-515999868-170667a.jpg"},
+{id:20,name:"Lễ hội Đền Cuông",province:"Nghệ An",lat:19.2,lng:105.68,desc:"Thờ An Dương Vương",img:"-festival-map-vietnam/image/unnamed.png"},
+
+{id:21,name:"Lễ hội Bà Chúa Kho",province:"Bắc Ninh",lat:21.18,lng:106.05,desc:"Cầu tài lộc",img:"https://poliva.vn/wp-content/uploads/2019/07/den-ba-chua-kho-4.jpg"},
+{id:22,name:"Lễ hội Chùa Keo",province:"Thái Bình",lat:20.45,lng:106.27,desc:"Lễ hội cổ truyền",img:"-festival-map-vietnam/image/16-places-to-pray-for-fortune-and-luck-are-considered-the-most-sacred-in-vietnam-20.jpg"},
+{id:23,name:"Lễ hội Đền Sóc",province:"Hà Nội",lat:21.2,lng:105.87,desc:"Thờ Thánh Gióng",img:"-festival-map-vietnam/image/49DB30A4-E57B-41F7-BBF3-5CCB6BA75670.jpeg"},
+{id:24,name:"Lễ hội Phủ Giầy",province:"Nam Định",lat:20.42,lng:106.2,desc:"Thờ Mẫu Liễu Hạnh",img:"-festival-map-vietnam/image/le-hoi-phu-giay.jpg"},
+{id:25,name:"Lễ hội Chùa Dâu",province:"Bắc Ninh",lat:21.12,lng:106.04,desc:"Lễ hội Phật giáo cổ",img:"https://cdn.xanhsm.com/2024/11/a9dbf841-chua-dau-16.jpg"},
+
+{id:26,name:"Lễ hội Chùa Bút Tháp",province:"Bắc Ninh",lat:21.1,lng:106.02,desc:"Di tích Phật giáo",img:"-festival-map-vietnam/image/chùa  bút tháp.jpg"},
+{id:27,name:"Lễ hội Đền Đô",province:"Bắc Ninh",lat:21.17,lng:106.08,desc:"Thờ vua Lý",img:"https://thumbs.dreamstime.com/b/group-people-traditional-costume-palanquin-procession-h-hai-duong-vietnam-february-holy-con-son-kiep-bac-festival-32630728.jpg"},
+{id:28,name:"Lễ hội Cửa Ông",province:"Quảng Ninh",lat:21.01,lng:107.3,desc:"Thờ Trần Quốc Tảng",img:"https://source.unsplash.com/400x300/?festival"},
+{id:29,name:"Lễ hội Bạch Đằng",province:"Quảng Ninh",lat:20.9,lng:106.8,desc:"Kỷ niệm chiến thắng Bạch Đằng",img:"https://source.unsplash.com/400x300/?history"},
+{id:30,name:"Lễ hội Đền Tranh",province:"Hải Dương",lat:21.02,lng:106.37,desc:"Thờ Quan Lớn Tuần Tranh",img:"https://source.unsplash.com/400x300/?temple"},
+
+{id:31,name:"Lễ hội Lam Kinh",province:"Thanh Hóa",lat:19.88,lng:105.43,desc:"Tưởng nhớ Lê Lợi",img:"https://source.unsplash.com/400x300/?heritage"},
+{id:32,name:"Lễ hội Điện Hòn Chén",province:"Huế",lat:16.43,lng:107.55,desc:"Thờ Thiên Y A Na",img:"https://source.unsplash.com/400x300/?festival"},
+{id:33,name:"Lễ hội Tháp Bà Ponagar",province:"Khánh Hòa",lat:12.27,lng:109.2,desc:"Thờ nữ thần Ponagar",img:"https://source.unsplash.com/400x300/?temple"},
+{id:34,name:"Lễ hội Dinh Thầy Thím",province:"Bình Thuận",lat:10.56,lng:107.73,desc:"Tín ngưỡng dân gian",img:"https://source.unsplash.com/400x300/?festival"},
+{id:35,name:"Lễ hội Đua Bò",province:"An Giang",lat:10.36,lng:104.85,desc:"Lễ hội Khmer",img:"https://source.unsplash.com/400x300/?race"},
+
+{id:36,name:"Lễ hội Đua Ghe Ngo",province:"Sóc Trăng",lat:9.6,lng:105.97,desc:"Lễ hội sông nước",img:"https://source.unsplash.com/400x300/?boat"},
+{id:37,name:"Lễ hội Chol Chnam Thmay",province:"Nam Bộ",lat:10.2,lng:105.9,desc:"Tết Khmer",img:"https://source.unsplash.com/400x300/?festival"},
+{id:38,name:"Lễ hội Cồng Chiêng",province:"Tây Nguyên",lat:14.7,lng:108.0,desc:"Di sản văn hóa",img:"https://source.unsplash.com/400x300/?culture"},
+{id:39,name:"Lễ hội Đua Voi",province:"Đắk Lắk",lat:12.67,lng:108.04,desc:"Truyền thống Tây Nguyên",img:"https://source.unsplash.com/400x300/?elephant"},
+{id:40,name:"Lễ hội Đâm Trâu",province:"Kon Tum",lat:14.35,lng:108.0,desc:"Nghi lễ dân tộc",img:"https://source.unsplash.com/400x300/?tribe"},
+
+{id:41,name:"Lễ hội Hoa Đà Lạt",province:"Lâm Đồng",lat:11.94,lng:108.45,desc:"Festival hoa",img:"https://source.unsplash.com/400x300/?flower"},
+{id:42,name:"Lễ hội Cà Phê",province:"Đắk Lắk",lat:12.67,lng:108.04,desc:"Festival cà phê",img:"https://source.unsplash.com/400x300/?coffee"},
+{id:43,name:"Lễ hội Pháo Hoa",province:"Đà Nẵng",lat:16.05,lng:108.2,desc:"Lễ hội pháo hoa quốc tế",img:"https://source.unsplash.com/400x300/?fireworks"},
+{id:44,name:"Lễ hội Trăng Rằm",province:"Hội An",lat:15.88,lng:108.33,desc:"Lễ hội đèn lồng",img:"https://source.unsplash.com/400x300/?lantern"},
+{id:45,name:"Lễ hội Biển",province:"Nha Trang",lat:12.23,lng:109.2,desc:"Festival biển",img:"https://source.unsplash.com/400x300/?beach"},
+
+{id:46,name:"Lễ hội Hang Động",province:"Quảng Bình",lat:17.54,lng:106.15,desc:"Du lịch hang động",img:"https://source.unsplash.com/400x300/?cave"},
+{id:47,name:"Lễ hội Đua Thuyền",province:"Quảng Bình",lat:17.47,lng:106.62,desc:"Lễ hội sông nước",img:"https://source.unsplash.com/400x300/?boat"},
+{id:48,name:"Lễ hội Gầu Tào",province:"Hà Giang",lat:22.82,lng:104.98,desc:"Lễ hội người Mông",img:"https://source.unsplash.com/400x300/?mountain"},
+{id:49,name:"Lễ hội Nhảy Lửa",province:"Hà Giang",lat:22.75,lng:105.0,desc:"Nghi lễ dân tộc",img:"https://source.unsplash.com/400x300/?fire"},
+{id:50,name:"Lễ hội Hoa Tam Giác Mạch",province:"Hà Giang",lat:23.28,lng:105.22,desc:"Festival hoa",img:"https://source.unsplash.com/400x300/?flower"},
+{id:51,name:"Lễ hội Chợ Tình Khâu Vai",province:"Hà Giang",lat:23.17,lng:104.85,desc:"Lễ hội chợ tình dân tộc",img:"https://source.unsplash.com/400x300/?market"},
+{id:52,name:"Lễ hội Đền Thượng",province:"Lào Cai",lat:22.49,lng:103.97,desc:"Thờ Trần Hưng Đạo",img:"https://source.unsplash.com/400x300/?temple"},
+{id:53,name:"Lễ hội Bảo Hà",province:"Lào Cai",lat:22.19,lng:104.28,desc:"Thờ thần Hoàng Bảy",img:"https://source.unsplash.com/400x300/?temple"},
+{id:54,name:"Lễ hội Roóng Poọc",province:"Lào Cai",lat:22.38,lng:103.87,desc:"Lễ hội xuống đồng",img:"https://source.unsplash.com/400x300/?festival"},
+{id:55,name:"Lễ hội Tết Nhảy",province:"Lào Cai",lat:22.38,lng:103.92,desc:"Lễ hội người Dao",img:"https://source.unsplash.com/400x300/?culture"},
+
+{id:56,name:"Lễ hội Hoa Ban",province:"Sơn La",lat:21.33,lng:103.9,desc:"Festival hoa ban Tây Bắc",img:"https://source.unsplash.com/400x300/?flower"},
+{id:57,name:"Lễ hội Hạn Khuống",province:"Sơn La",lat:21.27,lng:104.1,desc:"Lễ hội dân tộc Thái",img:"https://source.unsplash.com/400x300/?culture"},
+{id:58,name:"Lễ hội Xên Bản",province:"Lai Châu",lat:22.39,lng:103.47,desc:"Cầu mùa màng",img:"https://source.unsplash.com/400x300/?festival"},
+{id:59,name:"Lễ hội Then Kin Pang",province:"Lai Châu",lat:22.38,lng:103.48,desc:"Lễ hội dân tộc Thái",img:"https://source.unsplash.com/400x300/?culture"},
+{id:60,name:"Lễ hội Lẩu Then",province:"Cao Bằng",lat:22.66,lng:106.25,desc:"Lễ hội tín ngưỡng",img:"https://source.unsplash.com/400x300/?festival"},
+
+{id:61,name:"Lễ hội Ná Nhèm",province:"Lạng Sơn",lat:21.85,lng:106.76,desc:"Lễ hội dân gian độc đáo",img:"https://source.unsplash.com/400x300/?festival"},
+{id:62,name:"Lễ hội Kỳ Cùng",province:"Lạng Sơn",lat:21.85,lng:106.76,desc:"Lễ hội truyền thống",img:"https://source.unsplash.com/400x300/?temple"},
+{id:63,name:"Lễ hội Đền Bắc Lệ",province:"Lạng Sơn",lat:21.62,lng:106.58,desc:"Lễ hội tín ngưỡng",img:"https://source.unsplash.com/400x300/?temple"},
+{id:64,name:"Lễ hội Thành Tuyên",province:"Tuyên Quang",lat:21.82,lng:105.22,desc:"Lễ hội trung thu lớn",img:"https://source.unsplash.com/400x300/?lantern"},
+{id:65,name:"Lễ hội Làng Sen",province:"Nghệ An",lat:18.67,lng:105.68,desc:"Tưởng nhớ Chủ tịch Hồ Chí Minh",img:"https://source.unsplash.com/400x300/?heritage"},
+
+{id:66,name:"Lễ hội Cửa Lò",province:"Nghệ An",lat:18.81,lng:105.72,desc:"Festival du lịch biển",img:"https://source.unsplash.com/400x300/?beach"},
+{id:67,name:"Lễ hội Biển Sầm Sơn",province:"Thanh Hóa",lat:19.73,lng:105.9,desc:"Festival du lịch biển",img:"https://source.unsplash.com/400x300/?sea"},
+{id:68,name:"Lễ hội Chùa Hương Tích",province:"Hà Tĩnh",lat:18.37,lng:105.9,desc:"Lễ hội hành hương",img:"https://source.unsplash.com/400x300/?pagoda"},
+{id:69,name:"Lễ hội Đền Quả Sơn",province:"Nghệ An",lat:19.2,lng:105.45,desc:"Thờ Uy Minh Vương",img:"https://source.unsplash.com/400x300/?temple"},
+{id:70,name:"Lễ hội Đền Cờn",province:"Nghệ An",lat:19.05,lng:105.71,desc:"Lễ hội tín ngưỡng biển",img:"https://source.unsplash.com/400x300/?sea"},
+
+{id:71,name:"Lễ hội Hang Động Phong Nha",province:"Quảng Bình",lat:17.54,lng:106.15,desc:"Festival du lịch hang động",img:"https://source.unsplash.com/400x300/?cave"},
+{id:72,name:"Lễ hội Đua Thuyền Nhật Lệ",province:"Quảng Bình",lat:17.47,lng:106.62,desc:"Lễ hội sông nước",img:"https://source.unsplash.com/400x300/?boat"},
+{id:73,name:"Lễ hội Điện Hòn Chén",province:"Huế",lat:16.43,lng:107.55,desc:"Thờ Thiên Y A Na",img:"https://source.unsplash.com/400x300/?temple"},
+{id:74,name:"Lễ hội Cầu Ngư Lăng Cô",province:"Huế",lat:16.26,lng:107.9,desc:"Lễ hội ngư dân",img:"https://source.unsplash.com/400x300/?sea"},
+{id:75,name:"Lễ hội Bà Chiêm Sơn",province:"Quảng Nam",lat:15.88,lng:108.33,desc:"Lễ hội tín ngưỡng",img:"https://source.unsplash.com/400x300/?festival"},
+
+{id:76,name:"Lễ hội Quán Thế Âm",province:"Đà Nẵng",lat:16.01,lng:108.27,desc:"Lễ hội Phật giáo",img:"https://source.unsplash.com/400x300/?pagoda"},
+{id:77,name:"Lễ hội Đình Làng An Hải",province:"Đà Nẵng",lat:16.06,lng:108.24,desc:"Lễ hội truyền thống",img:"https://source.unsplash.com/400x300/?festival"},
+{id:78,name:"Lễ hội Biển Nha Trang",province:"Khánh Hòa",lat:12.23,lng:109.2,desc:"Festival biển",img:"https://source.unsplash.com/400x300/?beach"},
+{id:79,name:"Lễ hội Dinh Thầy Thím",province:"Bình Thuận",lat:10.56,lng:107.73,desc:"Lễ hội tín ngưỡng",img:"https://source.unsplash.com/400x300/?temple"},
+{id:80,name:"Lễ hội Katê",province:"Ninh Thuận",lat:11.67,lng:108.86,desc:"Lễ hội người Chăm",img:"https://source.unsplash.com/400x300/?culture"},
+
+{id:81,name:"Lễ hội Ramưwan",province:"Ninh Thuận",lat:11.7,lng:108.9,desc:"Tết người Chăm",img:"https://source.unsplash.com/400x300/?festival"},
+{id:82,name:"Lễ hội Đua Voi",province:"Đắk Lắk",lat:12.67,lng:108.04,desc:"Lễ hội truyền thống Tây Nguyên",img:"https://source.unsplash.com/400x300/?elephant"},
+{id:83,name:"Lễ hội Cồng Chiêng",province:"Gia Lai",lat:13.98,lng:108.0,desc:"Di sản văn hóa Tây Nguyên",img:"https://source.unsplash.com/400x300/?culture"},
+{id:84,name:"Lễ hội Mừng Lúa Mới",province:"Kon Tum",lat:14.35,lng:108.0,desc:"Lễ hội mùa màng",img:"https://source.unsplash.com/400x300/?festival"},
+{id:85,name:"Lễ hội Bỏ Mả",province:"Gia Lai",lat:13.9,lng:108.1,desc:"Nghi lễ dân tộc",img:"https://source.unsplash.com/400x300/?tribe"},
+
+{id:86,name:"Lễ hội Hoa Đà Lạt",province:"Lâm Đồng",lat:11.94,lng:108.45,desc:"Festival hoa Đà Lạt",img:"https://source.unsplash.com/400x300/?flower"},
+{id:87,name:"Lễ hội Cà Phê Buôn Ma Thuột",province:"Đắk Lắk",lat:12.67,lng:108.04,desc:"Festival cà phê",img:"https://source.unsplash.com/400x300/?coffee"},
+{id:88,name:"Lễ hội Trái Cây",province:"Tiền Giang",lat:10.36,lng:106.36,desc:"Festival trái cây",img:"https://source.unsplash.com/400x300/?fruit"},
+{id:89,name:"Lễ hội Nghinh Ông",province:"Bến Tre",lat:10.24,lng:106.38,desc:"Lễ hội cầu ngư",img:"https://source.unsplash.com/400x300/?sea"},
+{id:90,name:"Lễ hội Dinh Ông",province:"Bình Dương",lat:11.0,lng:106.65,desc:"Lễ hội tín ngưỡng",img:"https://source.unsplash.com/400x300/?temple"},
+
+{id:91,name:"Lễ hội Chùa Bà Thiên Hậu",province:"Bình Dương",lat:10.98,lng:106.66,desc:"Lễ hội văn hóa Hoa",img:"https://source.unsplash.com/400x300/?temple"},
+{id:92,name:"Lễ hội Núi Bà Đen",province:"Tây Ninh",lat:11.37,lng:106.16,desc:"Hành hương núi Bà",img:"https://source.unsplash.com/400x300/?mountain"},
+{id:93,name:"Lễ hội Nghinh Ông",province:"Cần Giờ",lat:10.41,lng:106.96,desc:"Lễ hội biển",img:"https://source.unsplash.com/400x300/?sea"},
+{id:94,name:"Lễ hội Đua Ghe Ngo",province:"Trà Vinh",lat:9.94,lng:106.34,desc:"Lễ hội Khmer",img:"https://source.unsplash.com/400x300/?boat"},
+{id:95,name:"Lễ hội Ok Om Bok",province:"Trà Vinh",lat:9.94,lng:106.34,desc:"Cúng trăng Khmer",img:"https://source.unsplash.com/400x300/?lantern"},
+
+{id:96,name:"Lễ hội Chol Chnam Thmay",province:"Sóc Trăng",lat:9.6,lng:105.98,desc:"Tết Khmer",img:"https://source.unsplash.com/400x300/?festival"},
+{id:97,name:"Lễ hội Đua Bò",province:"An Giang",lat:10.36,lng:104.85,desc:"Lễ hội Khmer",img:"https://source.unsplash.com/400x300/?race"},
+{id:98,name:"Lễ hội Nghinh Ông",province:"Kiên Giang",lat:10.22,lng:103.96,desc:"Lễ hội biển",img:"https://source.unsplash.com/400x300/?sea"},
+{id:99,name:"Lễ hội Dinh Cậu",province:"Phú Quốc",lat:10.22,lng:103.96,desc:"Lễ hội ngư dân",img:"https://source.unsplash.com/400x300/?island"},
+{id:100,name:"Lễ hội Biển Phú Quốc",province:"Kiên Giang",lat:10.28,lng:103.96,desc:"Festival du lịch biển",img:"https://source.unsplash.com/400x300/?beach"}
+
+];
+
+// Các array khác cũng cần copy nếu muốn chi tiết cho chúng
+
+// khu vui chơi gần lễ hội
+var entertainments=[{id:1,name:"Công viên nước Hồ Tây",province:"Hà Nội",lat:21.0733,lng:105.8010,desc:"Khu vui chơi mát mẻ gần Hà Nội",img:"https://source.unsplash.com/400x300/?waterpark"},{id:2,name:"Công viên Văn hóa Đầm Sen",province:"TP.HCM",lat:10.7758,lng:106.6320,desc:"Khu giải trí lớn ở Sài Gòn",img:"https://source.unsplash.com/400x300/?themepark"},{id:3,name:"Sun World Hạ Long",province:"Quảng Ninh",lat:20.9850,lng:107.0480,desc:"Công viên chủ đề tại Hạ Long",img:"https://source.unsplash.com/400x300/?universe"}];
+
+// điểm ẩm thực gần lễ hội
+var foods=[{id:1,name:"Phở Bát Đàn",province:"Hà Nội",lat:21.0285,lng:105.8530,desc:"Phở truyền thống Hà Nội",img:"https://source.unsplash.com/400x300/?pho"},{id:2,name:"Bánh mì Phượng",province:"Đà Nẵng",lat:16.0678,lng:108.2143,desc:"Bánh mì nổi tiếng tại Đà Nẵng",img:"https://source.unsplash.com/400x300/?bread"},{id:3,name:"Hủ tiếu Nam Vang",province:"TP.HCM",lat:10.7868,lng:106.6990,desc:"Món hủ tiếu đặc sản Sài Gòn",img:"https://source.unsplash.com/400x300/?noodle"}];
+
+// tiện ích: khách sạn
+var hotels=[{id:1,name:"Khách sạn Hà Nội - Elegance",province:"Hà Nội",lat:21.0280,lng:105.8542,desc:"Khách sạn 4 sao trung tâm Hà Nội",img:"https://source.unsplash.com/400x300/?hotel"},{id:2,name:"Khách sạn Sài Gòn - Riverside",province:"TP.HCM",lat:10.7708,lng:106.6996,desc:"Khách sạn ven sông Sài Gòn",img:"https://source.unsplash.com/400x300/?building"}];
+
+// tiện ích: y tế
+var medicals=[{id:1,name:"Bệnh viện Trung ương Huế",province:"Huế",lat:16.4546,lng:107.5790,desc:"Bệnh viện tuyến trung ương",img:"https://source.unsplash.com/400x300/?hospital"},{id:2,name:"Phòng khám Đa khoa Quảng Ninh",province:"Quảng Ninh",lat:20.9600,lng:107.0482,desc:"Phòng khám y tế ở Hạ Long",img:"https://source.unsplash.com/400x300/?clinic"}];
+
+// tiện ích: cửa hàng tiện lợi
+var stores=[{id:1,name:"Circle K Hà Nội",province:"Hà Nội",lat:21.0281,lng:105.8533,desc:"Chuỗi cửa hàng tiện lợi 24/7",img:"https://source.unsplash.com/400x300/?store"},{id:2,name:"7-Eleven Đà Nẵng",province:"Đà Nẵng",lat:16.0544,lng:108.2022,desc:"Cửa hàng tiện lợi nổi tiếng tại ĐN",img:"https://source.unsplash.com/400x300/?convenience"}];
+
+function getQueryParam(param) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(param);
+}
+
+function displayDetail() {
+    const type = getQueryParam('type');
+    const id = parseInt(getQueryParam('id'));
+
+    let item = null;
+    let title = '';
+
+    if (type === 'festival') {
+        item = festivals.find(f => f.id === id);
+        title = 'Lễ hội';
+    } else if (type === 'entertainment') {
+        item = entertainments.find(e => e.id === id);
+        title = 'Khu vui chơi';
+    } else if (type === 'food') {
+        item = foods.find(f => f.id === id);
+        title = 'Ẩm thực';
+    } else if (type === 'hotel') {
+        item = hotels.find(h => h.id === id);
+        title = 'Khách sạn';
+    } else if (type === 'medical') {
+        item = medicals.find(m => m.id === id);
+        title = 'Bệnh viện';
+    } else if (type === 'store') {
+        item = stores.find(s => s.id === id);
+        title = 'Cửa hàng tiện lợi';
+    }
+
+    if (item) {
+        document.getElementById('detailContent').innerHTML = `
+            <h2>${item.name}</h2>
+            <img src="${item.img}" alt="${item.name}" onerror="this.src='https://via.placeholder.com/400x300?text=No+Image'">
+            <p><strong>Tỉnh:</strong> ${item.province}</p>
+            <p>${item.desc}</p>
+            <p><strong>Vị trí:</strong> ${item.lat}, ${item.lng}</p>
+            <a href="https://www.google.com/maps/dir/?api=1&destination=${item.lat},${item.lng}" target="_blank">
+                <button>Chỉ đường</button>
+            </a>
+        `;
+    } else {
+        document.getElementById('detailContent').innerHTML = '<p>Không tìm thấy thông tin.</p>';
+    }
+}
+
+window.onload = displayDetail;
+
+</script>
+
+</body>
+</html>
