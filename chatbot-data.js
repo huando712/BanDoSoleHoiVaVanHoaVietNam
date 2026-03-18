@@ -13,7 +13,7 @@ const foods = [
   { name: "Bánh đa cua Cầu Đất", province: "Hải Phòng", desc: "Đặc sản bánh đa cua đất cảng" },
   { name: "Chả mực Hạ Long", province: "Quảng Ninh", desc: "Chả mực giã tay nổi tiếng" },
   { name: "Bún bò Huế O Cương", province: "Huế", desc: "Bún bò Huế vị truyền thống" },
-  { name: "Bánh mì Phượng", province: "Đà Nẵng", desc: "Bánh mì nổi tiếng miền Trung" },
+  { name: "Bánh mì Phượng", province: "Quảng Nam", desc: "Bánh mì nổi tiếng miền Trung" },
   { name: "Mì Quảng Bà Mua", province: "Đà Nẵng", desc: "Mì Quảng chuẩn vị Đà Nẵng" },
   { name: "Bún cá Nha Trang", province: "Khánh Hòa", desc: "Bún cá thanh ngọt miền biển" },
   { name: "Hủ tiếu Nam Vang", province: "TP.HCM", desc: "Món hủ tiếu đặc sản Sài Gòn" },

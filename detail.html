@@ -3,7 +3,7 @@
 
 <head>
 <meta charset="UTF-8">
-<title>Chi tiết - Vietnam Festival Explorer</title>
+<title>Chi tiết - Bản đồ số Lễ hội và Văn hóa Việt Nam</title>
 
 <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
 
@@ -99,7 +99,7 @@ padding:30px;
 
 <header>
 
-<h1>🇻🇳 Vietnam Festival Explorer</h1>
+<h1>🇻🇳 Bản đồ số Lễ hội và Văn hóa Việt Nam</h1>
 
 <p>Chi tiết thông tin</p>
 
@@ -129,8 +129,8 @@ padding:30px;
 
 <footer>
 
-<p>Vietnam Festival Explorer</p>
-<p>Nền tảng khám phá lễ hội Việt Nam</p>
+<p>Bản đồ số Lễ hội và Văn hóa Việt Nam</p>
+<p>Nền tảng số khám phá lễ hội và văn hóa Việt Nam</p>
 
 </footer>
 
@@ -276,6 +276,206 @@ var medicals=[{id:1,name:"Bệnh viện Trung ương Huế",province:"Huế",lat
 
 // tiện ích: cửa hàng tiện lợi
 var stores=[{id:1,name:"Circle K Hà Nội",province:"Hà Nội",lat:21.0281,lng:105.8533,desc:"Chuỗi cửa hàng tiện lợi 24/7",img:"https://source.unsplash.com/400x300/?store"},{id:2,name:"7-Eleven Đà Nẵng",province:"Đà Nẵng",lat:16.0544,lng:108.2022,desc:"Cửa hàng tiện lợi nổi tiếng tại ĐN",img:"https://source.unsplash.com/400x300/?convenience"}];
+
+function normalizeVietnameseText(text) {
+    return String(text || "")
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/\p{M}/gu, '')
+        .replace(/đ/g, 'd')
+        .trim();
+}
+
+function getFestivalTheme(item) {
+    var content = normalizeVietnameseText(item.name + ' ' + (item.desc || ''));
+    if (/(chua|phat|quan the am|huong tich|yen tu|ponagar|thap ba)/.test(content)) return 'tam linh phat giao';
+    if (/(den|phu|dinh|hung|tran|gio|ba trieu|anh hung|lich su)/.test(content)) return 'lich su tam linh';
+    if (/(bien|nghinh ong|cau ngu|dua thuyen|ghe ngo|cua lo|sam son|nha trang)/.test(content)) return 'van hoa bien';
+    if (/(khmer|chol chnam|ok om bok|kate|kato|ramuwan|ramuwan|cong chieng|dan toc)/.test(content)) return 'ban sac dan toc';
+    if (/(hoa|ca phe|trai cay|phao hoa|den long|trang ram|festival)/.test(content)) return 'le hoi du lich';
+    return 'van hoa truyen thong';
+}
+
+function getFestivalActivities(theme) {
+    if (theme === 'tam linh phat giao') return 'Phần lễ thường tập trung vào dâng hương, cầu an, hành hương và nghi thức tâm linh tại không gian chùa hoặc thánh tích.';
+    if (theme === 'lich su tam linh') return 'Nội dung nổi bật là nghi lễ tưởng niệm tiền nhân, rước lễ truyền thống, biểu diễn dân gian và hoạt động cộng đồng.';
+    if (theme === 'van hoa bien') return 'Không khí lễ hội đậm sắc thái sông nước với nghi thức cầu ngư, lễ rước, trình diễn văn nghệ và sinh hoạt văn hóa vùng biển.';
+    if (theme === 'ban sac dan toc') return 'Lễ hội thể hiện bản sắc tộc người qua trang phục truyền thống, nhạc cụ dân tộc, nghi lễ cộng đồng và ẩm thực địa phương.';
+    if (theme === 'le hoi du lich') return 'Bên cạnh phần lễ, chương trình thường có trình diễn nghệ thuật, quảng bá đặc sản địa phương và trải nghiệm dành cho du khách.';
+    return 'Lễ hội kết hợp phần lễ trang nghiêm với phần hội sôi động, giúp người tham dự cảm nhận rõ bản sắc văn hóa bản địa.';
+}
+
+function getFestivalSpecificHighlight(name) {
+    var key = normalizeVietnameseText(name);
+    var highlights = {
+        'le hoi den hung': 'Điểm nhấn là nghi thức dâng hương tưởng nhớ các Vua Hùng, khẳng định truyền thống uống nước nhớ nguồn của dân tộc.',
+        'le hoi chua huong': 'Hành trình trẩy hội kết hợp đi đò, leo núi và lễ chùa tạo nên trải nghiệm hành hương đặc sắc đầu năm.',
+        'hoi lim': 'Không gian quan họ trên thuyền, hát đối đáp và sinh hoạt hội làng tạo nên bản sắc riêng của vùng Kinh Bắc.',
+        'festival hue': 'Lễ hội nổi bật với các chương trình nghệ thuật cung đình, áo dài, diễu hành và hoạt động văn hóa cộng đồng.',
+        'le hoi ba chua xu': 'Nghi lễ vía Bà tại Núi Sam thu hút đông đảo người dân, mang đậm tín ngưỡng dân gian Nam Bộ.',
+        'le hoi giong': 'Các nghi thức rước và tái hiện truyền thuyết Thánh Gióng tạo nên chiều sâu lịch sử - huyền thoại đặc biệt.',
+        'le hoi yen tu': 'Hoạt động hành hương về non thiêng Yên Tử gắn với thiền phái Trúc Lâm và đời sống Phật giáo Việt Nam.',
+        'le hoi con son kiep bac': 'Lễ hội tôn vinh danh nhân và truyền thống yêu nước, gắn với quần thể di tích lịch sử - văn hóa nổi tiếng.',
+        'le hoi den tran': 'Nghi thức khai ấn đầu xuân là điểm thu hút lớn, thể hiện ước nguyện về học hành, công danh và bình an.',
+        'le hoi choi trau': 'Phần hội chọi trâu tạo khí thế sôi động, thể hiện tinh thần cộng đồng và văn hóa vùng biển Đồ Sơn.',
+        'le hoi hoa ban': 'Lễ hội gắn với mùa hoa ban và đời sống người Thái, tôn vinh vẻ đẹp núi rừng Tây Bắc.',
+        'le hoi long tong': 'Nghi thức xuống đồng đầu năm thể hiện ước vọng mùa màng bội thu và cuộc sống no đủ.',
+        'le hoi den ba trieu': 'Lễ hội tưởng niệm nữ anh hùng Bà Triệu, góp phần giáo dục truyền thống yêu nước cho cộng đồng.',
+        'le hoi cau ngu': 'Nghi thức cầu ngư phản ánh đời sống tín ngưỡng gắn với biển và nghề đánh bắt truyền thống.',
+        'le hoi kate': 'Đây là lễ hội lớn của cộng đồng Chăm theo đạo Bà-la-môn, giàu màu sắc nghi lễ và nghệ thuật dân gian.',
+        'le hoi ok om bok': 'Lễ cúng trăng cùng hoạt động ghe ngo là nét văn hóa đặc trưng của cộng đồng Khmer Nam Bộ.',
+        'le hoi nghinh ong': 'Nghi thức rước Ông ra biển thể hiện niềm tin cầu bình an, thuận lợi cho những chuyến ra khơi.',
+        'le hoi dinh co': 'Lễ hội quy tụ hoạt động tín ngưỡng và sinh hoạt cộng đồng ven biển, mang sắc thái địa phương rõ nét.',
+        'le hoi cua ong': 'Lễ rước tại đền Cửa Ông gắn với tín ngưỡng thờ Trần Quốc Tảng và văn hóa tâm linh Quảng Ninh.',
+        'le hoi thap ba ponagar': 'Phần lễ tại tháp Bà phản ánh sự giao thoa văn hóa Chăm - Việt trong đời sống tín ngưỡng miền Trung.',
+        'le hoi dua ghe ngo': 'Cuộc đua ghe ngo là hoạt động trung tâm, thể hiện sức mạnh tập thể và tinh thần lễ hội Khmer.',
+        'le hoi cong chieng': 'Âm thanh cồng chiêng và nghi thức cộng đồng tạo nên giá trị di sản đặc sắc của Tây Nguyên.',
+        'le hoi dua voi': 'Lễ hội tôn vinh voi và văn hóa bản địa, phản ánh quan hệ gắn bó giữa con người với núi rừng.',
+        'le hoi hoa da lat': 'Không gian đường hoa, triển lãm và hoạt động nghệ thuật làm nổi bật bản sắc thành phố ngàn hoa.',
+        'le hoi ca phe': 'Các chương trình trải nghiệm cà phê, quảng bá nông sản và văn hóa Tây Nguyên là điểm nhấn của lễ hội.',
+        'le hoi phao hoa': 'Những đêm trình diễn pháo hoa kết hợp lễ hội đường phố tạo sức hút lớn cho du lịch địa phương.',
+        'le hoi trang ram': 'Lễ hội đèn lồng và sinh hoạt cộng đồng ban đêm tạo nên không khí trung thu đặc trưng.',
+        'le hoi cho tinh khau vai': 'Đây là không gian văn hóa độc đáo của đồng bào vùng cao, gắn với câu chuyện tình và chợ phiên.',
+        'le hoi thanh tuyen': 'Mô hình đèn trung thu quy mô lớn và diễu hành cộng đồng tạo dấu ấn riêng của địa phương.',
+        'le hoi lang sen': 'Lễ hội gắn với quê hương Chủ tịch Hồ Chí Minh, có giá trị giáo dục truyền thống sâu sắc.',
+        'le hoi quan the am': 'Nội dung chính là nghi lễ Phật giáo, cầu quốc thái dân an và hoạt động từ thiện cộng đồng.',
+        'le hoi bien phu quoc': 'Sự kiện quảng bá du lịch biển đảo với nhiều hoạt động trải nghiệm, biểu diễn và dịch vụ lễ hội.'
+    };
+    return highlights[key] || 'Điểm đặc trưng của lễ hội nằm ở cách cộng đồng địa phương gìn giữ nghi thức cổ truyền và truyền dạy giá trị văn hóa qua nhiều thế hệ.';
+}
+
+function getFestivalTravelTip(theme) {
+    if (theme === 'tam linh phat giao' || theme === 'lich su tam linh') {
+        return 'Bạn nên chuẩn bị trang phục lịch sự, đi sớm để tránh đông và ưu tiên di chuyển theo khung giờ tổ chức nghi lễ chính.';
+    }
+    if (theme === 'van hoa bien') {
+        return 'Nên theo dõi thời tiết, chuẩn bị đồ chống nắng và sắp xếp lịch trình linh hoạt khi tham gia các hoạt động ngoài trời.';
+    }
+    if (theme === 'ban sac dan toc') {
+        return 'Khi tham dự, nên tôn trọng phong tục địa phương, tìm hiểu trước nghi thức truyền thống và ưu tiên trải nghiệm do cộng đồng bản địa tổ chức.';
+    }
+    return 'Để trải nghiệm trọn vẹn, bạn nên kết hợp tham quan di tích, thưởng thức đặc sản địa phương và đặt dịch vụ sớm vào mùa cao điểm.';
+}
+
+const manualFestivalDetailById = {
+    1: 'Lễ hội Đền Hùng là dịp trọng đại để tưởng nhớ công đức các Vua Hùng, thường thu hút đông đảo người dân từ nhiều địa phương về dâng hương tại Phú Thọ. Phần lễ trang nghiêm kết hợp phần hội với hát xoan, trò chơi dân gian và không khí hướng về cội nguồn dân tộc.',
+    2: 'Lễ hội Chùa Hương mở đầu mùa hành hương đầu năm, nổi bật với hành trình đi đò suối Yến và vãn cảnh quần thể chùa động linh thiêng. Du khách thường kết hợp lễ Phật, tham quan thắng cảnh và trải nghiệm văn hóa lễ hội truyền thống vùng ven đô Hà Nội.',
+    3: 'Hội Lim là không gian văn hóa quan họ tiêu biểu của Bắc Ninh, nơi các liền anh liền chị giao lưu hát đối đáp trong mùa xuân. Ngoài hát quan họ, lễ hội còn có các sinh hoạt cộng đồng và trò chơi dân gian đậm sắc thái vùng Kinh Bắc.',
+    4: 'Festival Huế là chuỗi sự kiện văn hóa nghệ thuật quy mô lớn, tôn vinh di sản cố đô qua trình diễn cung đình, áo dài và hoạt động đường phố. Điểm hấp dẫn của lễ hội nằm ở sự giao thoa giữa giá trị truyền thống và hơi thở đương đại của thành phố Huế.',
+    5: 'Lễ hội Bà Chúa Xứ Núi Sam là trung tâm tín ngưỡng quan trọng ở An Giang, nổi bật với nghi lễ rước và cúng Bà cầu bình an, tài lộc. Mùa lễ hội tạo nên không khí hành hương sôi động, gắn với sinh hoạt tâm linh của cư dân Nam Bộ.',
+    6: 'Lễ hội Gióng tái hiện tinh thần chống giặc ngoại xâm qua hình tượng Thánh Gióng, kết hợp nghi lễ truyền thống và hoạt động cộng đồng. Đây là lễ hội tiêu biểu của Hà Nội, có giá trị lớn về lịch sử, tín ngưỡng và giáo dục truyền thống dân tộc.',
+    7: 'Lễ hội Yên Tử gắn với hành trình về đất tổ Phật giáo Trúc Lâm, nơi người dân và du khách hành hương cầu an đầu năm. Không gian núi rừng linh thiêng cùng các hoạt động lễ Phật tạo nên trải nghiệm tâm linh đặc biệt của Quảng Ninh.',
+    8: 'Lễ hội Côn Sơn Kiếp Bạc tôn vinh các bậc danh nhân, anh hùng dân tộc và truyền thống yêu nước của vùng Đông Bắc. Phần lễ rước, tế và phần hội văn hóa dân gian giúp người tham dự cảm nhận rõ chiều sâu lịch sử của di tích.',
+    9: 'Lễ hội Đền Trần nổi bật với nghi thức khai ấn đầu xuân, thu hút đông đảo người dân cầu may mắn trong học tập, công việc và cuộc sống. Lễ hội mang đậm dấu ấn lịch sử triều Trần, kết hợp tín ngưỡng và sinh hoạt cộng đồng.',
+    10: 'Lễ hội Chọi Trâu Đồ Sơn là nét văn hóa đặc trưng của cư dân vùng biển Hải Phòng, thể hiện tinh thần thượng võ và tính cộng đồng. Bên cạnh phần hội sôi động, nghi thức tế lễ truyền thống vẫn được duy trì trang trọng qua nhiều thế hệ.',
+    11: 'Lễ hội Hoa Ban tôn vinh vẻ đẹp mùa hoa và bản sắc văn hóa dân tộc Thái ở Điện Biên, diễn ra trong không khí mùa xuân rực rỡ. Chương trình thường có biểu diễn nghệ thuật dân gian, giới thiệu ẩm thực và trò chơi truyền thống vùng cao.',
+    12: 'Lễ hội Lồng Tồng là nghi lễ xuống đồng đầu năm, thể hiện ước vọng mưa thuận gió hòa và mùa màng bội thu của cộng đồng địa phương. Phần lễ nông nghiệp kết hợp phần hội dân gian tạo nên bản sắc riêng của Tuyên Quang.',
+    13: 'Lễ hội Đền Bà Triệu tưởng niệm nữ anh hùng dân tộc Bà Triệu, góp phần bồi đắp lòng tự hào và ý thức lịch sử cho cộng đồng. Nghi lễ rước, tế cùng hoạt động văn hóa truyền thống làm nổi bật tinh thần thượng võ xứ Thanh.',
+    14: 'Lễ hội Cầu Ngư ở Đà Nẵng phản ánh đời sống tín ngưỡng của ngư dân, với mong ước biển yên sóng lặng và đánh bắt thuận lợi. Không gian lễ hội sông nước, hát bả trạo và các hoạt động cộng đồng tạo nên sắc thái đặc trưng miền biển.',
+    15: 'Lễ hội Katê là sự kiện văn hóa lớn của người Chăm ở Ninh Thuận, diễn ra tại các tháp Chăm với nghi thức trang trọng và âm nhạc truyền thống. Lễ hội thể hiện rõ bản sắc tộc người, tinh thần gắn kết cộng đồng và gìn giữ di sản.',
+    16: 'Lễ hội Ok Om Bok của người Khmer ở Sóc Trăng nổi bật với nghi thức cúng trăng và sinh hoạt văn hóa cộng đồng vào mùa cuối năm. Hoạt động thả đèn nước, biểu diễn nghệ thuật và ẩm thực truyền thống tạo nên không khí lễ hội đặc sắc.',
+    17: 'Lễ hội Nghinh Ông tại Vũng Tàu là nghi lễ cầu ngư quan trọng của cư dân biển, thể hiện niềm tin vào sự che chở trong những chuyến ra khơi. Lễ rước trên biển và hoạt động cộng đồng mang đậm bản sắc văn hóa địa phương.',
+    18: 'Lễ hội Dinh Cô là điểm hẹn tâm linh nổi bật ở vùng biển Vũng Tàu, nơi người dân và du khách đến cầu bình an, may mắn. Phần lễ truyền thống kết hợp sinh hoạt văn hóa dân gian tạo nên không gian lễ hội gần gũi, linh thiêng.',
+    19: 'Lễ hội Bà Thu Bồn ở Quảng Nam gắn với tín ngưỡng thờ nữ thần sông, phản ánh mối quan hệ mật thiết giữa cư dân và môi trường sông nước. Nghi lễ truyền thống cùng các hoạt động hội làng giúp bảo tồn giá trị văn hóa bản địa.',
+    20: 'Lễ hội Đền Cuông tưởng niệm An Dương Vương và truyền thuyết lịch sử gắn với vùng đất Nghệ An. Không gian lễ hội kết hợp dâng hương, rước lễ và các hoạt động văn hóa cộng đồng giàu ý nghĩa giáo dục truyền thống.',
+    21: 'Lễ hội Bà Chúa Kho tại Bắc Ninh nổi tiếng với nghi thức cầu tài lộc đầu năm, thu hút đông đảo người dân và tiểu thương. Bên cạnh tín ngưỡng dân gian, lễ hội còn phản ánh đời sống kinh tế, văn hóa vùng Kinh Bắc.',
+    22: 'Lễ hội Chùa Keo là lễ hội cổ truyền tiêu biểu của Thái Bình, gắn với di tích kiến trúc tôn giáo có giá trị lịch sử cao. Các nghi thức tế lễ, rước kiệu cùng trò diễn dân gian tạo nên bản sắc riêng cho mùa hội địa phương.',
+    23: 'Lễ hội Đền Sóc thờ Thánh Gióng, thể hiện tinh thần yêu nước và truyền thống chống ngoại xâm trong văn hóa Việt. Lễ hội có phần nghi lễ trang nghiêm, kết hợp hoạt động cộng đồng trong không khí đầu xuân.',
+    24: 'Lễ hội Phủ Giầy tôn vinh tín ngưỡng thờ Mẫu Liễu Hạnh, là một trong những trung tâm thực hành đạo Mẫu nổi bật ở miền Bắc. Nghi thức hầu đồng, dâng lễ và sinh hoạt văn hóa tâm linh tạo nên nét đặc sắc của lễ hội.',
+    25: 'Lễ hội Chùa Dâu gắn với trung tâm Phật giáo cổ, phản ánh quá trình hình thành và phát triển văn hóa tôn giáo ở vùng Kinh Bắc. Người tham dự thường kết hợp lễ Phật, tham quan di tích và tìm hiểu nghệ thuật dân gian truyền thống.',
+    26: 'Lễ hội Chùa Bút Tháp tôn vinh giá trị di tích Phật giáo và nghệ thuật điêu khắc cổ của Bắc Ninh. Không gian lễ hội yên bình, phù hợp cho hành hương, cầu an và trải nghiệm chiều sâu văn hóa truyền thống.',
+    27: 'Lễ hội Đền Đô tưởng nhớ các vị vua nhà Lý, góp phần tái hiện dấu ấn lịch sử của triều đại có nhiều đóng góp cho quốc gia. Phần lễ và phần hội đều nhấn mạnh tinh thần tôn vinh tiền nhân và gắn kết cộng đồng.',
+    28: 'Lễ hội Cửa Ông là lễ hội lớn của Quảng Ninh, thờ Trần Quốc Tảng và gắn với truyền thống uống nước nhớ nguồn. Nghi thức rước lễ, tế tự và sinh hoạt văn hóa dân gian thu hút đông đảo người dân, du khách tham gia.',
+    29: 'Lễ hội Bạch Đằng tưởng niệm chiến thắng lịch sử trên sông Bạch Đằng, khơi dậy niềm tự hào dân tộc và tinh thần độc lập. Hoạt động tưởng niệm kết hợp văn nghệ, giáo dục lịch sử tạo nên chiều sâu cho lễ hội.',
+    30: 'Lễ hội Đền Tranh gắn với tín ngưỡng thờ Quan Lớn Tuần Tranh trong hệ thống văn hóa tâm linh vùng đồng bằng Bắc Bộ. Lễ hội là dịp cầu bình an, thuận lợi và duy trì sinh hoạt tín ngưỡng truyền thống của cộng đồng.',
+    31: 'Lễ hội Lam Kinh tưởng nhớ công lao vua Lê Lợi và cuộc khởi nghĩa Lam Sơn, là điểm nhấn văn hóa - lịch sử của Thanh Hóa. Các nghi thức dâng hương, tế lễ cùng hoạt động nghệ thuật dân gian tạo không khí trang trọng.',
+    32: 'Lễ hội Điện Hòn Chén tại Huế kết hợp tín ngưỡng dân gian và yếu tố cung đình, diễn ra trong không gian sông Hương đặc sắc. Lễ rước trên sông cùng nghi thức thờ Thiên Y A Na tạo nên trải nghiệm văn hóa tâm linh độc đáo.',
+    33: 'Lễ hội Tháp Bà Ponagar là sự kiện quan trọng ở Khánh Hòa, tôn vinh nữ thần Thiên Y A Na và giá trị văn hóa Chăm - Việt. Không gian tháp cổ, nghi lễ truyền thống và hoạt động cộng đồng tạo nên sức hút lớn cho du khách.',
+    34: 'Lễ hội Dinh Thầy Thím tại Bình Thuận gắn với tín ngưỡng dân gian của cư dân duyên hải Nam Trung Bộ. Người dân tham gia lễ hội để cầu bình an, may mắn và tưởng nhớ công đức nhân vật được thờ tự.',
+    35: 'Lễ hội Đua Bò ở An Giang là nét văn hóa đặc trưng của cộng đồng Khmer, thể hiện tinh thần thể thao dân gian và sự gắn kết cộng đồng. Sự kiện thường diễn ra sôi động với đông đảo người dân, du khách theo dõi.',
+    36: 'Lễ hội Đua Ghe Ngo ở Sóc Trăng là hoạt động văn hóa thể thao tiêu biểu của người Khmer Nam Bộ. Những cuộc đua ghe sôi nổi trên sông đi cùng lễ nghi truyền thống tạo nên không khí lễ hội đặc sắc.',
+    37: 'Lễ hội Chol Chnam Thmay là Tết cổ truyền của người Khmer, đánh dấu thời điểm chuyển mùa và khởi đầu năm mới. Hoạt động cúng lễ, vui hội và thăm hỏi cộng đồng thể hiện rõ bản sắc văn hóa dân tộc.',
+    38: 'Lễ hội Cồng Chiêng tôn vinh không gian văn hóa cồng chiêng Tây Nguyên, nơi âm nhạc cộng đồng gắn liền với nghi lễ đời sống. Đây là dịp quan trọng để bảo tồn di sản phi vật thể và truyền dạy văn hóa bản địa cho thế hệ trẻ.',
+    39: 'Lễ hội Đua Voi ở Đắk Lắk phản ánh bản sắc văn hóa độc đáo của cư dân Tây Nguyên trong mối quan hệ với voi nhà. Sự kiện mang tính biểu diễn truyền thống, thu hút du khách và góp phần quảng bá văn hóa địa phương.',
+    40: 'Lễ hội Đâm Trâu là nghi lễ cộng đồng của một số tộc người Tây Nguyên, thể hiện quan niệm tâm linh và ước vọng no đủ. Khi tìm hiểu, du khách nên tôn trọng phong tục địa phương và tiếp cận với tinh thần bảo tồn văn hóa.',
+    41: 'Lễ hội Hoa Đà Lạt tôn vinh thương hiệu thành phố ngàn hoa với không gian trưng bày nghệ thuật hoa, chương trình biểu diễn và hoạt động cộng đồng. Lễ hội là điểm nhấn du lịch quan trọng của Lâm Đồng vào mùa cuối năm.',
+    42: 'Lễ hội Cà Phê ở Đắk Lắk quảng bá giá trị hạt cà phê Việt Nam, kết hợp trình diễn văn hóa và trải nghiệm sản phẩm địa phương. Sự kiện góp phần kết nối du lịch, nông nghiệp và bản sắc Tây Nguyên.',
+    43: 'Lễ hội Pháo Hoa tại Đà Nẵng là sự kiện du lịch quốc tế nổi bật với các đêm trình diễn nghệ thuật ánh sáng trên sông Hàn. Không khí lễ hội đường phố và dịch vụ du lịch đi kèm tạo sức hút mạnh cho thành phố biển.',
+    44: 'Lễ hội Trăng Rằm ở Hội An nổi tiếng với không gian đèn lồng, hoạt động văn hóa truyền thống và nhịp sống phố cổ về đêm. Sự kiện mang lại trải nghiệm giàu bản sắc cho du khách trong dịp trung thu.',
+    45: 'Lễ hội Biển Nha Trang tôn vinh văn hóa biển đảo với chuỗi hoạt động nghệ thuật, thể thao và quảng bá du lịch ven biển. Đây là dịp để giới thiệu hình ảnh thành phố biển năng động, thân thiện và giàu bản sắc.',
+    46: 'Lễ hội Hang Động ở Quảng Bình quảng bá giá trị cảnh quan thiên nhiên và du lịch khám phá hệ thống hang động nổi tiếng. Sự kiện thường kết hợp trình diễn văn hóa địa phương và hoạt động trải nghiệm dành cho du khách.',
+    47: 'Lễ hội Đua Thuyền tại Quảng Bình gắn với truyền thống sông nước và tinh thần thi đấu cộng đồng của cư dân địa phương. Những cuộc đua thuyền sôi động tạo không khí náo nhiệt và củng cố tính đoàn kết cộng đồng.',
+    48: 'Lễ hội Gầu Tào của người Mông ở Hà Giang mang ý nghĩa cầu phúc, cầu may và gắn kết cộng đồng đầu năm. Lễ hội có nhiều hoạt động văn hóa dân gian, trò chơi truyền thống và biểu diễn nghệ thuật vùng cao.',
+    49: 'Lễ hội Nhảy Lửa là nghi lễ độc đáo thể hiện sức mạnh tinh thần và tín ngưỡng cộng đồng của một số tộc người miền núi. Nghi thức diễn ra trong không khí linh thiêng, phản ánh đậm nét bản sắc văn hóa bản địa.',
+    50: 'Lễ hội Hoa Tam Giác Mạch ở Hà Giang diễn ra vào mùa hoa nở, kết hợp quảng bá cảnh quan cao nguyên đá và văn hóa địa phương. Du khách thường tham gia chụp ảnh, trải nghiệm ẩm thực và tìm hiểu sinh hoạt cộng đồng vùng cao.',
+    51: 'Lễ hội Chợ Tình Khâu Vai là nét văn hóa độc đáo của Hà Giang, gắn với câu chuyện tình và không gian gặp gỡ cộng đồng vùng cao. Đây là dịp giao lưu văn hóa, mua bán sản vật và trải nghiệm sinh hoạt chợ phiên truyền thống.',
+    52: 'Lễ hội Đền Thượng tại Lào Cai gắn với tín ngưỡng thờ Trần Hưng Đạo và đời sống tâm linh của cư dân biên giới. Hoạt động dâng hương, rước lễ và sinh hoạt cộng đồng tạo nên không khí lễ hội trang nghiêm, gần gũi.',
+    53: 'Lễ hội Đền Bảo Hà tôn vinh thần Hoàng Bảy, là điểm đến tâm linh quen thuộc của người dân miền Bắc. Lễ hội thu hút du khách bởi nghi thức truyền thống, không gian văn hóa vùng núi và đời sống tín ngưỡng dân gian.',
+    54: 'Lễ hội Roóng Poọc là lễ hội xuống đồng của cộng đồng địa phương ở Lào Cai, thể hiện ước mong mùa màng thuận lợi. Phần nghi lễ nông nghiệp kết hợp văn nghệ, trò chơi truyền thống giúp bảo tồn nét văn hóa bản địa.',
+    55: 'Lễ hội Tết Nhảy của người Dao là hoạt động văn hóa - tín ngưỡng đặc sắc, tái hiện nghi lễ truyền đời của cộng đồng. Lễ hội góp phần giữ gìn phong tục, âm nhạc và nghệ thuật trình diễn truyền thống dân tộc.',
+    56: 'Lễ hội Hoa Ban ở Sơn La tôn vinh mùa hoa vùng Tây Bắc và các giá trị văn hóa dân tộc địa phương. Chương trình thường có biểu diễn nghệ thuật dân gian, giới thiệu sản vật và trải nghiệm du lịch cộng đồng.',
+    57: 'Lễ hội Hạn Khuống là sinh hoạt văn hóa của người Thái, phản ánh đời sống tinh thần và nghệ thuật giao duyên truyền thống. Không gian lễ hội giàu bản sắc, phù hợp để tìm hiểu văn hóa vùng cao Tây Bắc.',
+    58: 'Lễ hội Xên Bản ở Lai Châu mang ý nghĩa cầu mùa, cầu bình an cho bản làng và cộng đồng cư dân nông nghiệp. Phần nghi lễ truyền thống đi cùng hoạt động hội tạo nên không khí gắn kết cộng đồng sâu sắc.',
+    59: 'Lễ hội Then Kin Pang là sự kiện văn hóa tiêu biểu của người Thái, thể hiện nghi lễ tín ngưỡng và nghệ thuật dân gian truyền thống. Lễ hội góp phần bảo tồn tiếng nói, trang phục và sinh hoạt văn hóa cộng đồng.',
+    60: 'Lễ hội Lẩu Then tại Cao Bằng phản ánh đời sống tín ngưỡng dân gian của cư dân địa phương, gắn với mong ước bình an và thuận lợi. Nghi lễ truyền thống cùng không gian văn hóa bản địa tạo nên bản sắc riêng của lễ hội.',
+    61: 'Lễ hội Ná Nhèm ở Lạng Sơn là lễ hội dân gian độc đáo, nổi bật với hình thức diễn xướng và nghi lễ đặc trưng vùng núi phía Bắc. Đây là dịp cộng đồng cùng tham gia bảo tồn phong tục, tập quán truyền thống.',
+    62: 'Lễ hội Kỳ Cùng là lễ hội truyền thống quan trọng của Lạng Sơn, gắn với tín ngưỡng thờ thần và đời sống tâm linh địa phương. Hoạt động rước lễ, tế thần và hội dân gian tạo bầu không khí trang trọng, sôi nổi.',
+    63: 'Lễ hội Đền Bắc Lệ là điểm hẹn tâm linh nổi tiếng ở Lạng Sơn, thu hút nhiều người dân đến lễ Mẫu cầu bình an. Không gian lễ hội mang đậm màu sắc tín ngưỡng dân gian vùng Đông Bắc.',
+    64: 'Lễ hội Thành Tuyên được biết đến với các mô hình đèn trung thu quy mô lớn và hoạt động diễu hành cộng đồng rực rỡ sắc màu. Sự kiện góp phần quảng bá hình ảnh Tuyên Quang như một điểm đến văn hóa gia đình.',
+    65: 'Lễ hội Làng Sen tại Nghệ An là dịp tưởng nhớ Chủ tịch Hồ Chí Minh, gắn với các chương trình nghệ thuật và giáo dục truyền thống. Lễ hội có ý nghĩa lớn trong việc lan tỏa giá trị lịch sử, văn hóa và tinh thần yêu nước.',
+    66: 'Lễ hội Cửa Lò là sự kiện du lịch biển của Nghệ An, kết hợp hoạt động văn nghệ, thể thao và quảng bá văn hóa địa phương. Không khí lễ hội sôi động mở đầu mùa du lịch hè ven biển.',
+    67: 'Lễ hội Biển Sầm Sơn là điểm nhấn mùa du lịch của Thanh Hóa, tập trung vào hoạt động cộng đồng, biểu diễn nghệ thuật và trải nghiệm biển. Sự kiện góp phần thúc đẩy kinh tế du lịch và quảng bá hình ảnh địa phương.',
+    68: 'Lễ hội Chùa Hương Tích là hành trình hành hương tiêu biểu của Hà Tĩnh, thu hút người dân đến cầu an và vãn cảnh danh thắng. Không gian lễ hội kết hợp tín ngưỡng Phật giáo với cảnh quan núi rừng thanh tịnh.',
+    69: 'Lễ hội Đền Quả Sơn tưởng niệm Uy Minh Vương, phản ánh đời sống tín ngưỡng và truyền thống lịch sử của Nghệ An. Phần lễ và phần hội diễn ra hài hòa, gắn kết cộng đồng địa phương.',
+    70: 'Lễ hội Đền Cờn là lễ hội tín ngưỡng biển nổi bật ở Nghệ An, thể hiện mong ước bình an và thuận lợi cho cư dân ven biển. Nghi lễ truyền thống kết hợp hoạt động hội dân gian tạo nên không khí đặc trưng miền biển.',
+    71: 'Lễ hội Hang Động Phong Nha quảng bá cảnh quan thiên nhiên và giá trị du lịch mạo hiểm của Quảng Bình. Sự kiện góp phần giới thiệu hình ảnh di sản thiên nhiên với du khách trong và ngoài nước.',
+    72: 'Lễ hội Đua Thuyền Nhật Lệ là sinh hoạt văn hóa sông nước đặc sắc của Quảng Bình, thể hiện tinh thần thi đấu và đoàn kết cộng đồng. Các đội thuyền tranh tài tạo nên không khí lễ hội sôi nổi, giàu bản sắc địa phương.',
+    73: 'Lễ hội Điện Hòn Chén ở Huế là sự giao thoa giữa tín ngưỡng dân gian và văn hóa cung đình, tổ chức trong không gian sông Hương. Nghi thức rước thuyền, dâng lễ và trình diễn dân gian tạo nên nét rất riêng của lễ hội.',
+    74: 'Lễ hội Cầu Ngư Lăng Cô gắn liền với đời sống ngư dân ven biển Huế, cầu cho mùa biển thuận lợi và bình an. Không khí lễ hội mang đậm bản sắc duyên hải với nghi thức cầu ngư, văn nghệ cộng đồng.',
+    75: 'Lễ hội Bà Chiêm Sơn là lễ hội tín ngưỡng dân gian ở Quảng Nam, phản ánh truyền thống tôn kính thần linh của cư dân địa phương. Hoạt động lễ hội góp phần duy trì đời sống văn hóa cộng đồng qua nhiều thế hệ.',
+    76: 'Lễ hội Quán Thế Âm tại Đà Nẵng là sự kiện Phật giáo lớn, kết hợp nghi lễ cầu an với chương trình văn hóa và hoạt động thiện nguyện. Lễ hội tạo không gian hướng thiện, thu hút đông đảo phật tử và du khách.',
+    77: 'Lễ hội Đình Làng An Hải tái hiện sinh hoạt lễ hội truyền thống của cư dân làng biển Đà Nẵng, nhấn mạnh tinh thần cộng đồng. Nghi thức đình làng và phần hội dân gian giúp bảo tồn bản sắc địa phương giữa đô thị hiện đại.',
+    78: 'Lễ hội Biển Nha Trang tôn vinh văn hóa biển đảo Khánh Hòa qua các hoạt động nghệ thuật, thể thao và quảng bá du lịch. Đây là dịp quan trọng để thành phố giới thiệu hình ảnh năng động, hiện đại và thân thiện.',
+    79: 'Lễ hội Dinh Thầy Thím ở Bình Thuận là điểm đến tâm linh thu hút đông đảo người dân đến dâng hương, cầu an và cầu may. Nghi lễ truyền thống kết hợp hội dân gian góp phần giữ gìn giá trị văn hóa địa phương.',
+    80: 'Lễ hội Katê tại Ninh Thuận là lễ hội lớn của người Chăm, thể hiện đậm nét tín ngưỡng và nghệ thuật trình diễn dân gian. Du khách có thể trải nghiệm không khí lễ hội giàu màu sắc qua trang phục, âm nhạc và nghi thức truyền thống.',
+    81: 'Lễ hội Ramưwan là tết truyền thống của cộng đồng Chăm theo đạo Bani, mang ý nghĩa tưởng nhớ tổ tiên và gắn kết gia đình. Đây là dịp quan trọng để cộng đồng thực hành nghi lễ và gìn giữ bản sắc văn hóa riêng.',
+    82: 'Lễ hội Đua Voi ở Đắk Lắk phản ánh đời sống văn hóa Tây Nguyên và mối quan hệ lâu đời giữa cộng đồng bản địa với voi. Sự kiện góp phần quảng bá du lịch văn hóa và nâng cao nhận thức bảo tồn giá trị truyền thống.',
+    83: 'Lễ hội Cồng Chiêng tại Gia Lai tôn vinh di sản âm nhạc truyền thống của các dân tộc Tây Nguyên trong không gian cộng đồng. Lễ hội có ý nghĩa lớn trong việc bảo tồn, truyền dạy và lan tỏa giá trị văn hóa cồng chiêng.',
+    84: 'Lễ hội Mừng Lúa Mới ở Kon Tum là dịp tạ ơn thần linh sau vụ mùa, thể hiện khát vọng no đủ của cộng đồng cư dân nông nghiệp. Nghi lễ truyền thống và sinh hoạt văn hóa bản địa tạo nên sắc thái lễ hội đặc trưng.',
+    85: 'Lễ hội Bỏ Mả là nghi lễ văn hóa tâm linh của một số cộng đồng Tây Nguyên, gắn với quan niệm vòng đời và sự gắn kết cộng đồng. Khi tìm hiểu lễ hội, cần tiếp cận với thái độ tôn trọng phong tục và giá trị bản địa.',
+    86: 'Lễ hội Hoa Đà Lạt là sự kiện du lịch văn hóa nổi bật, nơi thành phố giới thiệu nghệ thuật hoa, cảnh quan và các hoạt động sáng tạo cộng đồng. Lễ hội góp phần khẳng định thương hiệu Đà Lạt như một điểm đến lễ hội đặc sắc.',
+    87: 'Lễ hội Cà Phê Buôn Ma Thuột tôn vinh giá trị hạt cà phê Việt Nam và văn hóa Tây Nguyên qua chuỗi hoạt động quảng bá, trình diễn, trải nghiệm. Sự kiện kết nối sản xuất nông nghiệp với du lịch và văn hóa bản địa.',
+    88: 'Lễ hội Trái Cây ở Tiền Giang quảng bá sản vật miệt vườn, kết hợp trải nghiệm ẩm thực và sinh hoạt văn hóa sông nước Nam Bộ. Đây là dịp để du khách cảm nhận sự phong phú của nông sản vùng đồng bằng.',
+    89: 'Lễ hội Nghinh Ông ở Bến Tre mang đậm tín ngưỡng cư dân ven biển, với nghi thức cầu ngư và hoạt động cộng đồng đặc trưng. Lễ hội góp phần bảo tồn văn hóa biển và tăng cường tinh thần đoàn kết địa phương.',
+    90: 'Lễ hội Dinh Ông tại Bình Dương là sinh hoạt tín ngưỡng dân gian quan trọng, thể hiện mong ước bình an và thuận lợi trong cuộc sống. Nghi thức tế lễ trang trọng đi cùng phần hội tạo nên không khí lễ hội gần gũi.',
+    91: 'Lễ hội Chùa Bà Thiên Hậu là sự kiện văn hóa của cộng đồng người Hoa tại Bình Dương, kết nối tín ngưỡng và sinh hoạt đô thị địa phương. Lễ hội nổi bật với nghi thức rước Bà, dâng hương và hoạt động cộng đồng đông vui.',
+    92: 'Lễ hội Núi Bà Đen là hành trình hành hương nổi tiếng ở Tây Ninh, thu hút du khách đến chiêm bái và tham quan danh thắng. Không gian núi thiêng kết hợp hoạt động lễ hội tạo nên trải nghiệm tâm linh - du lịch đặc sắc.',
+    93: 'Lễ hội Nghinh Ông Cần Giờ phản ánh văn hóa biển của cư dân TP.HCM vùng ven biển, với nghi thức cầu ngư truyền thống. Hoạt động lễ hội giúp bảo tồn bản sắc địa phương và tạo điểm nhấn du lịch cộng đồng.',
+    94: 'Lễ hội Đua Ghe Ngo Trà Vinh là sự kiện văn hóa thể thao tiêu biểu của cộng đồng Khmer, thu hút đông đảo đội đua và khán giả. Không khí cạnh tranh sôi nổi cùng nghi lễ truyền thống tạo sức hấp dẫn riêng cho lễ hội.',
+    95: 'Lễ hội Ok Om Bok ở Trà Vinh là dịp cúng trăng và sinh hoạt cộng đồng của người Khmer, mang ý nghĩa tâm linh sâu sắc. Các hoạt động văn hóa, nghệ thuật và ẩm thực giúp lễ hội trở thành điểm nhấn đặc sắc vùng Nam Bộ.',
+    96: 'Lễ hội Chol Chnam Thmay tại Sóc Trăng là tết cổ truyền quan trọng của người Khmer, gắn với nghi thức cầu phúc và làm mới đời sống tinh thần. Lễ hội góp phần gìn giữ bản sắc văn hóa dân tộc trong cộng đồng địa phương.',
+    97: 'Lễ hội Đua Bò An Giang là hoạt động văn hóa thể thao đặc trưng của người Khmer, diễn ra sôi động và giàu tính cộng đồng. Sự kiện vừa mang giá trị giải trí, vừa phản ánh đời sống nông nghiệp truyền thống của địa phương.',
+    98: 'Lễ hội Nghinh Ông ở Kiên Giang là nét văn hóa biển tiêu biểu, thể hiện niềm tin cầu an và mùa biển thuận lợi của ngư dân. Nghi thức rước và lễ tế diễn ra trong không khí trang trọng, gắn kết cộng đồng ven biển.',
+    99: 'Lễ hội Dinh Cậu ở Phú Quốc là điểm nhấn tâm linh của cư dân đảo, nơi người dân cầu bình an và may mắn trong cuộc sống, nghề biển. Không gian lễ hội kết hợp cảnh quan biển đảo tạo nên trải nghiệm đặc sắc cho du khách.',
+    100: 'Lễ hội Biển Phú Quốc là sự kiện quảng bá du lịch biển đảo với nhiều hoạt động văn hóa, nghệ thuật và trải nghiệm cộng đồng. Lễ hội góp phần lan tỏa hình ảnh Phú Quốc năng động, hiện đại và giàu bản sắc địa phương.'
+};
+
+function buildFestivalDetailVietnamese(item) {
+    var theme = getFestivalTheme(item);
+    var intro = item.name + ' là lễ hội tiêu biểu tại ' + item.province + ', phản ánh chiều sâu lịch sử, tín ngưỡng và đời sống văn hóa của cộng đồng địa phương.';
+    var highlight = getFestivalSpecificHighlight(item.name);
+    var activities = getFestivalActivities(theme);
+    var tip = getFestivalTravelTip(theme);
+    return intro + ' ' + highlight + ' ' + activities + ' ' + tip;
+}
+
+function enrichFestivalDetailsVietnamese() {
+    festivals.forEach(function(festival) {
+        festival.detail = manualFestivalDetailById[festival.id] || buildFestivalDetailVietnamese(festival);
+    });
+}
+
+enrichFestivalDetailsVietnamese();
 
 function getQueryParam(param) {
     const urlParams = new URLSearchParams(window.location.search);

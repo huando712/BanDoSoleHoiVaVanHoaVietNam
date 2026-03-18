@@ -9,29 +9,67 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800&family=Cormorant+Garamond:wght@600;700&display=swap" rel="stylesheet">
 
 <style>
 
 :root{
---bg-cream:#fff8ec;
---bg-peach:#ffd9ba;
---brand:#e84a2a;
---brand-dark:#b5301a;
+--bg-cream:#fff5e6;
+--bg-peach:#ffd4a8;
+--bg-gold:#ffc857;
+--bg-red:#c63c2f;
+--brand:#d94a2b;
+--brand-dark:#972519;
+--brand-deep:#5e1711;
+--accent-soft:#fff1d7;
+--accent-line:rgba(217,74,43,0.22);
 --ink:#2a1f18;
 --muted:#5f5148;
---card-shadow:0 14px 30px rgba(42,26,18,0.14);
+--surface:rgba(255,249,239,0.88);
+--surface-strong:rgba(255,252,246,0.96);
+--card-shadow:0 18px 38px rgba(70,28,19,0.16);
 }
 
 body{
 margin:0;
 font-family:"Be Vietnam Pro",sans-serif;
 background:
-radial-gradient(circle at 12% 10%, rgba(255,206,131,0.28), transparent 38%),
-radial-gradient(circle at 88% 18%, rgba(232,74,42,0.2), transparent 35%),
-linear-gradient(135deg, var(--bg-cream) 0%, var(--bg-peach) 100%);
+radial-gradient(circle at 14% 16%, rgba(255,214,122,0.34), transparent 24%),
+radial-gradient(circle at 86% 14%, rgba(198,60,47,0.22), transparent 28%),
+radial-gradient(circle at 50% 120%, rgba(255,177,86,0.26), transparent 36%),
+linear-gradient(145deg, #fff5e7 0%, #ffe3c0 44%, #ffd2af 100%);
 min-height: 100vh;
 color:var(--ink);
+position:relative;
+overflow-x:hidden;
+background-attachment:fixed;
+}
+
+body::before,
+body::after{
+content:"";
+position:fixed;
+pointer-events:none;
+z-index:-1;
+border-radius:50%;
+filter:blur(10px);
+opacity:0.8;
+}
+
+body::before{
+width:360px;
+height:360px;
+top:72px;
+left:-120px;
+background:radial-gradient(circle, rgba(255,202,107,0.42) 0%, rgba(255,202,107,0) 72%);
+}
+
+body::after{
+width:420px;
+height:420px;
+right:-120px;
+bottom:80px;
+background:radial-gradient(circle, rgba(198,60,47,0.22) 0%, rgba(198,60,47,0) 72%);
 }
 
 header{
@@ -43,13 +81,17 @@ text-align:center;
 color:white;
 position:relative;
 overflow:hidden;
+box-shadow:inset 0 -70px 90px rgba(0,0,0,0.12);
 }
 
 header::before{
 content:"";
 position:absolute;
 inset:0;
-background:linear-gradient(135deg, rgba(20,12,9,0.64), rgba(136,44,26,0.35));
+background:
+linear-gradient(180deg, rgba(0,0,0,0.14), rgba(0,0,0,0.28)),
+radial-gradient(circle at 20% 20%, rgba(255,255,255,0.14), transparent 30%),
+radial-gradient(circle at 80% 18%, rgba(255,255,255,0.1), transparent 28%);
 }
 
 header > *{
@@ -58,15 +100,17 @@ z-index:1;
 }
 
 header h1{
-font-family:"Playfair Display",serif;
+font-family:"Cormorant Garamond",serif;
 font-size:clamp(38px,5vw,58px);
 margin:0;
+font-weight:700;
+letter-spacing:0.8px;
 text-shadow:0 8px 18px rgba(0,0,0,0.4);
 }
 
 header p{
 font-size:18px;
-letter-spacing:0.2px;
+letter-spacing:0.35px;
 margin:14px 0 0;
 text-shadow:0 4px 12px rgba(0,0,0,0.35);
 }
@@ -83,11 +127,12 @@ flex-wrap:wrap;
 padding:12px 14px;
 width:min(420px,78vw);
 border:1px solid rgba(255,255,255,0.42);
-border-radius:10px;
-background:rgba(255,255,255,0.16);
+border-radius:14px;
+background:rgba(255,248,238,0.18);
 color:#fff;
 outline:none;
 backdrop-filter:blur(5px);
+box-shadow:inset 0 1px 0 rgba(255,255,255,0.22), 0 12px 24px rgba(38,15,10,0.14);
 }
 
 .search input::placeholder{
@@ -95,31 +140,46 @@ color:rgba(255,255,255,0.9);
 }
 
 .search input:focus{
-box-shadow:0 0 0 4px rgba(255,255,255,0.2);
+box-shadow:0 0 0 4px rgba(255,255,255,0.2), 0 14px 28px rgba(38,15,10,0.18);
 }
 
 button{
 background:linear-gradient(135deg, var(--brand) 0%, var(--brand-dark) 100%);
 color:white;
 border:none;
-padding:10px;
-border-radius:10px;
+padding:11px 16px;
+border-radius:14px;
 cursor:pointer;
 font-weight:600;
 box-shadow:0 8px 18px rgba(181,48,26,0.35);
-transition:transform .2s ease, box-shadow .25s ease;
+transition:transform .2s ease, box-shadow .25s ease, filter .2s ease;
+position:relative;
+overflow:hidden;
+letter-spacing:0.2px;
+}
+
+button::before{
+content:"";
+position:absolute;
+inset:1px;
+border-radius:13px;
+background:linear-gradient(180deg, rgba(255,255,255,0.16), rgba(255,255,255,0));
+pointer-events:none;
 }
 
 button:hover{
 transform:translateY(-2px);
 box-shadow:0 12px 22px rgba(181,48,26,0.42);
+filter:saturate(1.05);
 }
 
 nav{
-background:rgba(17,17,17,0.86);
+background:linear-gradient(90deg, rgba(94,23,17,0.94), rgba(151,37,25,0.9));
 padding:15px;
 text-align:center;
 backdrop-filter:blur(8px);
+border-top:1px solid rgba(255,220,162,0.18);
+border-bottom:1px solid rgba(255,220,162,0.18);
 }
 
 nav a{
@@ -157,12 +217,15 @@ margin-top:8px;
 
 .module-btn{
 padding:12px 14px;
-border-radius:12px;
-border:1px solid rgba(232,74,42,0.2);
-background:linear-gradient(145deg, #fff8ee 0%, #ffe7cc 100%);
-color:#4c2f23;
+border-radius:16px;
+border:1px solid rgba(217,74,43,0.18);
+background:linear-gradient(145deg, #fff9ef 0%, #ffe5c4 100%);
+color:#5a2f1c;
 font-weight:700;
-box-shadow:0 6px 14px rgba(42,26,18,0.12);
+box-shadow:0 10px 20px rgba(42,26,18,0.1);
+text-transform:uppercase;
+font-size:13px;
+letter-spacing:0.7px;
 }
 
 .module-btn:hover{
@@ -186,19 +249,36 @@ display:none;
 
 section{
 padding:50px 10%;
-background: rgba(255,255,255,0.9);
+background:
+linear-gradient(180deg, var(--surface-strong) 0%, var(--surface) 100%);
 margin: 20px auto;
-border-radius: 15px;
-box-shadow: 0 8px 22px rgba(0,0,0,0.11);
-border:1px solid rgba(232,74,42,0.08);
+border-radius: 18px;
+box-shadow: 0 16px 34px rgba(70,28,19,0.12);
+border:1px solid rgba(217,74,43,0.12);
+backdrop-filter:blur(8px);
+position:relative;
+overflow:hidden;
+}
+
+section::before{
+content:"";
+position:absolute;
+top:0;
+left:24px;
+right:24px;
+height:1px;
+background:linear-gradient(90deg, transparent, rgba(255,200,87,0.78), transparent);
+pointer-events:none;
 }
 
 h2{
-font-family:"Playfair Display",serif;
+font-family:"Cormorant Garamond",serif;
 font-size:clamp(28px,3.2vw,36px);
 margin:0 0 16px;
 position:relative;
 display:inline-block;
+font-weight:700;
+letter-spacing:0.4px;
 }
 
 h2::after{
@@ -221,21 +301,35 @@ z-index:3;
 }
 
 .highlight-panel{
-background:linear-gradient(130deg, rgba(255,255,255,0.98) 0%, rgba(255,245,232,0.96) 100%);
-border:1px solid rgba(232,74,42,0.16);
+background:
+linear-gradient(130deg, rgba(255,252,246,0.98) 0%, rgba(255,240,217,0.96) 100%);
+border:1px solid rgba(217,74,43,0.18);
 border-radius:16px;
 box-shadow:var(--card-shadow);
 padding:18px;
 display:grid;
 grid-template-columns:1.2fr 1fr;
 gap:16px;
+position:relative;
+overflow:hidden;
+}
+
+.highlight-panel::after{
+content:"";
+position:absolute;
+inset:auto -40px -60px auto;
+width:220px;
+height:220px;
+background:radial-gradient(circle, rgba(255,200,87,0.22) 0%, rgba(255,200,87,0) 72%);
+pointer-events:none;
 }
 
 .highlight-title{
 margin:0 0 8px;
 font-size:24px;
-font-family:"Playfair Display",serif;
+font-family:"Cormorant Garamond",serif;
 color:#3b281f;
+letter-spacing:0.45px;
 }
 
 .highlight-text{
@@ -250,13 +344,261 @@ grid-template-columns:repeat(3,1fr);
 gap:10px;
 }
 
+.home-showcase{
+max-width:1100px;
+margin:20px auto;
+padding:28px 20px;
+}
+
+.home-lead{
+display:flex;
+justify-content:space-between;
+gap:14px;
+align-items:end;
+flex-wrap:wrap;
+margin-bottom:18px;
+}
+
+.home-lead p{
+margin:0;
+color:var(--muted);
+max-width:720px;
+line-height:1.6;
+}
+
+.story-grid,
+.season-grid,
+.timeline-grid,
+.gallery-grid{
+display:grid;
+gap:14px;
+}
+
+.story-grid{
+grid-template-columns:1.2fr 1fr 1fr;
+}
+
+.story-card,
+.season-card,
+.timeline-card,
+.gallery-card,
+.spotlight-card{
+background:linear-gradient(155deg, rgba(255,255,255,0.98) 0%, rgba(255,241,220,0.96) 100%);
+border:1px solid rgba(217,74,43,0.14);
+border-radius:16px;
+padding:16px;
+box-shadow:0 10px 20px rgba(70,28,19,0.1);
+position:relative;
+overflow:hidden;
+}
+
+.story-card::after,
+.season-card::after,
+.timeline-card::after,
+.spotlight-card::after{
+content:"";
+position:absolute;
+inset:auto -26px -44px auto;
+width:120px;
+height:120px;
+background:radial-gradient(circle, rgba(255,200,87,0.2) 0%, rgba(255,200,87,0) 72%);
+pointer-events:none;
+}
+
+.story-card h3,
+.season-card h3,
+.timeline-card h3,
+.spotlight-card h3{
+font-family:"Cormorant Garamond",serif;
+font-size:30px;
+margin:0 0 8px;
+line-height:1.05;
+color:#45251a;
+}
+
+.story-card p,
+.season-card p,
+.timeline-card p,
+.spotlight-card p{
+margin:0;
+color:var(--muted);
+line-height:1.58;
+}
+
+.story-chip-row{
+display:flex;
+flex-wrap:wrap;
+gap:8px;
+margin-top:12px;
+}
+
+.story-chip{
+padding:6px 12px;
+border-radius:999px;
+font-size:12px;
+font-weight:700;
+background:rgba(217,74,43,0.12);
+color:#8f2919;
+border:1px solid rgba(217,74,43,0.22);
+}
+
+.season-grid{
+grid-template-columns:repeat(4, minmax(0, 1fr));
+}
+
+.season-card{
+min-height:190px;
+display:flex;
+flex-direction:column;
+justify-content:space-between;
+}
+
+.season-tag{
+display:inline-flex;
+align-items:center;
+justify-content:center;
+padding:5px 10px;
+border-radius:999px;
+font-size:11px;
+font-weight:700;
+letter-spacing:0.4px;
+background:rgba(255,255,255,0.72);
+color:#73351e;
+border:1px solid rgba(217,74,43,0.2);
+width:max-content;
+margin-bottom:8px;
+}
+
+.month-spotlight-head{
+display:flex;
+justify-content:space-between;
+gap:12px;
+align-items:flex-end;
+flex-wrap:wrap;
+margin-bottom:14px;
+}
+
+.month-spotlight-meta{
+margin:0;
+color:var(--muted);
+font-size:14px;
+}
+
+.month-spotlight-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+gap:14px;
+}
+
+.spotlight-card img{
+width:100%;
+height:150px;
+object-fit:cover;
+border-radius:12px;
+border:1px solid rgba(217,74,43,0.14);
+margin-bottom:10px;
+}
+
+.spotlight-card h3{
+font-size:26px;
+margin-bottom:6px;
+}
+
+.spotlight-card .spotlight-meta{
+font-size:13px;
+margin-top:8px;
+color:#6a4f3f;
+font-weight:600;
+}
+
+.timeline-grid{
+grid-template-columns:repeat(3, minmax(0, 1fr));
+}
+
+.timeline-line{
+position:relative;
+padding-left:18px;
+margin-top:12px;
+}
+
+.timeline-line::before{
+content:"";
+position:absolute;
+left:4px;
+top:2px;
+bottom:2px;
+width:2px;
+background:linear-gradient(180deg, #d94a2b, rgba(217,74,43,0.15));
+}
+
+.timeline-stop{
+position:relative;
+margin-bottom:10px;
+font-size:14px;
+color:#503a2f;
+}
+
+.timeline-stop::before{
+content:"";
+position:absolute;
+left:-17px;
+top:6px;
+width:8px;
+height:8px;
+border-radius:50%;
+background:#d94a2b;
+box-shadow:0 0 0 3px rgba(217,74,43,0.16);
+}
+
+.gallery-grid{
+grid-template-columns:repeat(4, minmax(0, 1fr));
+}
+
+.gallery-card{
+padding:0;
+min-height:220px;
+}
+
+.gallery-card img{
+width:100%;
+height:220px;
+object-fit:cover;
+display:block;
+}
+
+.gallery-card .gallery-caption{
+position:absolute;
+left:10px;
+right:10px;
+bottom:10px;
+padding:10px 12px;
+border-radius:12px;
+background:rgba(20,10,6,0.58);
+color:#fff;
+font-size:13px;
+line-height:1.45;
+backdrop-filter:blur(3px);
+}
+
+.reveal-up{
+opacity:0;
+transform:translateY(22px);
+transition:opacity .55s ease, transform .55s ease;
+}
+
+.reveal-up.is-visible{
+opacity:1;
+transform:translateY(0);
+}
+
 .stat-box{
-background:linear-gradient(155deg, #fff 0%, #fff2df 100%);
-border:1px solid rgba(232,74,42,0.14);
+background:linear-gradient(155deg, rgba(255,255,255,0.95) 0%, rgba(255,239,214,0.98) 100%);
+border:1px solid rgba(217,74,43,0.16);
 border-radius:12px;
 padding:12px 10px;
 text-align:center;
 animation:floatCard 4.8s ease-in-out infinite;
+box-shadow:0 10px 18px rgba(94,23,17,0.08);
 }
 
 .stat-box:nth-child(2){
@@ -271,6 +613,8 @@ animation-delay:.7s;
 display:block;
 font-size:24px;
 color:#9f301f;
+font-family:"Cormorant Garamond",serif;
+letter-spacing:0.5px;
 }
 
 .stat-box span{
@@ -280,7 +624,9 @@ color:var(--muted);
 
 #map{
 height:500px;
-border-radius:10px;
+border-radius:16px;
+box-shadow:0 12px 28px rgba(70,28,19,0.14);
+border:1px solid rgba(217,74,43,0.14);
 }
 
 .grid{
@@ -290,35 +636,145 @@ gap:20px;
 }
 
 .card{
-background:white;
-border-radius:10px;
-box-shadow:0 3px 10px rgba(0,0,0,0.2);
+background:linear-gradient(180deg, rgba(255,255,255,0.98) 0%, rgba(255,247,236,0.98) 100%);
+border-radius:16px;
+box-shadow:0 10px 22px rgba(70,28,19,0.12);
 overflow:hidden;
 cursor:pointer;
-border:1px solid rgba(232,74,42,0.1);
+border:1px solid rgba(217,74,43,0.12);
 transition:transform .25s ease, box-shadow .25s ease;
+position:relative;
 }
 
 .card:hover{
-transform:translateY(-4px);
-box-shadow:0 14px 24px rgba(42,26,18,0.16);
+transform:translateY(-6px);
+box-shadow:0 18px 30px rgba(42,26,18,0.18);
+}
+
+.card::before{
+content:"";
+position:absolute;
+top:0;
+left:0;
+right:0;
+height:4px;
+background:linear-gradient(90deg, var(--brand), #ffbf63, var(--brand-dark));
+opacity:0.9;
 }
 
 .card img{
 width:100%;
-height:160px;
+height:180px;
 object-fit:cover;
 }
 
 .card-content{
 padding:15px;
+position:relative;
+}
+
+.card-content h3{
+margin:0 0 8px;
+font-family:"Cormorant Garamond",serif;
+font-size:28px;
+line-height:1.05;
+color:#472618;
+}
+
+.card-content p{
+margin:0 0 10px;
+line-height:1.55;
 }
 
 footer{
-background:#111;
+background:linear-gradient(135deg, var(--brand-deep) 0%, var(--brand-dark) 100%);
 color:white;
 text-align:center;
 padding:30px;
+border-top:1px solid rgba(255,217,168,0.16);
+}
+
+footer p:first-child{
+font-family:"Cormorant Garamond",serif;
+font-size:28px;
+letter-spacing:0.6px;
+margin:0 0 6px;
+}
+
+footer p:last-child{
+margin:0;
+opacity:0.88;
+letter-spacing:0.25px;
+}
+
+label{
+font-weight:600;
+color:#5b4032;
+}
+
+select,
+.chatbot-input{
+border-radius:12px;
+border:1px solid rgba(217,74,43,0.18);
+background:rgba(255,252,246,0.95);
+color:var(--ink);
+box-shadow:0 8px 18px rgba(70,28,19,0.06);
+}
+
+select{
+padding:10px 12px;
+margin-left:6px;
+font-family:"Be Vietnam Pro",sans-serif;
+}
+
+.util-nav{
+display:flex;
+gap:10px;
+flex-wrap:wrap;
+margin:16px 0 18px;
+}
+
+.util-nav button{
+background:linear-gradient(145deg, #fff6e9 0%, #ffdba7 100%);
+color:#6d321c;
+border:1px solid rgba(217,74,43,0.14);
+box-shadow:0 8px 16px rgba(70,28,19,0.08);
+}
+
+.util-nav button::before{
+background:linear-gradient(180deg, rgba(255,255,255,0.42), rgba(255,255,255,0));
+}
+
+.chatbot-head h3,
+.cal-title,
+.cal-fl-title{
+font-family:"Cormorant Garamond",serif;
+letter-spacing:0.4px;
+}
+
+.chatbot-chip,
+.chat-action-btn{
+border-radius:999px;
+background:linear-gradient(145deg, #fffaf2 0%, #ffe7c7 100%);
+border:1px solid rgba(217,74,43,0.18);
+box-shadow:0 6px 14px rgba(70,28,19,0.06);
+}
+
+.chatbot-panel,
+.cal-container,
+.cal-festival-list{
+border-radius:18px;
+}
+
+@media (max-width: 620px){
+    .card-content h3{
+        font-size:24px;
+    }
+
+    .module-btn{
+        font-size:12px;
+        letter-spacing:0.5px;
+    }
 }
 
 #searchHistory button{
@@ -348,6 +804,19 @@ grid-template-columns:1fr;
 .highlight-stats{
 grid-template-columns:repeat(3,minmax(0,1fr));
 }
+
+.story-grid,
+.timeline-grid{
+grid-template-columns:1fr;
+}
+
+.season-grid{
+grid-template-columns:repeat(2,minmax(0,1fr));
+}
+
+.gallery-grid{
+grid-template-columns:repeat(2,minmax(0,1fr));
+}
 }
 
 @media (max-width: 620px){
@@ -361,6 +830,15 @@ grid-template-columns:1fr;
 
 section{
 padding:36px 6%;
+}
+
+.season-grid,
+.gallery-grid{
+grid-template-columns:1fr;
+}
+
+.home-showcase{
+padding:20px 14px;
 }
 }
 
@@ -650,16 +1128,18 @@ height:68px;
 border-radius:22px;
 border:none;
 background:
-radial-gradient(circle at 30% 30%, rgba(255,255,255,0.38), transparent 32%),
-linear-gradient(135deg, #ff8a4c 0%, var(--brand) 48%, var(--brand-dark) 100%);
+radial-gradient(circle at 30% 28%, rgba(255,255,255,0.46), transparent 30%),
+radial-gradient(circle at 72% 78%, rgba(255,211,141,0.18), transparent 28%),
+linear-gradient(145deg, #ff9d56 0%, var(--brand) 46%, var(--brand-dark) 100%);
 color:#fff;
 font-size:28px;
-box-shadow:0 16px 30px rgba(181,48,26,0.38);
+box-shadow:0 20px 34px rgba(151,37,25,0.34), 0 0 0 8px rgba(255,240,218,0.32);
 cursor:pointer;
 display:flex;
 align-items:center;
 justify-content:center;
 overflow:hidden;
+animation:aiPulse 3.6s ease-in-out infinite;
 }
 
 .chatbot-fab::before{
@@ -681,7 +1161,7 @@ content:'';
 position:absolute;
 inset:4px;
 border-radius:18px;
-border:1px solid rgba(255,255,255,0.18);
+border:1px solid rgba(255,255,255,0.24);
 pointer-events:none;
 }
 
@@ -694,22 +1174,48 @@ height:min(560px,72vh);
 z-index:1000;
 display:none;
 flex-direction:column;
-background:linear-gradient(135deg,#fffaf3 0%,#fff5e8 100%);
-border:1px solid rgba(232,74,42,0.14);
-border-radius:16px;
-box-shadow:0 18px 34px rgba(42,26,18,0.22);
+background:
+linear-gradient(180deg, rgba(255,252,247,0.98) 0%, rgba(255,244,231,0.98) 100%);
+border:1px solid rgba(217,74,43,0.16);
+border-radius:24px;
+box-shadow:0 28px 56px rgba(42,26,18,0.24), 0 0 0 1px rgba(255,255,255,0.42) inset;
 overflow:hidden;
+backdrop-filter:blur(14px);
+}
+
+.chatbot-panel::before{
+content:'';
+position:absolute;
+inset:0;
+background:
+radial-gradient(circle at 12% 10%, rgba(255,208,126,0.18), transparent 24%),
+radial-gradient(circle at 88% 16%, rgba(217,74,43,0.12), transparent 22%),
+linear-gradient(180deg, rgba(255,255,255,0.24), rgba(255,255,255,0));
+pointer-events:none;
 }
 
 .chatbot-panel.show{display:flex;}
 
 .chatbot-head{
-padding:12px 14px;
-background:linear-gradient(135deg, var(--brand) 0%, var(--brand-dark) 100%);
+padding:14px 16px 12px;
+background:
+linear-gradient(135deg, rgba(107,27,18,0.96) 0%, rgba(151,37,25,0.95) 58%, rgba(204,92,39,0.92) 100%);
 color:#fff;
 display:flex;
 justify-content:space-between;
 align-items:center;
+position:relative;
+border-bottom:1px solid rgba(255,218,170,0.2);
+}
+
+.chatbot-head::after{
+content:'';
+position:absolute;
+left:16px;
+right:16px;
+bottom:0;
+height:1px;
+background:linear-gradient(90deg, transparent, rgba(255,228,190,0.75), transparent);
 }
 
 .chatbot-head-main{
@@ -721,15 +1227,16 @@ gap:10px;
 .chatbot-avatar{
 width:46px;
 height:46px;
-border-radius:14px;
+border-radius:16px;
 background:
-radial-gradient(circle at 30% 30%, rgba(255,255,255,0.38), transparent 30%),
-linear-gradient(135deg, #ffb56f 0%, #ff8847 46%, #bf351b 100%);
+radial-gradient(circle at 30% 28%, rgba(255,255,255,0.48), transparent 28%),
+radial-gradient(circle at 76% 78%, rgba(255,221,164,0.2), transparent 24%),
+linear-gradient(135deg, #ffc071 0%, #ff8b4a 44%, #b92f1a 100%);
 display:flex;
 align-items:center;
 justify-content:center;
 font-size:23px;
-box-shadow:inset 0 0 0 1px rgba(255,255,255,0.18);
+box-shadow:inset 0 0 0 1px rgba(255,255,255,0.22), 0 10px 18px rgba(58,15,10,0.24);
 position:relative;
 }
 
@@ -750,11 +1257,12 @@ box-shadow:0 4px 10px rgba(42,26,18,0.16);
 
 .chatbot-head h3{
 margin:0;
-font-size:16px;
-font-family:"Playfair Display",serif;
+font-size:22px;
+font-family:"Cormorant Garamond",serif;
+letter-spacing:0.4px;
 }
 
-.chatbot-head small{opacity:0.9;}
+.chatbot-head small{opacity:0.92;}
 
 .chatbot-head-meta{
 display:flex;
@@ -762,6 +1270,7 @@ align-items:center;
 gap:6px;
 margin-top:3px;
 font-size:12px;
+color:rgba(255,242,227,0.9);
 }
 
 .chatbot-status-dot{
@@ -773,24 +1282,31 @@ box-shadow:0 0 0 4px rgba(140,255,193,0.15);
 }
 
 .chatbot-close{
-background:transparent;
+background:rgba(255,255,255,0.08);
 border:none;
 color:#fff;
 font-size:20px;
 cursor:pointer;
 box-shadow:none;
 padding:0;
+width:36px;
+height:36px;
+border-radius:12px;
+display:flex;
+align-items:center;
+justify-content:center;
 }
 
 .chatbot-body{
-padding:12px;
+padding:14px 14px 10px;
 display:flex;
 flex-direction:column;
 gap:10px;
 overflow:auto;
 background:
-radial-gradient(circle at 85% 10%, rgba(232,74,42,0.08), transparent 36%),
-radial-gradient(circle at 8% 95%, rgba(255,187,108,0.22), transparent 42%);
+radial-gradient(circle at 85% 10%, rgba(232,74,42,0.09), transparent 36%),
+radial-gradient(circle at 8% 95%, rgba(255,187,108,0.24), transparent 42%),
+linear-gradient(180deg, rgba(255,250,243,0.86) 0%, rgba(255,244,231,0.92) 100%);
 }
 
 .chatbot-notice{
@@ -798,14 +1314,14 @@ display:flex;
 align-items:flex-start;
 gap:10px;
 padding:10px 12px;
-margin:0 12px;
-background:linear-gradient(135deg, rgba(255,248,231,0.98) 0%, rgba(255,236,214,0.98) 100%);
-border:1px solid rgba(232,74,42,0.18);
-border-radius:12px;
+margin:0 12px 2px;
+background:linear-gradient(135deg, rgba(255,250,239,0.98) 0%, rgba(255,239,218,0.98) 100%);
+border:1px solid rgba(232,74,42,0.16);
+border-radius:16px;
 color:#70402d;
 font-size:12px;
 line-height:1.45;
-box-shadow:0 8px 18px rgba(42,26,18,0.06);
+box-shadow:0 10px 22px rgba(42,26,18,0.08);
 }
 
 .chatbot-notice-icon{
@@ -828,59 +1344,63 @@ color:#5f2418;
 
 .chat-msg{
 max-width:88%;
-padding:10px 12px;
-border-radius:12px;
+padding:12px 14px;
+border-radius:18px;
 line-height:1.5;
 font-size:14px;
 white-space:pre-wrap;
+box-shadow:0 10px 20px rgba(55,22,13,0.08);
 }
 
 .chat-msg.user{
 align-self:flex-end;
-background:linear-gradient(135deg,var(--brand),var(--brand-dark));
+background:linear-gradient(135deg, #d84d2d 0%, #9b2719 100%);
 color:#fff;
+border-bottom-right-radius:6px;
 }
 
 .chat-msg.bot{
 align-self:flex-start;
-background:#fff;
+background:linear-gradient(180deg, rgba(255,255,255,0.98) 0%, rgba(255,248,239,0.98) 100%);
 color:#34241c;
 border:1px solid rgba(232,74,42,0.12);
 position:relative;
-padding-left:44px;
+padding-left:50px;
+border-bottom-left-radius:6px;
 }
 
 .chat-msg.bot::before{
 content:'🤖';
 position:absolute;
-left:12px;
-top:10px;
-width:24px;
-height:24px;
-border-radius:8px;
+left:14px;
+top:12px;
+width:26px;
+height:26px;
+border-radius:9px;
 display:flex;
 align-items:center;
 justify-content:center;
-background:linear-gradient(135deg,#fff1dc 0%,#ffd2aa 100%);
+background:linear-gradient(135deg,#fff1dc 0%,#ffd4a8 100%);
+box-shadow:0 6px 12px rgba(42,26,18,0.08);
 }
 
 .chat-actions{
-margin-top:8px;
+margin-top:10px;
 display:flex;
 gap:6px;
 flex-wrap:wrap;
 }
 
 .chat-action-btn{
-padding:5px 9px;
+padding:7px 11px;
 border-radius:999px;
-border:1px solid rgba(232,74,42,0.25);
-background:#fff8ef;
+border:1px solid rgba(232,74,42,0.2);
+background:linear-gradient(145deg, #fffaf1 0%, #ffe7c4 100%);
 color:#7a3526;
 font-size:12px;
 font-weight:600;
 cursor:pointer;
-box-shadow:none;
+box-shadow:0 6px 14px rgba(42,26,18,0.06);
 }
 
 .chat-action-btn:hover{
@@ -890,44 +1410,62 @@ border-color:transparent;
 }
 
 .chatbot-suggest{
-padding:8px 12px 0;
+padding:10px 12px 0;
 display:flex;
 gap:8px;
 flex-wrap:wrap;
+background:linear-gradient(180deg, rgba(255,250,243,0.76), rgba(255,250,243,0));
 }
 
 .chatbot-chip{
-padding:5px 10px;
+padding:8px 12px;
 border-radius:999px;
 font-size:12px;
 font-weight:600;
-border:1px solid rgba(232,74,42,0.25);
-background:#fff;
+border:1px solid rgba(232,74,42,0.18);
+background:linear-gradient(145deg, #fffdf9 0%, #ffe9cd 100%);
 color:#7a3526;
 cursor:pointer;
+box-shadow:0 8px 16px rgba(42,26,18,0.06);
 }
 
 .chatbot-input-wrap{
-padding:10px;
+padding:12px;
 border-top:1px solid rgba(232,74,42,0.12);
 display:flex;
 gap:8px;
-background:#fffefb;
+background:linear-gradient(180deg, rgba(255,253,249,0.96) 0%, rgba(255,246,235,0.98) 100%);
 }
 
 .chatbot-input{
 flex:1;
-padding:10px 12px;
-border:1px solid rgba(232,74,42,0.2);
-border-radius:10px;
+padding:12px 14px;
+border:1px solid rgba(232,74,42,0.18);
+border-radius:16px;
 font-size:14px;
 outline:none;
+background:rgba(255,255,255,0.92);
+box-shadow:inset 0 1px 0 rgba(255,255,255,0.7), 0 10px 18px rgba(42,26,18,0.05);
 }
 
 .chatbot-send{
-padding:10px 12px;
-border-radius:10px;
+padding:12px 16px;
+border-radius:16px;
 font-weight:700;
+min-width:68px;
+}
+
+.chatbot-input:focus{
+box-shadow:0 0 0 4px rgba(217,74,43,0.12), 0 12px 22px rgba(42,26,18,0.08);
+}
+
+@keyframes aiPulse{
+0%, 100% {
+transform:translateY(0);
+}
+50% {
+transform:translateY(-2px);
+}
 }
 
 @media (max-width:620px){
@@ -1029,6 +1567,142 @@ font-weight:700;
     <div id="map"></div>
 </section>
 
+<section class="home-showcase reveal-up" id="homeStory">
+    <div class="home-lead">
+        <h2>Hành trình lễ hội xuyên Việt</h2>
+        <p>Trang chủ mới được mở rộng theo kiểu kể chuyện: chọn mùa, khám phá vùng, xem điểm nổi bật trong tháng và nhận gợi ý lịch trình theo phong cách du lịch của bạn.</p>
+    </div>
+    <div class="story-grid">
+        <article class="story-card">
+            <h3>Bắt đầu từ một mùa bạn thích</h3>
+            <p>Mỗi mùa có sắc thái khác nhau: mùa xuân rộn ràng tâm linh, mùa hạ sôi động biển đảo, mùa thu giàu bản sắc văn hóa và mùa đông phù hợp khám phá ẩm thực lễ hội.</p>
+            <div class="story-chip-row">
+                <span class="story-chip">Tìm theo tháng</span>
+                <span class="story-chip">Gợi ý theo vùng</span>
+                <span class="story-chip">Kế hoạch 1-3 ngày</span>
+            </div>
+        </article>
+        <article class="story-card">
+            <h3>Lọc thông minh</h3>
+            <p>Chọn miền Bắc, Trung, Nam hoặc tỉnh cụ thể để ra danh sách có độ chính xác cao, tránh trùng lặp và ưu tiên địa điểm khớp nhất với từ khóa.</p>
+        </article>
+        <article class="story-card">
+            <h3>Đi là có tiện ích</h3>
+            <p>Khi xem lễ hội, bạn có thể chuyển nhanh sang ăn uống, khu vui chơi và tiện ích gần nhất để hoàn thiện chuyến đi trong cùng một giao diện.</p>
+        </article>
+    </div>
+</section>
+
+<section class="home-showcase reveal-up" id="seasonJourney">
+    <div class="home-lead">
+        <h2>Khám phá theo mùa</h2>
+        <p>Chọn mùa để mở nhanh danh sách gợi ý tương ứng. Dữ liệu được tối ưu để bạn tìm đúng vùng chỉ trong vài thao tác.</p>
+    </div>
+    <div class="season-grid">
+        <article class="season-card">
+            <div>
+                <span class="season-tag">MÙA XUÂN</span>
+                <h3>Lễ hội khai xuân</h3>
+                <p>Tập trung ở miền Bắc với các hành hương, hội làng, lễ cầu năm mới và văn hóa dân gian đặc sắc.</p>
+            </div>
+            <button onclick="applyRegionAndOpen('bac')">Xem miền Bắc</button>
+        </article>
+        <article class="season-card">
+            <div>
+                <span class="season-tag">MÙA HẠ</span>
+                <h3>Biển và giải trí</h3>
+                <p>Phù hợp kết hợp lễ hội với du lịch biển, khu vui chơi chủ đề và chuỗi trải nghiệm gia đình.</p>
+            </div>
+            <button onclick="applyRegionAndOpen('trung')">Xem miền Trung</button>
+        </article>
+        <article class="season-card">
+            <div>
+                <span class="season-tag">MÙA THU</span>
+                <h3>Sắc màu văn hóa</h3>
+                <p>Nhiều lễ hội cộng đồng, ẩm thực vùng miền và hoạt động truyền thống diễn ra trong thời tiết dễ chịu.</p>
+            </div>
+            <button onclick="openModule('food')">Xem ẩm thực</button>
+        </article>
+        <article class="season-card">
+            <div>
+                <span class="season-tag">MÙA ĐÔNG</span>
+                <h3>Hành trình cuối năm</h3>
+                <p>Ưu tiên hành trình ngắn ngày, trải nghiệm lễ hội đặc trưng địa phương và tiện ích lưu trú gần điểm đến.</p>
+            </div>
+            <button onclick="openModule('utilities')">Xem tiện ích</button>
+        </article>
+    </div>
+</section>
+
+<section class="home-showcase reveal-up" id="monthSpotlight">
+    <div class="month-spotlight-head">
+        <h2 id="monthSpotlightTitle">Spotlight tháng này</h2>
+        <p id="monthSpotlightMeta" class="month-spotlight-meta">Đang tải dữ liệu nổi bật...</p>
+    </div>
+    <div id="monthSpotlightGrid" class="month-spotlight-grid"></div>
+</section>
+
+<section class="home-showcase reveal-up" id="itineraryHome">
+    <div class="home-lead">
+        <h2>Timeline gợi ý hành trình</h2>
+        <p>Gợi ý mẫu để người dùng mới có thể đi ngay, sau đó tùy chỉnh bằng chatbot hoặc bộ lọc khu vực theo nhu cầu thực tế.</p>
+    </div>
+    <div class="timeline-grid">
+        <article class="timeline-card">
+            <h3>2 ngày Hà Nội</h3>
+            <p>Lộ trình kết hợp lễ hội và ẩm thực phố cổ.</p>
+            <div class="timeline-line">
+                <div class="timeline-stop">Sáng: Chùa Hương hoặc Đền Sóc</div>
+                <div class="timeline-stop">Trưa: Phở Bát Đàn, bún chả Hàng Quạt</div>
+                <div class="timeline-stop">Chiều: Khu vui chơi Hồ Tây</div>
+            </div>
+        </article>
+        <article class="timeline-card">
+            <h3>3 ngày Huế - Đà Nẵng</h3>
+            <p>Dành cho nhóm bạn thích trải nghiệm văn hóa và vui chơi.</p>
+            <div class="timeline-line">
+                <div class="timeline-stop">Ngày 1: Festival Huế, ẩm thực cố đô</div>
+                <div class="timeline-stop">Ngày 2: Bà Nà Hills, Asia Park</div>
+                <div class="timeline-stop">Ngày 3: Mì Quảng, biển và mua sắm</div>
+            </div>
+        </article>
+        <article class="timeline-card">
+            <h3>2 ngày Phú Quốc</h3>
+            <p>Hành trình ngắn cho gia đình, tập trung vui chơi và nghỉ dưỡng.</p>
+            <div class="timeline-line">
+                <div class="timeline-stop">Sáng: VinWonders Phú Quốc</div>
+                <div class="timeline-stop">Chiều: Grand World, chợ đêm</div>
+                <div class="timeline-stop">Tối: Bún kèn và hải sản địa phương</div>
+            </div>
+        </article>
+    </div>
+</section>
+
+<section class="home-showcase reveal-up" id="festivalGalleryHome">
+    <div class="home-lead">
+        <h2>Không khí lễ hội</h2>
+        <p>Bộ sưu tập hình ảnh nổi bật tạo chiều sâu cho trang chủ, giúp trải nghiệm khám phá sinh động hơn ngay từ lần truy cập đầu tiên.</p>
+    </div>
+    <div class="gallery-grid">
+        <article class="gallery-card">
+            <img src="image/denhung.jpg" alt="Lễ hội Đền Hùng">
+            <div class="gallery-caption">Hành trình về cội nguồn tại Lễ hội Đền Hùng.</div>
+        </article>
+        <article class="gallery-card">
+            <img src="image/feshue.jpg" alt="Festival Huế">
+            <div class="gallery-caption">Sắc màu di sản và nghệ thuật trình diễn tại Huế.</div>
+        </article>
+        <article class="gallery-card">
+            <img src="image/hoilim.jpg" alt="Hội Lim">
+            <div class="gallery-caption">Không gian dân ca quan họ trong mùa hội xuân.</div>
+        </article>
+        <article class="gallery-card">
+            <img src="image/trekking-yen-tu-2.png" alt="Yên Tử">
+            <div class="gallery-caption">Trải nghiệm hành hương và cảnh quan núi non Yên Tử.</div>
+        </article>
+    </div>
+</section>
+
 <section id="list" class="module-panel">
 
 <h2>Danh sách lễ hội</h2>
@@ -1114,7 +1788,7 @@ font-weight:700;
 <footer>
 
 <p>Vietnam Festival Explorer</p>
-<p>Nền tảng khám phá lễ hội Việt Nam</p>
+<p>Nền tảng số khám phá lễ hội và văn hóa Việt Nam</p>
 
 </footer>
 
@@ -1125,7 +1799,7 @@ font-weight:700;
         <div class="chatbot-head-main">
             <div class="chatbot-avatar" aria-hidden="true">🤖</div>
             <div>
-                <h3>LeHoiMate AI</h3>
+                <h3>Tro ly AI Le Hoi Viet</h3>
                 <div class="chatbot-head-meta">
                     <span class="chatbot-status-dot"></span>
                     <small>Bot tự động • tư vấn lễ hội, ăn uống, vui chơi</small>
@@ -1164,13 +1838,128 @@ const regionMap = {
     nam: ["TP.HCM","Bà Rịa - Vũng Tàu","Bình Dương","Bình Phước","Đồng Nai","Tây Ninh","Bình Thuận","Long An","Đồng Tháp","An Giang","Bến Tre","Vĩnh Long","Trà Vinh","Hậu Giang","Kiên Giang","Sóc Trăng","Bạc Liêu","Cà Mau","Cần Thơ","Tiền Giang"]
 };
 
-function getAllProvinces(region) {
-    if (!region) {
-        // Lấy tất cả tỉnh có trong danh sách lễ hội
-        const ps = new Set(festivals.map(f=>f.province));
-        return Array.from(ps).sort();
+const provinceAliasMap = {
+    "ba ria vung tau": "Bà Rịa - Vũng Tàu",
+    "vung tau": "Bà Rịa - Vũng Tàu",
+    "hue": "Thừa Thiên Huế",
+    "thua thien hue": "Thừa Thiên Huế",
+    "tphcm": "TP.HCM",
+    "tp hcm": "TP.HCM",
+    "ho chi minh": "TP.HCM",
+    "sai gon": "TP.HCM",
+    "phu quoc": "Kiên Giang",
+    "nha trang": "Khánh Hòa",
+    "hoi an": "Quảng Nam",
+    "can gio": "TP.HCM"
+};
+
+function getCanonicalProvinceName(province) {
+    const normalized = normalizeLocationText(province);
+    return provinceAliasMap[normalized] || province;
+}
+
+function provinceMatchesSelection(itemProvince, selectedProvince) {
+    if (!selectedProvince) return true;
+    return normalizeLocationText(getCanonicalProvinceName(itemProvince)) === normalizeLocationText(getCanonicalProvinceName(selectedProvince));
+}
+
+function provinceBelongsToRegion(province, region) {
+    if (!region) return true;
+    return regionMap[region].some(function(regionProvince) {
+        return provinceMatchesSelection(province, regionProvince);
+    });
+}
+
+function dedupeFestivals(items) {
+    const seen = new Set();
+    return items.filter(function(item) {
+        const key = [
+            normalizeLocationText(item.name),
+            normalizeLocationText(getCanonicalProvinceName(item.province)),
+            item.start || '',
+            item.end || ''
+        ].join('|');
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
+    });
+}
+
+function scoreFestivalMatch(festival, keyword) {
+    if (!keyword) return 1;
+
+    const normalizedKeyword = normalizeLocationText(keyword);
+    if (!normalizedKeyword) return 1;
+
+    const terms = normalizedKeyword.split(' ').filter(Boolean);
+    const name = normalizeLocationText(festival.name);
+    const province = normalizeLocationText(getCanonicalProvinceName(festival.province));
+    const desc = normalizeLocationText(festival.desc);
+    const haystack = [name, province, desc].join(' ');
+
+    if (!terms.every(function(term) { return haystack.includes(term); })) {
+        return 0;
     }
-    return regionMap[region] ? regionMap[region].slice() : [];
+
+    if (name === normalizedKeyword) return 1000;
+    if (province === normalizedKeyword) return 900;
+    if ((name + ' ' + province) === normalizedKeyword) return 850;
+    if (name.startsWith(normalizedKeyword)) return 700;
+    if (province.startsWith(normalizedKeyword)) return 650;
+
+    let score = 400;
+    terms.forEach(function(term) {
+        if (name.startsWith(term)) score += 120;
+        else if (name.includes(term)) score += 80;
+
+        if (province.startsWith(term)) score += 70;
+        else if (province.includes(term)) score += 45;
+
+        if (desc.includes(term)) score += 15;
+    });
+
+    return score;
+}
+
+function getFilteredFestivals() {
+    const keyword = document.getElementById('searchBox')?.value || '';
+    const region = document.getElementById('regionFilter')?.value || '';
+    const province = document.getElementById('provinceFilter')?.value || '';
+
+    return dedupeFestivals(festivals)
+        .map(function(festival) {
+            return {
+                festival: festival,
+                score: scoreFestivalMatch(festival, keyword)
+            };
+        })
+        .filter(function(entry) {
+            return entry.score > 0 && provinceBelongsToRegion(entry.festival.province, region) && provinceMatchesSelection(entry.festival.province, province);
+        })
+        .sort(function(a, b) {
+            if (b.score !== a.score) return b.score - a.score;
+            return a.festival.name.localeCompare(b.festival.name, 'vi');
+        })
+        .map(function(entry) {
+            return entry.festival;
+        });
+}
+
+function getAllProvinces(region) {
+    const provinceMap = new Map();
+
+    dedupeFestivals(festivals).forEach(function(festival) {
+        if (!provinceBelongsToRegion(festival.province, region)) return;
+        const canonical = getCanonicalProvinceName(festival.province);
+        const key = normalizeLocationText(canonical);
+        if (!provinceMap.has(key)) {
+            provinceMap.set(key, canonical);
+        }
+    });
+
+    return Array.from(provinceMap.values()).sort(function(a, b) {
+        return a.localeCompare(b, 'vi');
+    });
 }
 
 function updateProvinceFilter(region) {
@@ -1180,16 +1969,88 @@ function updateProvinceFilter(region) {
 }
 
 function filterFestivals() {
-    const region = document.getElementById('regionFilter').value;
-    const province = document.getElementById('provinceFilter').value;
-    let filtered = festivals;
-    if (region) {
-        filtered = filtered.filter(f => regionMap[region].includes(f.province));
+    render(getFilteredFestivals());
+}
+
+function applyRegionAndOpen(region) {
+    var regionFilter = document.getElementById('regionFilter');
+    var provinceFilter = document.getElementById('provinceFilter');
+    if (!regionFilter || !provinceFilter) return;
+    regionFilter.value = region || '';
+    updateProvinceFilter(region || '');
+    provinceFilter.value = '';
+    filterFestivals();
+    openModule('list');
+}
+
+function getCurrentMonthFestivals(limit) {
+    var now = new Date();
+    var month = now.getMonth();
+    var year = now.getFullYear();
+    var monthStart = new Date(year, month, 1);
+    var monthEnd = new Date(year, month + 1, 0);
+
+    var matched = dedupeFestivals(festivals).filter(function(f) {
+        if (!f.start || !f.end) return false;
+        var s = new Date(f.start);
+        var e = new Date(f.end);
+        return !(s > monthEnd || e < monthStart);
+    }).sort(function(a, b) {
+        return new Date(a.start) - new Date(b.start);
+    });
+
+    if (!matched.length) {
+        matched = dedupeFestivals(festivals).slice(0, limit || 4);
     }
-    if (province) {
-        filtered = filtered.filter(f => f.province === province);
+
+    return matched.slice(0, limit || 4);
+}
+
+function renderHomeMonthSpotlight() {
+    var titleEl = document.getElementById('monthSpotlightTitle');
+    var metaEl = document.getElementById('monthSpotlightMeta');
+    var gridEl = document.getElementById('monthSpotlightGrid');
+    if (!titleEl || !metaEl || !gridEl) return;
+
+    var now = new Date();
+    var items = getCurrentMonthFestivals(4);
+    titleEl.textContent = 'Spotlight ' + monthNames[now.getMonth()] + ' ' + now.getFullYear();
+    metaEl.textContent = items.length + ' lễ hội đang được đề xuất cho tháng hiện tại.';
+
+    gridEl.innerHTML = '';
+    items.forEach(function(f) {
+        var card = document.createElement('article');
+        card.className = 'spotlight-card';
+        card.innerHTML = `
+            <img src="${resolveImageUrl(f.img,'festival',f)}" onerror="${getImageOnError('festival',f)}" alt="${f.name}">
+            <h3>${f.name}</h3>
+            <p>${f.desc || 'Lễ hội truyền thống nổi bật.'}</p>
+            <p class="spotlight-meta">${f.province} • ${f.start || 'Đang cập nhật lịch'}</p>
+            <button onclick="openModule('list')">Xem trong danh sách</button>
+        `;
+        gridEl.appendChild(card);
+    });
+}
+
+function initHomeReveal() {
+    var blocks = document.querySelectorAll('.reveal-up');
+    if (!blocks.length) return;
+
+    if (!('IntersectionObserver' in window)) {
+        blocks.forEach(function(el) { el.classList.add('is-visible'); });
+        return;
     }
-    render(filtered);
+
+    var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.18 });
+
+    blocks.forEach(function(el) { observer.observe(el); });
 }
 
 function openModule(moduleId) {
@@ -1223,6 +2084,8 @@ window.addEventListener('DOMContentLoaded', function() {
         filterFestivals();
     });
     document.getElementById('provinceFilter').addEventListener('change', filterFestivals);
+    renderHomeMonthSpotlight();
+    initHomeReveal();
 });
 
 
@@ -1681,6 +2544,103 @@ var stores=[
     {id:2,name:"7-Eleven Đà Nẵng",province:"Đà Nẵng",lat:16.0544,lng:108.2022,desc:"Cửa hàng tiện lợi nổi tiếng tại ĐN",img:"https://source.unsplash.com/400x300/?convenience"}
 ];
 
+function normalizeLocationText(text) {
+    return String(text || "")
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/\p{M}/gu, '')
+        .replace(/đ/g, 'd')
+        .replace(/[^a-z0-9]+/g, ' ')
+        .trim();
+}
+
+function buildLocationKey(name, province) {
+    return normalizeLocationText(name) + '|' + normalizeLocationText(province);
+}
+
+const exactLocationOverrides = {
+    festival: {
+        [buildLocationKey("Lễ hội Đền Hùng", "Phú Thọ")]: { lat: 21.3670433, lng: 105.3200361 },
+        [buildLocationKey("Lễ hội Chùa Hương", "Hà Nội")]: { lat: 20.69754, lng: 105.71567 },
+        [buildLocationKey("Hội Lim", "Bắc Ninh")]: { lat: 21.12171, lng: 106.06134 },
+        [buildLocationKey("Festival Huế", "Thừa Thiên Huế")]: { lat: 16.46194, lng: 107.59546 },
+        [buildLocationKey("Lễ hội Bà Chúa Xứ", "An Giang")]: { lat: 10.70561, lng: 105.1159 },
+        [buildLocationKey("Lễ hội Gióng", "Hà Nội")]: { lat: 21.08373, lng: 105.82612 },
+        [buildLocationKey("Lễ hội Yên Tử", "Quảng Ninh")]: { lat: 21.14367, lng: 106.72104 },
+        [buildLocationKey("Lễ hội Côn Sơn Kiếp Bạc", "Hải Dương")]: { lat: 21.11675, lng: 106.38628 },
+        [buildLocationKey("Lễ hội Đền Trần", "Nam Định")]: { lat: 20.43392, lng: 106.17731 },
+        [buildLocationKey("Lễ hội Đền Bà Triệu", "Thanh Hóa")]: { lat: 19.84952, lng: 105.93142 },
+        [buildLocationKey("Lễ hội Cầu Ngư", "Đà Nẵng")]: { lat: 16.07122, lng: 108.22444 },
+        [buildLocationKey("Lễ hội Kate", "Ninh Thuận")]: { lat: 11.56521, lng: 108.98942 },
+        [buildLocationKey("Lễ hội Ok Om Bok", "Sóc Trăng")]: { lat: 9.60301, lng: 105.97314 },
+        [buildLocationKey("Lễ hội Nghinh Ông", "Vũng Tàu")]: { lat: 10.34599, lng: 107.08426, province: "Bà Rịa - Vũng Tàu" },
+        [buildLocationKey("Lễ hội Dinh Cô", "Vũng Tàu")]: { lat: 10.38221, lng: 107.10541, province: "Bà Rịa - Vũng Tàu" },
+        [buildLocationKey("Lễ hội Bà Thu Bồn", "Quảng Nam")]: { lat: 15.85411, lng: 108.03912 },
+        [buildLocationKey("Lễ hội Đền Cuông", "Nghệ An")]: { lat: 19.21678, lng: 105.70432 },
+        [buildLocationKey("Lễ hội Bà Chúa Kho", "Bắc Ninh")]: { lat: 21.1314, lng: 106.07744 },
+        [buildLocationKey("Lễ hội Chùa Keo", "Thái Bình")]: { lat: 20.61124, lng: 106.34892 },
+        [buildLocationKey("Lễ hội Đền Sóc", "Hà Nội")]: { lat: 21.0835, lng: 105.8264 },
+        [buildLocationKey("Lễ hội Phủ Giầy", "Nam Định")]: { lat: 20.33575, lng: 106.16098 },
+        [buildLocationKey("Lễ hội Chùa Dâu", "Bắc Ninh")]: { lat: 21.10355, lng: 106.04941 },
+        [buildLocationKey("Lễ hội Chùa Bút Tháp", "Bắc Ninh")]: { lat: 21.09021, lng: 106.08566 },
+        [buildLocationKey("Lễ hội Đền Đô", "Bắc Ninh")]: { lat: 21.03971, lng: 105.91731 },
+        [buildLocationKey("Lễ hội Cửa Ông", "Quảng Ninh")]: { lat: 21.03561, lng: 107.31055 },
+        [buildLocationKey("Lễ hội Điện Hòn Chén", "Huế")]: { lat: 16.42912, lng: 107.57514 },
+        [buildLocationKey("Lễ hội Tháp Bà Ponagar", "Khánh Hòa")]: { lat: 12.26501, lng: 109.19521 },
+        [buildLocationKey("Lễ hội Dinh Thầy Thím", "Bình Thuận")]: { lat: 10.56922, lng: 107.84112 },
+        [buildLocationKey("Lễ hội Đua Bò", "An Giang")]: { lat: 10.48211, lng: 104.97322 },
+        [buildLocationKey("Lễ hội Đua Ghe Ngo", "Sóc Trăng")]: { lat: 9.60211, lng: 105.97298 },
+        [buildLocationKey("Lễ hội Hoa Đà Lạt", "Lâm Đồng")]: { lat: 11.94042, lng: 108.45831 },
+        [buildLocationKey("Lễ hội Đua Voi", "Đắk Lắk")]: { lat: 12.89345, lng: 107.73901 },
+        [buildLocationKey("Lễ hội Đâm Trâu", "Kon Tum")]: { lat: 14.35011, lng: 108.00312 },
+        [buildLocationKey("Lễ hội Cồng Chiêng", "Tây Nguyên")]: { lat: 14.35011, lng: 108.00312 }
+    },
+    food: {
+        [buildLocationKey("Phở Bát Đàn", "Hà Nội")]: { lat: 21.030496, lng: 105.848603 },
+        [buildLocationKey("Bún chả Hàng Quạt", "Hà Nội")]: { lat: 21.03144, lng: 105.84964 },
+        [buildLocationKey("Bánh đa cua Cầu Đất", "Hải Phòng")]: { lat: 20.85578, lng: 106.68991 },
+        [buildLocationKey("Chả mực Hạ Long", "Quảng Ninh")]: { lat: 20.95262, lng: 107.08226 },
+        [buildLocationKey("Bún bò Huế O Cương", "Huế")]: { lat: 16.46434, lng: 107.58976 },
+        [buildLocationKey("Bánh mì Phượng", "")]: { lat: 15.876815, lng: 108.327755, province: "Quảng Nam" },
+        [buildLocationKey("Mì Quảng Bà Mua", "Đà Nẵng")]: { lat: 16.05418, lng: 108.22133 },
+        [buildLocationKey("Bún cá Nha Trang", "Khánh Hòa")]: { lat: 12.24552, lng: 109.19183 },
+        [buildLocationKey("Hủ tiếu Nam Vang", "TP.HCM")]: { lat: 10.78336, lng: 106.68817 },
+        [buildLocationKey("Cơm tấm Sài Gòn", "TP.HCM")]: { lat: 10.77638, lng: 106.70114 },
+        [buildLocationKey("Lẩu mắm Cần Thơ", "Cần Thơ")]: { lat: 10.03268, lng: 105.78791 },
+        [buildLocationKey("Bún kèn Phú Quốc", "Kiên Giang")]: { lat: 10.21981, lng: 103.96066 }
+    },
+    entertainment: {
+        [buildLocationKey("Công viên nước Hồ Tây", "Hà Nội")]: { lat: 21.07092, lng: 105.81522 },
+        [buildLocationKey("Thiên Đường Bảo Sơn", "Hà Nội")]: { lat: 20.98897, lng: 105.72427 },
+        [buildLocationKey("Sun World Hạ Long", "Quảng Ninh")]: { lat: 20.95186, lng: 107.06307 },
+        [buildLocationKey("Tuần Châu Park", "Quảng Ninh")]: { lat: 20.92228, lng: 106.98912 },
+        [buildLocationKey("Dragon Park", "Quảng Ninh")]: { lat: 20.95082, lng: 107.06465 },
+        [buildLocationKey("Sun World Bà Nà Hills", "Đà Nẵng")]: { lat: 15.995632, lng: 107.996155 },
+        [buildLocationKey("Asia Park", "Đà Nẵng")]: { lat: 16.038105, lng: 108.227542 },
+        [buildLocationKey("VinWonders Nam Hội An", "Quảng Nam")]: { lat: 15.835576, lng: 108.331987 },
+        [buildLocationKey("VinWonders Nha Trang", "Khánh Hòa")]: { lat: 12.21994, lng: 109.24358 },
+        [buildLocationKey("Suối Tiên", "TP.HCM")]: { lat: 10.87866, lng: 106.80392 },
+        [buildLocationKey("Công viên Văn hóa Đầm Sen", "TP.HCM")]: { lat: 10.76963, lng: 106.63526 },
+        [buildLocationKey("VinWonders Phú Quốc", "Kiên Giang")]: { lat: 10.34062, lng: 103.85589 }
+    }
+};
+
+function applyLocationOverrides(items, type) {
+    var overrides = exactLocationOverrides[type];
+    if (!Array.isArray(items) || !overrides) return;
+    items.forEach(function(item) {
+        var override = overrides[buildLocationKey(item.name, item.province)] || overrides[buildLocationKey(item.name, '')];
+        if (override) {
+            Object.assign(item, override);
+        }
+    });
+}
+
+applyLocationOverrides(festivals, 'festival');
+applyLocationOverrides(foods, 'food');
+applyLocationOverrides(entertainments, 'entertainment');
+festivals = dedupeFestivals(festivals);
+
 const fallbackLabelByType = {
     festival: "Le hoi",
     entertainment: "Khu vui choi",
@@ -1690,9 +2650,204 @@ const fallbackLabelByType = {
     store: "Cua hang"
 };
 
+const fallbackThemeByType = {
+    festival: { c1: '#ffcf9c', c2: '#d94a2b', badge: 'FEST' },
+    entertainment: { c1: '#9dd8ff', c2: '#1f78d1', badge: 'PLAY' },
+    food: { c1: '#ffd5a8', c2: '#cf5c22', badge: 'FOOD' },
+    hotel: { c1: '#c9d8ff', c2: '#3d58b7', badge: 'STAY' },
+    medical: { c1: '#b9f4db', c2: '#1f9b74', badge: 'CARE' },
+    store: { c1: '#ffe7a8', c2: '#ca8a14', badge: 'SHOP' }
+};
+
 function buildFallbackDataUri(type) {
     const label = fallbackLabelByType[type] || "Hinh minh hoa";
-    const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0%' stop-color='#ffd9ba'/><stop offset='100%' stop-color='#e84a2a'/></linearGradient></defs><rect width='400' height='300' fill='url(#g)'/><circle cx='320' cy='60' r='38' fill='rgba(255,255,255,0.25)'/><circle cx='72' cy='235' r='52' fill='rgba(255,255,255,0.15)'/><text x='200' y='150' dominant-baseline='middle' text-anchor='middle' fill='#ffffff' font-family='Arial, sans-serif' font-size='28' font-weight='700'>${label}</text></svg>`;
+    const theme = fallbackThemeByType[type] || { c1: '#ffd9ba', c2: '#e84a2a', badge: 'IMG' };
+    const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'>
+<defs>
+<linearGradient id='g' x1='0' y1='0' x2='1' y2='1'>
+<stop offset='0%' stop-color='${theme.c1}'/>
+<stop offset='100%' stop-color='${theme.c2}'/>
+</linearGradient>
+<pattern id='p' width='22' height='22' patternUnits='userSpaceOnUse' patternTransform='rotate(35)'>
+<rect width='22' height='22' fill='rgba(255,255,255,0.03)'/>
+<path d='M0 11h22' stroke='rgba(255,255,255,0.08)' stroke-width='1'/>
+</pattern>
+</defs>
+<rect width='400' height='300' fill='url(#g)'/>
+<rect width='400' height='300' fill='url(#p)'/>
+<circle cx='330' cy='52' r='42' fill='rgba(255,255,255,0.20)'/>
+<circle cx='78' cy='246' r='58' fill='rgba(255,255,255,0.12)'/>
+<rect x='22' y='20' width='72' height='28' rx='14' fill='rgba(255,255,255,0.9)'/>
+<text x='58' y='39' dominant-baseline='middle' text-anchor='middle' fill='${theme.c2}' font-family='Arial, sans-serif' font-size='11' font-weight='700'>${theme.badge}</text>
+<text x='200' y='150' dominant-baseline='middle' text-anchor='middle' fill='#ffffff' font-family='Arial, sans-serif' font-size='30' font-weight='700'>${label}</text>
+<text x='200' y='182' dominant-baseline='middle' text-anchor='middle' fill='rgba(255,255,255,0.9)' font-family='Arial, sans-serif' font-size='13'>Ban do so Le hoi va Van hoa Viet Nam</text>
+</svg>`;
+    return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
+}
+
+function hashText(text) {
+    var str = String(text || '');
+    var hash = 0;
+    for (var i = 0; i < str.length; i++) {
+        hash = ((hash << 5) - hash) + str.charCodeAt(i);
+        hash |= 0;
+    }
+    return Math.abs(hash);
+}
+
+function pickEntertainmentIcon(name) {
+    var q = normalizeLocationText(name);
+    if (q.includes('nuoc') || q.includes('water') || q.includes('suoi')) return 'WATER';
+    if (q.includes('sun') || q.includes('vinwonders') || q.includes('asia') || q.includes('dragon')) return 'PARK';
+    if (q.includes('snow')) return 'SNOW';
+    if (q.includes('resort')) return 'RESORT';
+    return 'PLAY';
+}
+
+function shortenLabel(text, fallback) {
+    var clean = String(text || '').replace(/\s+/g, ' ').trim();
+    if (!clean) return fallback || '';
+    if (clean.length <= 24) return clean;
+    return clean.slice(0, 21).trim() + '...';
+}
+
+function buildEntertainmentCardDataUri(item) {
+    var name = shortenLabel(item && item.name, 'Khu vui choi');
+    var province = shortenLabel(item && item.province, 'Viet Nam');
+    var icon = pickEntertainmentIcon(item && item.name);
+    var seed = hashText((item && item.name) + '|' + (item && item.province));
+    var palettes = [
+        { c1: '#2ca6ff', c2: '#1254b2', c3: '#dff2ff' },
+        { c1: '#15b29a', c2: '#14655f', c3: '#d7fff7' },
+        { c1: '#f39a3f', c2: '#bf4e1f', c3: '#fff1dd' },
+        { c1: '#8f7cf7', c2: '#5142a8', c3: '#efeaff' },
+        { c1: '#e86f84', c2: '#9e2e57', c3: '#ffe6ec' }
+    ];
+    var palette = palettes[seed % palettes.length];
+    var waveY = 210 + (seed % 28);
+    var svg = `<svg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'>
+<defs>
+<linearGradient id='bg' x1='0' y1='0' x2='1' y2='1'>
+<stop offset='0%' stop-color='${palette.c1}'/>
+<stop offset='100%' stop-color='${palette.c2}'/>
+</linearGradient>
+<pattern id='dots' width='18' height='18' patternUnits='userSpaceOnUse'>
+<circle cx='4' cy='4' r='1.2' fill='rgba(255,255,255,0.15)'/>
+</pattern>
+</defs>
+<rect width='400' height='300' fill='url(#bg)'/>
+<rect width='400' height='300' fill='url(#dots)'/>
+<path d='M0 ${waveY} C70 ${waveY - 32}, 140 ${waveY + 20}, 220 ${waveY - 12} C280 ${waveY - 36}, 340 ${waveY + 12}, 400 ${waveY - 8} L400 300 L0 300 Z' fill='rgba(255,255,255,0.18)'/>
+<rect x='20' y='20' width='86' height='30' rx='15' fill='rgba(255,255,255,0.92)'/>
+<text x='63' y='40' text-anchor='middle' fill='${palette.c2}' font-family='Arial, sans-serif' font-size='11' font-weight='700'>${icon}</text>
+<text x='26' y='150' fill='${palette.c3}' font-family='Arial, sans-serif' font-size='28' font-weight='700'>${name}</text>
+<text x='26' y='182' fill='rgba(255,255,255,0.95)' font-family='Arial, sans-serif' font-size='14'>${province}</text>
+<text x='26' y='260' fill='rgba(255,255,255,0.84)' font-family='Arial, sans-serif' font-size='12'>Ban do so Le hoi va Van hoa Viet Nam</text>
+</svg>`;
+    return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
+}
+
+function pickEntityIcon(type, name) {
+    var q = normalizeLocationText(name);
+    if (type === 'food') {
+        if (q.includes('pho')) return 'PHO';
+        if (q.includes('bun')) return 'BUN';
+        if (q.includes('banh mi') || q.includes('banhmi')) return 'BREAD';
+        if (q.includes('lau')) return 'HOTPOT';
+        return 'FOOD';
+    }
+    if (type === 'hotel') {
+        if (q.includes('resort')) return 'RESORT';
+        if (q.includes('riverside') || q.includes('river')) return 'RIVER';
+        return 'STAY';
+    }
+    if (type === 'medical') {
+        if (q.includes('benh vien') || q.includes('hospital')) return 'HOSP';
+        if (q.includes('phong kham') || q.includes('clinic')) return 'CLINIC';
+        return 'CARE';
+    }
+    if (type === 'store') {
+        if (q.includes('circle k')) return 'CIRCLE';
+        if (q.includes('7 eleven')) return '7-11';
+        return 'SHOP';
+    }
+    return 'IMG';
+}
+
+function getEntityPalettes(type) {
+    if (type === 'food') {
+        return [
+            { c1: '#ffb46e', c2: '#d4551f', c3: '#fff1e4' },
+            { c1: '#ffc779', c2: '#c06d1a', c3: '#fff4e3' },
+            { c1: '#ff9e7b', c2: '#bb4d2b', c3: '#ffe9df' }
+        ];
+    }
+    if (type === 'hotel') {
+        return [
+            { c1: '#8db7ff', c2: '#3457b3', c3: '#e9f0ff' },
+            { c1: '#89c8ff', c2: '#2f6ba5', c3: '#e7f5ff' },
+            { c1: '#7aa0f2', c2: '#334f96', c3: '#e8eeff' }
+        ];
+    }
+    if (type === 'medical') {
+        return [
+            { c1: '#82e4b8', c2: '#1f9368', c3: '#e9fff5' },
+            { c1: '#92dfd2', c2: '#217a78', c3: '#e8fffd' },
+            { c1: '#7fd8bc', c2: '#1f8a73', c3: '#eafff7' }
+        ];
+    }
+    if (type === 'store') {
+        return [
+            { c1: '#ffd97a', c2: '#c38416', c3: '#fff8e2' },
+            { c1: '#ffcf8f', c2: '#ba7020', c3: '#fff4e6' },
+            { c1: '#ffdea3', c2: '#b27a19', c3: '#fff8e8' }
+        ];
+    }
+    return [
+        { c1: '#ffd9ba', c2: '#e84a2a', c3: '#fff1e8' }
+    ];
+}
+
+function getEntityTypeLabel(type) {
+    var labels = {
+        food: 'Am thuc',
+        hotel: 'Khach san',
+        medical: 'Y te',
+        store: 'Tien ich'
+    };
+    return labels[type] || 'Dia diem';
+}
+
+function buildEntityCardDataUri(type, item) {
+    if (type === 'entertainment') {
+        return buildEntertainmentCardDataUri(item);
+    }
+    var name = shortenLabel(item && item.name, getEntityTypeLabel(type));
+    var province = shortenLabel(item && item.province, 'Viet Nam');
+    var icon = pickEntityIcon(type, item && item.name);
+    var seed = hashText(type + '|' + (item && item.name) + '|' + (item && item.province));
+    var palettes = getEntityPalettes(type);
+    var palette = palettes[seed % palettes.length];
+    var ridgeY = 214 + (seed % 24);
+    var svg = `<svg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'>
+<defs>
+<linearGradient id='bg' x1='0' y1='0' x2='1' y2='1'>
+<stop offset='0%' stop-color='${palette.c1}'/>
+<stop offset='100%' stop-color='${palette.c2}'/>
+</linearGradient>
+<pattern id='grid' width='20' height='20' patternUnits='userSpaceOnUse'>
+<path d='M20 0H0V20' fill='none' stroke='rgba(255,255,255,0.10)' stroke-width='1'/>
+</pattern>
+</defs>
+<rect width='400' height='300' fill='url(#bg)'/>
+<rect width='400' height='300' fill='url(#grid)'/>
+<path d='M0 ${ridgeY} C84 ${ridgeY - 24}, 142 ${ridgeY + 14}, 220 ${ridgeY - 10} C286 ${ridgeY - 28}, 342 ${ridgeY + 6}, 400 ${ridgeY - 6} L400 300 L0 300 Z' fill='rgba(255,255,255,0.17)'/>
+<rect x='20' y='20' width='96' height='30' rx='15' fill='rgba(255,255,255,0.92)'/>
+<text x='68' y='40' text-anchor='middle' fill='${palette.c2}' font-family='Arial, sans-serif' font-size='11' font-weight='700'>${icon}</text>
+<text x='26' y='145' fill='${palette.c3}' font-family='Arial, sans-serif' font-size='27' font-weight='700'>${name}</text>
+<text x='26' y='178' fill='rgba(255,255,255,0.95)' font-family='Arial, sans-serif' font-size='14'>${province}</text>
+<text x='26' y='260' fill='rgba(255,255,255,0.84)' font-family='Arial, sans-serif' font-size='12'>Ban do so Le hoi va Van hoa Viet Nam</text>
+</svg>`;
     return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
 }
 
@@ -1705,11 +2860,33 @@ const imageFallbackByType = {
     store: buildFallbackDataUri("store")
 };
 
-function resolveImageUrl(url, type) {
-    const fallback = imageFallbackByType[type] || imageFallbackByType.festival;
-    if (!url || typeof url !== 'string') return fallback;
+const localFallbackImageByType = {
+    festival: "image/denhung.jpg",
+    entertainment: "image/d7f856a4-le-hoi-yen-tu-11.jpg",
+    food: "image/le-hoi-ba-chua-xu-chau-doc-an-giang-2.webp",
+    hotel: "image/feshue.jpg",
+    medical: "image/unnamed.png",
+    store: "image/OIP.jpg"
+};
+
+function getPrimaryImageFallback(type) {
+    const localPath = localFallbackImageByType[type] || localFallbackImageByType.festival;
+    return encodeURI(localPath);
+}
+
+function getEntityImageFallback(type, item) {
+    if (type === 'entertainment' || type === 'food' || type === 'hotel' || type === 'medical' || type === 'store') {
+        return buildEntityCardDataUri(type, item || {});
+    }
+    return getPrimaryImageFallback(type);
+}
+
+function resolveImageUrl(url, type, item) {
+    const svgFallback = imageFallbackByType[type] || imageFallbackByType.festival;
+    const localFallback = getEntityImageFallback(type, item);
+    if (!url || typeof url !== 'string') return localFallback;
     let normalized = url.trim();
-    if (!normalized) return fallback;
+    if (!normalized) return localFallback;
 
     normalized = normalized.replace(/\\/g, '/');
 
@@ -1721,21 +2898,23 @@ function resolveImageUrl(url, type) {
         normalized = normalized.replace('/-festival-map-vietnam/', '');
     }
 
-    if (normalized.includes('source.unsplash.com')) {
-        const seed = encodeURIComponent(`${type || 'img'}-${normalized.slice(-48)}`);
-        return `https://picsum.photos/seed/${seed}/400/300`;
+    // These hosts are commonly blocked or rate-limited in this project context.
+    if (normalized.includes('source.unsplash.com') || normalized.includes('picsum.photos')) {
+        return localFallback;
     }
 
     if (/^https?:\/\//i.test(normalized) || normalized.startsWith('data:image')) {
         return normalized;
     }
 
-    return encodeURI(normalized);
+    const encoded = encodeURI(normalized);
+    return encoded || svgFallback;
 }
 
-function getImageOnError(type) {
-    const fallback = imageFallbackByType[type] || imageFallbackByType.festival;
-    return `this.onerror=null;this.src='${fallback}'`;
+function getImageOnError(type, item) {
+    const localFallback = getEntityImageFallback(type, item);
+    const svgFallback = imageFallbackByType[type] || imageFallbackByType.festival;
+    return `this.onerror=function(){this.onerror=null;this.src='${svgFallback}';};this.src='${localFallback}'`;
 }
 
 function renderEntertainment(data){
@@ -1744,7 +2923,7 @@ function renderEntertainment(data){
     data.forEach(e=>{
         entList.innerHTML+=`
         <div class="card" onclick="window.location.href='detail.html?type=entertainment&id=${e.id}'">
-            <img src="${resolveImageUrl(e.img,'entertainment')}" onerror="${getImageOnError('entertainment')}">
+            <img src="${resolveImageUrl(e.img,'entertainment',e)}" onerror="${getImageOnError('entertainment',e)}">
             <div class="card-content">
                 <h3>${e.name}</h3>
                 <p>${e.desc}</p>
@@ -1759,7 +2938,7 @@ function renderFood(data){
     data.forEach(f=>{
         foodList.innerHTML+=`
         <div class="card" onclick="window.location.href='detail.html?type=food&id=${f.id}'">
-            <img src="${resolveImageUrl(f.img,'food')}" onerror="${getImageOnError('food')}">
+            <img src="${resolveImageUrl(f.img,'food',f)}" onerror="${getImageOnError('food',f)}">
             <div class="card-content">
                 <h3>${f.name}</h3>
                 <p>${f.desc}</p>
@@ -1774,7 +2953,7 @@ function renderHotels(data){
     data.forEach(h=>{
         hotelList.innerHTML+=`
         <div class="card" onclick="window.location.href='detail.html?type=hotel&id=${h.id}'">
-            <img src="${resolveImageUrl(h.img,'hotel')}" onerror="${getImageOnError('hotel')}">
+            <img src="${resolveImageUrl(h.img,'hotel',h)}" onerror="${getImageOnError('hotel',h)}">
             <div class="card-content">
                 <h3>${h.name}</h3>
                 <p>${h.desc}</p>
@@ -1792,7 +2971,7 @@ function renderMedical(data){
     data.forEach(m=>{
         medList.innerHTML+=`
         <div class="card" onclick="window.location.href='detail.html?type=medical&id=${m.id}'">
-            <img src="${resolveImageUrl(m.img,'medical')}" onerror="${getImageOnError('medical')}">
+            <img src="${resolveImageUrl(m.img,'medical',m)}" onerror="${getImageOnError('medical',m)}">
             <div class="card-content">
                 <h3>${m.name}</h3>
                 <p>${m.desc}</p>
@@ -1810,7 +2989,7 @@ function renderStores(data){
     data.forEach(s=>{
         storeList.innerHTML+=`
         <div class="card" onclick="window.location.href='detail.html?type=store&id=${s.id}'">
-            <img src="${resolveImageUrl(s.img,'store')}" onerror="${getImageOnError('store')}">
+            <img src="${resolveImageUrl(s.img,'store',s)}" onerror="${getImageOnError('store',s)}">
             <div class="card-content">
                 <h3>${s.name}</h3>
                 <p>${s.desc}</p>
@@ -1943,7 +3122,7 @@ data.forEach((f,index)=>{
 
 }
 
-render(festivals);
+render(getFilteredFestivals());
 
 /* CLICK CARD → ZOOM MAP */
 
@@ -1958,23 +3137,6 @@ markers[i].openPopup();
 document.getElementById("map").scrollIntoView({behavior:"smooth"});
 
 }
-
-/* SEARCH */
-
-document.getElementById("searchBox").addEventListener("input",function(){
-
-let keyword=this.value.toLowerCase();
-
-let filtered=festivals.filter(f=>
-
-f.name.toLowerCase().includes(keyword) ||
-f.province.toLowerCase().includes(keyword)
-
-);
-
-render(filtered);
-
-});
 
 /* TÍNH KHOẢNG CÁCH */
 
@@ -2103,7 +3265,7 @@ function showNearestFestivals(festivalsData, entertainData, foodData, hotelData,
         entertainData.forEach((e,i)=>{
             html+=`\n
 <div class="card">\n
-<img src="${resolveImageUrl(e.img,'entertainment')}" onerror="${getImageOnError('entertainment')}">\n
+<img src="${resolveImageUrl(e.img,'entertainment',e)}" onerror="${getImageOnError('entertainment',e)}">\n
 <div class="card-content">\n
 <h3>${i+1}. ${e.name}</h3>\n
 <p>Khoảng cách: ${e.distance.toFixed(1)} km</p>\n
@@ -2122,7 +3284,7 @@ function showNearestFestivals(festivalsData, entertainData, foodData, hotelData,
         foodData.forEach((f,i)=>{
             html+=`\n
 <div class="card">\n
-<img src="${resolveImageUrl(f.img,'food')}" onerror="${getImageOnError('food')}">\n
+<img src="${resolveImageUrl(f.img,'food',f)}" onerror="${getImageOnError('food',f)}">\n
 <div class="card-content">\n
 <h3>${i+1}. ${f.name}</h3>\n
 <p>Khoảng cách: ${f.distance.toFixed(1)} km</p>\n
@@ -2141,7 +3303,7 @@ function showNearestFestivals(festivalsData, entertainData, foodData, hotelData,
         hotelData.forEach((h,i)=>{
             html+=`\n
 <div class="card">\n
-<img src="${resolveImageUrl(h.img,'hotel')}" onerror="${getImageOnError('hotel')}">\n
+<img src="${resolveImageUrl(h.img,'hotel',h)}" onerror="${getImageOnError('hotel',h)}">\n
 <div class="card-content">\n
 <h3>${i+1}. ${h.name}</h3>\n
 <p>Khoảng cách: ${h.distance.toFixed(1)} km</p>\n
@@ -2160,7 +3322,7 @@ function showNearestFestivals(festivalsData, entertainData, foodData, hotelData,
         medicalData.forEach((m,i)=>{
             html+=`\n
 <div class="card">\n
-<img src="${resolveImageUrl(m.img,'medical')}" onerror="${getImageOnError('medical')}">\n
+<img src="${resolveImageUrl(m.img,'medical',m)}" onerror="${getImageOnError('medical',m)}">\n
 <div class="card-content">\n
 <h3>${i+1}. ${m.name}</h3>\n
 <p>Khoảng cách: ${m.distance.toFixed(1)} km</p>\n
@@ -2179,7 +3341,7 @@ function showNearestFestivals(festivalsData, entertainData, foodData, hotelData,
         storeData.forEach((s,i)=>{
             html+=`\n
 <div class="card">\n
-<img src="${resolveImageUrl(s.img,'store')}" onerror="${getImageOnError('store')}">\n
+<img src="${resolveImageUrl(s.img,'store',s)}" onerror="${getImageOnError('store',s)}">\n
 <div class="card-content">\n
 <h3>${i+1}. ${s.name}</h3>\n
 <p>Khoảng cách: ${s.distance.toFixed(1)} km</p>\n
@@ -2227,15 +3389,8 @@ renderHistory();
 
 // Sửa event listener cho searchBox
 document.getElementById("searchBox").addEventListener("input", function() {
-    let keyword=this.value.toLowerCase();
-    let region = document.getElementById('regionFilter')?.value;
-    let province = document.getElementById('provinceFilter')?.value;
-    let filtered=festivals.filter(f=>
-        (f.name.toLowerCase().includes(keyword) || f.province.toLowerCase().includes(keyword)) &&
-        (!region || regionMap[region].includes(f.province)) &&
-        (!province || f.province === province)
-    );
-    render(filtered);
+    let keyword = this.value.trim();
+    filterFestivals();
     if (keyword.trim().length > 0) {
         openModule('list');
     }
@@ -2600,7 +3755,7 @@ window.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    addChatMessage('Xin chào. Mình là LeHoiMate AI. Hỏi mình về lễ hội, ăn gì, chơi gì hoặc xin lịch trình 1 ngày nhé.', 'bot');
+    addChatMessage('Xin chào. Mình là Trợ lý AI Lễ hội Việt. Hỏi mình về lễ hội, ăn gì, chơi gì hoặc xin lịch trình 1 ngày nhé.', 'bot');
 });
 
 </script>
