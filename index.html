@@ -7,14 +7,31 @@
 <title>Vietnam Festival Explorer</title>
 
 <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
 
 <style>
 
+:root{
+--bg-cream:#fff8ec;
+--bg-peach:#ffd9ba;
+--brand:#e84a2a;
+--brand-dark:#b5301a;
+--ink:#2a1f18;
+--muted:#5f5148;
+--card-shadow:0 14px 30px rgba(42,26,18,0.14);
+}
+
 body{
 margin:0;
-font-family:Arial;
-background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%);
+font-family:"Be Vietnam Pro",sans-serif;
+background:
+radial-gradient(circle at 12% 10%, rgba(255,206,131,0.28), transparent 38%),
+radial-gradient(circle at 88% 18%, rgba(232,74,42,0.2), transparent 35%),
+linear-gradient(135deg, var(--bg-cream) 0%, var(--bg-peach) 100%);
 min-height: 100vh;
+color:var(--ink);
 }
 
 header{
@@ -24,36 +41,85 @@ background-position:center;
 padding:120px 20px;
 text-align:center;
 color:white;
+position:relative;
+overflow:hidden;
+}
+
+header::before{
+content:"";
+position:absolute;
+inset:0;
+background:linear-gradient(135deg, rgba(20,12,9,0.64), rgba(136,44,26,0.35));
+}
+
+header > *{
+position:relative;
+z-index:1;
 }
 
 header h1{
-font-size:45px;
+font-family:"Playfair Display",serif;
+font-size:clamp(38px,5vw,58px);
+margin:0;
+text-shadow:0 8px 18px rgba(0,0,0,0.4);
+}
+
+header p{
+font-size:18px;
+letter-spacing:0.2px;
+margin:14px 0 0;
+text-shadow:0 4px 12px rgba(0,0,0,0.35);
 }
 
 .search{
-margin-top:20px;
+margin-top:22px;
+display:flex;
+justify-content:center;
+gap:10px;
+flex-wrap:wrap;
 }
 
 .search input{
-padding:10px;
-width:250px;
-border:none;
-border-radius:5px;
+padding:12px 14px;
+width:min(420px,78vw);
+border:1px solid rgba(255,255,255,0.42);
+border-radius:10px;
+background:rgba(255,255,255,0.16);
+color:#fff;
+outline:none;
+backdrop-filter:blur(5px);
+}
+
+.search input::placeholder{
+color:rgba(255,255,255,0.9);
+}
+
+.search input:focus{
+box-shadow:0 0 0 4px rgba(255,255,255,0.2);
 }
 
 button{
-background:#e53935;
+background:linear-gradient(135deg, var(--brand) 0%, var(--brand-dark) 100%);
 color:white;
 border:none;
 padding:10px;
-border-radius:5px;
+border-radius:10px;
 cursor:pointer;
+font-weight:600;
+box-shadow:0 8px 18px rgba(181,48,26,0.35);
+transition:transform .2s ease, box-shadow .25s ease;
+}
+
+button:hover{
+transform:translateY(-2px);
+box-shadow:0 12px 22px rgba(181,48,26,0.42);
 }
 
 nav{
-background:#111;
+background:rgba(17,17,17,0.86);
 padding:15px;
 text-align:center;
+backdrop-filter:blur(8px);
 }
 
 nav a{
@@ -63,6 +129,59 @@ text-decoration:none;
 font-weight:bold;
 font-size:18px;
 white-space:nowrap;
+position:relative;
+padding-bottom:4px;
+}
+
+nav a::after{
+content:"";
+position:absolute;
+left:0;
+bottom:0;
+height:2px;
+width:0;
+background:#ffc26a;
+transition:width .25s ease;
+}
+
+nav a:hover::after{
+width:100%;
+}
+
+.module-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+gap:12px;
+margin-top:8px;
+}
+
+.module-btn{
+padding:12px 14px;
+border-radius:12px;
+border:1px solid rgba(232,74,42,0.2);
+background:linear-gradient(145deg, #fff8ee 0%, #ffe7cc 100%);
+color:#4c2f23;
+font-weight:700;
+box-shadow:0 6px 14px rgba(42,26,18,0.12);
+}
+
+.module-btn:hover{
+transform:translateY(-2px);
+}
+
+.module-btn.active{
+background:linear-gradient(135deg, var(--brand) 0%, var(--brand-dark) 100%);
+color:#fff;
+border-color:transparent;
+}
+
+.module-hint{
+color:var(--muted);
+margin:0 0 12px;
+}
+
+.module-panel{
+display:none;
 }
 
 section{
@@ -70,7 +189,93 @@ padding:50px 10%;
 background: rgba(255,255,255,0.9);
 margin: 20px auto;
 border-radius: 15px;
-box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+box-shadow: 0 8px 22px rgba(0,0,0,0.11);
+border:1px solid rgba(232,74,42,0.08);
+}
+
+h2{
+font-family:"Playfair Display",serif;
+font-size:clamp(28px,3.2vw,36px);
+margin:0 0 16px;
+position:relative;
+display:inline-block;
+}
+
+h2::after{
+content:"";
+position:absolute;
+left:0;
+bottom:-6px;
+width:56%;
+height:3px;
+border-radius:4px;
+background:linear-gradient(90deg, var(--brand), #ffbb6c);
+}
+
+.hero-highlight{
+max-width:980px;
+margin:-56px auto 20px auto;
+padding:0 16px;
+position:relative;
+z-index:3;
+}
+
+.highlight-panel{
+background:linear-gradient(130deg, rgba(255,255,255,0.98) 0%, rgba(255,245,232,0.96) 100%);
+border:1px solid rgba(232,74,42,0.16);
+border-radius:16px;
+box-shadow:var(--card-shadow);
+padding:18px;
+display:grid;
+grid-template-columns:1.2fr 1fr;
+gap:16px;
+}
+
+.highlight-title{
+margin:0 0 8px;
+font-size:24px;
+font-family:"Playfair Display",serif;
+color:#3b281f;
+}
+
+.highlight-text{
+margin:0;
+color:var(--muted);
+line-height:1.6;
+}
+
+.highlight-stats{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:10px;
+}
+
+.stat-box{
+background:linear-gradient(155deg, #fff 0%, #fff2df 100%);
+border:1px solid rgba(232,74,42,0.14);
+border-radius:12px;
+padding:12px 10px;
+text-align:center;
+animation:floatCard 4.8s ease-in-out infinite;
+}
+
+.stat-box:nth-child(2){
+animation-delay:.35s;
+}
+
+.stat-box:nth-child(3){
+animation-delay:.7s;
+}
+
+.stat-box strong{
+display:block;
+font-size:24px;
+color:#9f301f;
+}
+
+.stat-box span{
+font-size:13px;
+color:var(--muted);
 }
 
 #map{
@@ -90,6 +295,13 @@ border-radius:10px;
 box-shadow:0 3px 10px rgba(0,0,0,0.2);
 overflow:hidden;
 cursor:pointer;
+border:1px solid rgba(232,74,42,0.1);
+transition:transform .25s ease, box-shadow .25s ease;
+}
+
+.card:hover{
+transform:translateY(-4px);
+box-shadow:0 14px 24px rgba(42,26,18,0.16);
 }
 
 .card img{
@@ -123,6 +335,35 @@ cursor:pointer;
 background:#d32f2f;
 }
 
+@keyframes floatCard{
+0%,100%{transform:translateY(0);}
+50%{transform:translateY(-4px);}
+}
+
+@media (max-width: 900px){
+.highlight-panel{
+grid-template-columns:1fr;
+}
+
+.highlight-stats{
+grid-template-columns:repeat(3,minmax(0,1fr));
+}
+}
+
+@media (max-width: 620px){
+header{
+padding:92px 16px;
+}
+
+.highlight-stats{
+grid-template-columns:1fr;
+}
+
+section{
+padding:36px 6%;
+}
+}
+
 </style>
 
 </head>
@@ -133,9 +374,6 @@ background:#d32f2f;
 
 <h1>Vietnam Festival Explorer</h1>
 
-<p>Khám phá 100 lễ hội truyền thống Việt Nam</p>
-
-
 <div class="search">
     <input id="searchBox" placeholder="Tìm lễ hội hoặc tỉnh...">
     <button onclick="findNearFestival()">📍 Lễ hội gần tôi</button>
@@ -145,18 +383,52 @@ background:#d32f2f;
 
 </header>
 
+<div class="hero-highlight">
+    <div class="highlight-panel">
+        <div>
+            <h2 class="highlight-title">Mùa lễ hội Việt Nam 2026</h2>
+            <p class="highlight-text">Khám phá nhanh các lễ hội đặc sắc theo vùng miền, tìm điểm ăn uống và tiện ích gần nhất chỉ với một lần bấm định vị.</p>
+        </div>
+        <div class="highlight-stats">
+            <div class="stat-box">
+                <strong>100+</strong>
+                <span>Lễ hội truyền thống</span>
+            </div>
+            <div class="stat-box">
+                <strong>3 miền</strong>
+                <span>Lọc theo khu vực</span>
+            </div>
+            <div class="stat-box">
+                <strong>1 chạm</strong>
+                <span>Tìm điểm gần bạn</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <section id="moduleHub" style="max-width:900px;margin:20px auto;padding:24px 18px;">
+        <h2>Khám phá nhanh</h2>
+        <p id="moduleHint" class="module-hint">Nhấn vào để hiển thị thông tin tương ứng.</p>
+        <div class="module-grid">
+            <button class="module-btn" data-target="list" onclick="openModule('list')">Danh sách lễ hội</button>
+            <button class="module-btn" data-target="entertainment" onclick="openModule('entertainment')">Khu vui chơi</button>
+            <button class="module-btn" data-target="food" onclick="openModule('food')">Ẩm thực</button>
+            <button class="module-btn" data-target="utilities" onclick="openModule('utilities')">Tiện ích</button>
+            <button class="module-btn" data-target="history" onclick="openModule('history')">Lịch sử tìm kiếm</button>
+            <button class="module-btn" data-target="collaboration" onclick="openModule('collaboration')">Hợp tác & quảng cáo</button>
+        </div>
+    </section>
+
 <!-- LỊCH LỄ HỘI TRANG CHỦ -->
 <section id="calendarHome" style="max-width:900px;margin:30px auto 0 auto;background:rgba(255,255,255,0.97);border-radius:15px;box-shadow:0 3px 12px rgba(0,0,0,0.08);padding:28px 18px;">
 
 
 <nav>
 <a href="#map">Bản đồ</a>
-<a href="#list">Danh sách lễ hội</a>
-<a href="#entertainment">Khu vui chơi</a>
-<a href="#food">Ẩm thực</a>
-<a href="#utilities">Tiện ích</a>
-<a href="#history">Lịch sử</a>
-<a href="#collaboration" style="white-space:nowrap;">Hợp tác & quảng cáo</a>
+<a href="#calendarHome">Lịch lễ hội</a>
+<a href="#moduleHub">Các module</a>
+<a href="javascript:void(0)" onclick="openModule('list')">Danh sách lễ hội</a>
+<a href="javascript:void(0)" onclick="openModule('utilities')">Tiện ích</a>
 </nav>
 
 
@@ -174,7 +446,7 @@ background:#d32f2f;
     <div id="map"></div>
 </section>
 
-<section id="list">
+<section id="list" class="module-panel">
 
 <h2>Danh sách lễ hội</h2>
 <div style="margin-bottom:18px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;">
@@ -194,17 +466,17 @@ background:#d32f2f;
 
 </section>
 
-<section id="entertainment">
+<section id="entertainment" class="module-panel">
 <h2>Khu vui chơi</h2>
 <div class="grid" id="entertainmentList"></div>
 </section>
 
-<section id="food">
+<section id="food" class="module-panel">
 <h2>Ẩm thực</h2>
 <div class="grid" id="foodList"></div>
 </section>
 
-<section id="utilities">
+<section id="utilities" class="module-panel">
 <h2>Tiện ích</h2>
 <p>Các tiện ích hỗ trợ du lịch và tham quan.</p>
 
@@ -221,12 +493,12 @@ background:#d32f2f;
 </div>
 </section>
 
-<section id="history">
+<section id="history" class="module-panel">
 <h2>Lịch sử tìm kiếm</h2>
 <div id="searchHistory"></div>
 </section>
 
-<section id="collaboration">
+<section id="collaboration" class="module-panel">
 <h2>Hợp tác & Quảng cáo</h2>
 <div class="grid">
 <div class="card">
@@ -299,6 +571,29 @@ function filterFestivals() {
         filtered = filtered.filter(f => f.province === province);
     }
     render(filtered);
+}
+
+function openModule(moduleId) {
+    const panels = document.querySelectorAll('.module-panel');
+    panels.forEach(panel => {
+        panel.style.display = 'none';
+    });
+
+    const selectedPanel = document.getElementById(moduleId);
+    if (selectedPanel) {
+        selectedPanel.style.display = 'block';
+        selectedPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    const moduleButtons = document.querySelectorAll('.module-btn');
+    moduleButtons.forEach(button => {
+        button.classList.toggle('active', button.dataset.target === moduleId);
+    });
+
+    const moduleHint = document.getElementById('moduleHint');
+    if (moduleHint) {
+        moduleHint.style.display = 'none';
+    }
 }
 
 window.addEventListener('DOMContentLoaded', function() {
@@ -431,11 +726,11 @@ var markers=[];
 var festivals=[
 
 
-{id:1,name:"Lễ hội Đền Hùng",province:"Phú Thọ",lat:21.395,lng:105.243,start:"2026-04-21",end:"2026-04-23",desc:"Tưởng nhớ các Vua Hùng",img:"image/denhung.jpg"},
-{id:2,name:"Lễ hội Chùa Hương",province:"Hà Nội",lat:20.345,lng:105.652,start:"2026-02-12",end:"2026-03-06",desc:"Lễ hội hành hương Phật giáo",img:"image/chuahuongg.jpg"},
-{id:3,name:"Hội Lim",province:"Bắc Ninh",lat:21.121,lng:106.061,start:"2026-02-12",end:"2026-02-14",desc:"Lễ hội Quan họ",img:"image/hoilim.jpg"},
-{id:4,name:"Festival Huế",province:"Huế",lat:16.4637,lng:107.5909,start:"2026-04-26",end:"2026-05-02",desc:"Festival văn hóa Huế",img:"image/feshue.jpg"},
-{id:5,name:"Lễ hội Bà Chúa Xứ",province:"An Giang",lat:10.705,lng:105.116,start:"2026-04-23",end:"2026-04-27",desc:"Lễ hội tín ngưỡng Núi Sam",img:"image/le-hoi-ba-chua-xu-chau-doc-an-giang-2.webp"},
+{id:1,name:"Lễ hội Đền Hùng",province:"Phú Thọ",lat:21.402837,lng:105.200086,start:"2026-04-21",end:"2026-04-23",desc:"Tưởng nhớ các Vua Hùng",img:"image/denhung.jpg"},
+{id:2,name:"Lễ hội Chùa Hương",province:"Hà Nội",lat:20.69754,lng:105.71567,start:"2026-02-12",end:"2026-03-06",desc:"Lễ hội hành hương Phật giáo",img:"image/chuahuongg.jpg"},
+{id:3,name:"Hội Lim",province:"Bắc Ninh",lat:21.12171,lng:106.06134,start:"2026-02-12",end:"2026-02-14",desc:"Lễ hội Quan họ",img:"image/hoilim.jpg"},
+{id:4,name:"Festival Huế",province:"Thừa Thiên Huế",lat:16.46194,lng:107.59546,start:"2026-04-26",end:"2026-05-02",desc:"Festival văn hóa Huế",img:"image/feshue.jpg"},
+{id:5,name:"Lễ hội Bà Chúa Xứ",province:"An Giang",lat:10.70561,lng:105.11590,start:"2026-04-23",end:"2026-04-27",desc:"Lễ hội tín ngưỡng Núi Sam",img:"image/le-hoi-ba-chua-xu-chau-doc-an-giang-2.webp"},
 
 {id:6,name:"Lễ hội Gióng",province:"Hà Nội",lat:21.083,lng:105.82,desc:"Tôn vinh Thánh Gióng",img:"image/hoi-giong-ha-noi-8.jpg"},
 {id:7,name:"Lễ hội Yên Tử",province:"Quảng Ninh",lat:21.17,lng:106.73,desc:"Hành hương Yên Tử",img:"image/trekking-yen-tu-2.png"},
@@ -556,8 +851,31 @@ var festivals=[
 // DỮ LIỆU KHU VUI CHƠI
 var entertainments=[
     {id:1,name:"Công viên nước Hồ Tây",province:"Hà Nội",lat:21.0733,lng:105.8010,desc:"Khu vui chơi mát mẻ gần Hà Nội",img:"https://source.unsplash.com/400x300/?waterpark"},
-    {id:2,name:"Công viên Văn hóa Đầm Sen",province:"TP.HCM",lat:10.7758,lng:106.6320,desc:"Khu giải trí lớn ở Sài Gòn",img:"https://source.unsplash.com/400x300/?themepark"},
-    {id:3,name:"Sun World Hạ Long",province:"Quảng Ninh",lat:20.9850,lng:107.0480,desc:"Công viên chủ đề tại Hạ Long",img:"https://source.unsplash.com/400x300/?universe"}
+    {id:2,name:"VinWonders Wave Park",province:"Hà Nội",lat:20.9956,lng:105.9348,desc:"Công viên sóng và trò chơi nước",img:"https://source.unsplash.com/400x300/?amusement-park"},
+    {id:3,name:"Thiên Đường Bảo Sơn",province:"Hà Nội",lat:21.0065,lng:105.7370,desc:"Khu giải trí tổng hợp cho gia đình",img:"https://source.unsplash.com/400x300/?themepark"},
+    {id:4,name:"Sun World Hạ Long",province:"Quảng Ninh",lat:20.9850,lng:107.0480,desc:"Công viên chủ đề tại Hạ Long",img:"https://source.unsplash.com/400x300/?rollercoaster"},
+    {id:5,name:"Tuần Châu Park",province:"Quảng Ninh",lat:20.9234,lng:106.9906,desc:"Khu vui chơi gần bến du thuyền",img:"https://source.unsplash.com/400x300/?harbor-park"},
+    {id:6,name:"Dragon Park",province:"Quảng Ninh",lat:20.9517,lng:107.0848,desc:"Công viên trò chơi cảm giác mạnh",img:"https://source.unsplash.com/400x300/?coaster"},
+    {id:7,name:"Cát Bà Adventure",province:"Hải Phòng",lat:20.7268,lng:107.0486,desc:"Tổ hợp vui chơi ngoài trời",img:"https://source.unsplash.com/400x300/?outdoor-park"},
+    {id:8,name:"Sun World Bà Nà Hills",province:"Đà Nẵng",lat:15.9950,lng:107.9968,desc:"Khu giải trí nổi tiếng miền Trung",img:"https://source.unsplash.com/400x300/?mountain-resort"},
+    {id:9,name:"Asia Park",province:"Đà Nẵng",lat:16.0387,lng:108.2264,desc:"Công viên giải trí trung tâm Đà Nẵng",img:"https://source.unsplash.com/400x300/?ferris-wheel"},
+    {id:10,name:"Mikazuki Water Park",province:"Đà Nẵng",lat:16.1048,lng:108.2061,desc:"Công viên nước trong nhà",img:"https://source.unsplash.com/400x300/?indoor-waterpark"},
+    {id:11,name:"VinWonders Nam Hội An",province:"Quảng Nam",lat:15.8358,lng:108.3315,desc:"Khu vui chơi chủ đề văn hóa",img:"https://source.unsplash.com/400x300/?family-park"},
+    {id:12,name:"Suối khoáng nóng Núi Thần Tài",province:"Đà Nẵng",lat:15.9959,lng:107.9750,desc:"Khu nghỉ dưỡng và vui chơi nước nóng",img:"https://source.unsplash.com/400x300/?hot-spring-resort"},
+    {id:13,name:"VinWonders Nha Trang",province:"Khánh Hòa",lat:12.2080,lng:109.2434,desc:"Công viên giải trí trên đảo",img:"https://source.unsplash.com/400x300/?island-themepark"},
+    {id:14,name:"I-Resort Nha Trang",province:"Khánh Hòa",lat:12.2908,lng:109.1717,desc:"Khu vui chơi nghỉ dưỡng khoáng nóng",img:"https://source.unsplash.com/400x300/?resort-pool"},
+    {id:15,name:"KDL Ghềnh Ráng",province:"Bình Định",lat:13.7454,lng:109.2165,desc:"Điểm vui chơi ngắm biển Quy Nhơn",img:"https://source.unsplash.com/400x300/?coastal-park"},
+    {id:16,name:"KDL Đại Nam",province:"Bình Dương",lat:11.0428,lng:106.6687,desc:"Khu du lịch giải trí quy mô lớn",img:"https://source.unsplash.com/400x300/?tourist-park"},
+    {id:17,name:"Suối Tiên",province:"TP.HCM",lat:10.8750,lng:106.8030,desc:"Khu vui chơi chủ đề văn hóa Việt",img:"https://source.unsplash.com/400x300/?funfair"},
+    {id:18,name:"Công viên Văn hóa Đầm Sen",province:"TP.HCM",lat:10.7758,lng:106.6320,desc:"Khu giải trí lớn ở Sài Gòn",img:"https://source.unsplash.com/400x300/?amusement"},
+    {id:19,name:"Snow Town",province:"TP.HCM",lat:10.7399,lng:106.7314,desc:"Khu vui chơi tuyết trong nhà",img:"https://source.unsplash.com/400x300/?indoor-playground"},
+    {id:20,name:"The Amazing Bay",province:"Đồng Nai",lat:10.9115,lng:106.9135,desc:"Công viên nước gần TP.HCM",img:"https://source.unsplash.com/400x300/?water-slide"},
+    {id:21,name:"Làng du lịch Mỹ Khánh",province:"Cần Thơ",lat:10.0307,lng:105.7063,desc:"Điểm vui chơi miệt vườn miền Tây",img:"https://source.unsplash.com/400x300/?eco-park"},
+    {id:22,name:"Công viên Ninh Kiều",province:"Cần Thơ",lat:10.0344,lng:105.7884,desc:"Không gian vui chơi ven sông",img:"https://source.unsplash.com/400x300/?riverfront-park"},
+    {id:23,name:"VinWonders Phú Quốc",province:"Kiên Giang",lat:10.3593,lng:103.8571,desc:"Công viên chủ đề lớn tại đảo ngọc",img:"https://source.unsplash.com/400x300/?island-park"},
+    {id:24,name:"Grand World Phú Quốc",province:"Kiên Giang",lat:10.3696,lng:103.8598,desc:"Tổ hợp vui chơi và biểu diễn đêm",img:"https://source.unsplash.com/400x300/?night-market"},
+    {id:25,name:"KDL Hồ Mây",province:"Bà Rịa - Vũng Tàu",lat:10.3518,lng:107.0746,desc:"Khu vui chơi trên núi tại Vũng Tàu",img:"https://source.unsplash.com/400x300/?hill-park"},
+    {id:26,name:"Wonderland Cà Mau",province:"Cà Mau",lat:9.1783,lng:105.1524,desc:"Khu vui chơi cho gia đình vùng cực Nam",img:"https://source.unsplash.com/400x300/?family-entertainment"}
 ];
 
 // DỮ LIỆU ẨM THỰC
@@ -587,20 +905,49 @@ var stores=[
 // điểm ẩm thực gần lễ hội
 var foods=[
     {id:1,name:"Phở Bát Đàn",province:"Hà Nội",lat:21.0285,lng:105.8530,desc:"Phở truyền thống Hà Nội",img:"https://source.unsplash.com/400x300/?pho"},
-    {id:2,name:"Bánh mì Phượng",province:"Đà Nẵng",lat:16.0678,lng:108.2143,desc:"Bánh mì nổi tiếng tại Đà Nẵng",img:"https://source.unsplash.com/400x300/?bread"},
-    {id:3,name:"Hủ tiếu Nam Vang",province:"TP.HCM",lat:10.7868,lng:106.6990,desc:"Món hủ tiếu đặc sản Sài Gòn",img:"https://source.unsplash.com/400x300/?noodle"}
+    {id:2,name:"Bún chả Hàng Quạt",province:"Hà Nội",lat:21.0314,lng:105.8498,desc:"Bún chả than hoa đậm vị",img:"https://source.unsplash.com/400x300/?bun-cha"},
+    {id:3,name:"Bánh đa cua Cầu Đất",province:"Hải Phòng",lat:20.8539,lng:106.6881,desc:"Đặc sản bánh đa cua đất cảng",img:"https://source.unsplash.com/400x300/?crab-noodle"},
+    {id:4,name:"Chả mực Hạ Long",province:"Quảng Ninh",lat:20.9534,lng:107.0825,desc:"Chả mực giã tay nổi tiếng",img:"https://source.unsplash.com/400x300/?seafood"},
+    {id:5,name:"Bún bò Huế O Cương",province:"Huế",lat:16.4637,lng:107.5909,desc:"Bún bò Huế vị truyền thống",img:"https://source.unsplash.com/400x300/?beef-noodle"},
+    {id:6,name:"Bánh mì Phượng",province:"Đà Nẵng",lat:16.0678,lng:108.2143,desc:"Bánh mì nổi tiếng miền Trung",img:"https://source.unsplash.com/400x300/?banhmi"},
+    {id:7,name:"Mì Quảng Bà Mua",province:"Đà Nẵng",lat:16.0544,lng:108.2022,desc:"Mì Quảng chuẩn vị Đà Nẵng",img:"https://source.unsplash.com/400x300/?mi-quang"},
+    {id:8,name:"Bún cá Nha Trang",province:"Khánh Hòa",lat:12.2388,lng:109.1967,desc:"Bún cá thanh ngọt miền biển",img:"https://source.unsplash.com/400x300/?fish-noodle"},
+    {id:9,name:"Hủ tiếu Nam Vang",province:"TP.HCM",lat:10.7868,lng:106.6990,desc:"Món hủ tiếu đặc sản Sài Gòn",img:"https://source.unsplash.com/400x300/?noodle"},
+    {id:10,name:"Cơm tấm Sài Gòn",province:"TP.HCM",lat:10.7756,lng:106.7009,desc:"Cơm tấm sườn bì chả",img:"https://source.unsplash.com/400x300/?rice-plate"},
+    {id:11,name:"Lẩu mắm Cần Thơ",province:"Cần Thơ",lat:10.0452,lng:105.7469,desc:"Lẩu mắm đậm chất miền Tây",img:"https://source.unsplash.com/400x300/?hotpot"},
+    {id:12,name:"Bún kèn Phú Quốc",province:"Kiên Giang",lat:10.2272,lng:103.9679,desc:"Đặc sản bún kèn đảo ngọc",img:"https://source.unsplash.com/400x300/?vietnamese-food"}
 ];
 
 // tiện ích: khách sạn
 var hotels=[
-    {id:1,name:"Khách sạn Hà Nội - Elegance",province:"Hà Nội",lat:21.0280,lng:105.8542,desc:"Khách sạn 4 sao trung tâm Hà Nội",img:"https://source.unsplash.com/400x300/?hotel"},
-    {id:2,name:"Khách sạn Sài Gòn - Riverside",province:"TP.HCM",lat:10.7708,lng:106.6996,desc:"Khách sạn ven sông Sài Gòn",img:"https://source.unsplash.com/400x300/?building"}
+    {id:1,name:"Hanoi Elegance Central",province:"Hà Nội",lat:21.0280,lng:105.8542,desc:"Khách sạn trung tâm phố cổ",img:"https://source.unsplash.com/400x300/?hotel"},
+    {id:2,name:"Lotte Hotel Hanoi",province:"Hà Nội",lat:21.0338,lng:105.8132,desc:"Khách sạn cao tầng view thành phố",img:"https://source.unsplash.com/400x300/?luxury-hotel"},
+    {id:3,name:"Seastar Hải Phòng",province:"Hải Phòng",lat:20.8449,lng:106.6880,desc:"Khách sạn thuận tiện đi lại",img:"https://source.unsplash.com/400x300/?resort"},
+    {id:4,name:"Halong Bay Premier",province:"Quảng Ninh",lat:20.9526,lng:107.0871,desc:"Lưu trú gần vịnh Hạ Long",img:"https://source.unsplash.com/400x300/?bay-hotel"},
+    {id:5,name:"Imperial Huế",province:"Huế",lat:16.4661,lng:107.5900,desc:"Khách sạn gần sông Hương",img:"https://source.unsplash.com/400x300/?boutique-hotel"},
+    {id:6,name:"Danang Riverside Hotel",province:"Đà Nẵng",lat:16.0610,lng:108.2235,desc:"Khách sạn ven sông Hàn",img:"https://source.unsplash.com/400x300/?city-hotel"},
+    {id:7,name:"Nha Trang Ocean View",province:"Khánh Hòa",lat:12.2358,lng:109.1969,desc:"Khách sạn gần biển Nha Trang",img:"https://source.unsplash.com/400x300/?beach-resort"},
+    {id:8,name:"Quy Nhơn Sea Breeze",province:"Bình Định",lat:13.7820,lng:109.2192,desc:"Khách sạn ngắm biển Quy Nhơn",img:"https://source.unsplash.com/400x300/?coast-hotel"},
+    {id:9,name:"Sai Gon Riverside",province:"TP.HCM",lat:10.7708,lng:106.6996,desc:"Khách sạn trung tâm quận 1",img:"https://source.unsplash.com/400x300/?hotel-lobby"},
+    {id:10,name:"Can Tho Ninh Kieu Hotel",province:"Cần Thơ",lat:10.0342,lng:105.7885,desc:"Khách sạn gần bến Ninh Kiều",img:"https://source.unsplash.com/400x300/?river-hotel"},
+    {id:11,name:"Vung Tau Marina Hotel",province:"Bà Rịa - Vũng Tàu",lat:10.3459,lng:107.0843,desc:"Khách sạn nghỉ dưỡng ven biển",img:"https://source.unsplash.com/400x300/?seaside-hotel"},
+    {id:12,name:"Phu Quoc Island Stay",province:"Kiên Giang",lat:10.2219,lng:103.9710,desc:"Khách sạn gần trung tâm đảo",img:"https://source.unsplash.com/400x300/?island-resort"}
 ];
 
 // tiện ích: y tế
 var medicals=[
-    {id:1,name:"Bệnh viện Trung ương Huế",province:"Huế",lat:16.4546,lng:107.5790,desc:"Bệnh viện tuyến trung ương",img:"https://source.unsplash.com/400x300/?hospital"},
-    {id:2,name:"Phòng khám Đa khoa Quảng Ninh",province:"Quảng Ninh",lat:20.9600,lng:107.0482,desc:"Phòng khám y tế ở Hạ Long",img:"https://source.unsplash.com/400x300/?clinic"}
+    {id:1,name:"Bệnh viện Bạch Mai",province:"Hà Nội",lat:21.0005,lng:105.8412,desc:"Bệnh viện đa khoa tuyến trung ương",img:"https://source.unsplash.com/400x300/?hospital"},
+    {id:2,name:"Bệnh viện Việt Đức",province:"Hà Nội",lat:21.0283,lng:105.8502,desc:"Bệnh viện ngoại khoa lớn",img:"https://source.unsplash.com/400x300/?medical"},
+    {id:3,name:"Bệnh viện Hữu nghị Việt Tiệp",province:"Hải Phòng",lat:20.8561,lng:106.6900,desc:"Cơ sở y tế lớn tại Hải Phòng",img:"https://source.unsplash.com/400x300/?clinic"},
+    {id:4,name:"Bệnh viện Đa khoa Quảng Ninh",province:"Quảng Ninh",lat:20.9600,lng:107.0482,desc:"Bệnh viện tỉnh tại Hạ Long",img:"https://source.unsplash.com/400x300/?hospital-building"},
+    {id:5,name:"Bệnh viện Trung ương Huế",province:"Huế",lat:16.4546,lng:107.5790,desc:"Bệnh viện tuyến trung ương",img:"https://source.unsplash.com/400x300/?hospital"},
+    {id:6,name:"Bệnh viện Đà Nẵng",province:"Đà Nẵng",lat:16.0701,lng:108.2207,desc:"Bệnh viện đa khoa lớn miền Trung",img:"https://source.unsplash.com/400x300/?healthcare"},
+    {id:7,name:"Bệnh viện Đa khoa Khánh Hòa",province:"Khánh Hòa",lat:12.2462,lng:109.1909,desc:"Cơ sở y tế trung tâm Nha Trang",img:"https://source.unsplash.com/400x300/?medical-center"},
+    {id:8,name:"Bệnh viện Quy Nhơn",province:"Bình Định",lat:13.7716,lng:109.2248,desc:"Bệnh viện đa khoa tỉnh Bình Định",img:"https://source.unsplash.com/400x300/?hospital-room"},
+    {id:9,name:"Bệnh viện Chợ Rẫy",province:"TP.HCM",lat:10.7567,lng:106.6596,desc:"Bệnh viện tuyến cuối phía Nam",img:"https://source.unsplash.com/400x300/?emergency"},
+    {id:10,name:"Bệnh viện Nhân dân 115",province:"TP.HCM",lat:10.7721,lng:106.6635,desc:"Bệnh viện đa khoa lớn tại TP.HCM",img:"https://source.unsplash.com/400x300/?doctor"},
+    {id:11,name:"Bệnh viện Đa khoa Cần Thơ",province:"Cần Thơ",lat:10.0340,lng:105.7709,desc:"Bệnh viện phục vụ khu vực miền Tây",img:"https://source.unsplash.com/400x300/?medical-team"},
+    {id:12,name:"Bệnh viện Lê Lợi",province:"Bà Rịa - Vũng Tàu",lat:10.3523,lng:107.0869,desc:"Bệnh viện tại trung tâm Vũng Tàu",img:"https://source.unsplash.com/400x300/?hospital-care"}
 ];
 
 // tiện ích: cửa hàng tiện lợi
@@ -609,13 +956,70 @@ var stores=[
     {id:2,name:"7-Eleven Đà Nẵng",province:"Đà Nẵng",lat:16.0544,lng:108.2022,desc:"Cửa hàng tiện lợi nổi tiếng tại ĐN",img:"https://source.unsplash.com/400x300/?convenience"}
 ];
 
+const fallbackLabelByType = {
+    festival: "Le hoi",
+    entertainment: "Khu vui choi",
+    food: "Am thuc",
+    hotel: "Khach san",
+    medical: "Benh vien",
+    store: "Cua hang"
+};
+
+function buildFallbackDataUri(type) {
+    const label = fallbackLabelByType[type] || "Hinh minh hoa";
+    const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0%' stop-color='#ffd9ba'/><stop offset='100%' stop-color='#e84a2a'/></linearGradient></defs><rect width='400' height='300' fill='url(#g)'/><circle cx='320' cy='60' r='38' fill='rgba(255,255,255,0.25)'/><circle cx='72' cy='235' r='52' fill='rgba(255,255,255,0.15)'/><text x='200' y='150' dominant-baseline='middle' text-anchor='middle' fill='#ffffff' font-family='Arial, sans-serif' font-size='28' font-weight='700'>${label}</text></svg>`;
+    return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
+}
+
+const imageFallbackByType = {
+    festival: buildFallbackDataUri("festival"),
+    entertainment: buildFallbackDataUri("entertainment"),
+    food: buildFallbackDataUri("food"),
+    hotel: buildFallbackDataUri("hotel"),
+    medical: buildFallbackDataUri("medical"),
+    store: buildFallbackDataUri("store")
+};
+
+function resolveImageUrl(url, type) {
+    const fallback = imageFallbackByType[type] || imageFallbackByType.festival;
+    if (!url || typeof url !== 'string') return fallback;
+    let normalized = url.trim();
+    if (!normalized) return fallback;
+
+    normalized = normalized.replace(/\\/g, '/');
+
+    if (normalized.startsWith('-festival-map-vietnam/')) {
+        normalized = normalized.replace('-festival-map-vietnam/', '');
+    }
+
+    if (normalized.startsWith('/-festival-map-vietnam/')) {
+        normalized = normalized.replace('/-festival-map-vietnam/', '');
+    }
+
+    if (normalized.includes('source.unsplash.com')) {
+        const seed = encodeURIComponent(`${type || 'img'}-${normalized.slice(-48)}`);
+        return `https://picsum.photos/seed/${seed}/400/300`;
+    }
+
+    if (/^https?:\/\//i.test(normalized) || normalized.startsWith('data:image')) {
+        return normalized;
+    }
+
+    return encodeURI(normalized);
+}
+
+function getImageOnError(type) {
+    const fallback = imageFallbackByType[type] || imageFallbackByType.festival;
+    return `this.onerror=null;this.src='${fallback}'`;
+}
+
 function renderEntertainment(data){
     var entList=document.getElementById("entertainmentList");
     entList.innerHTML="";
     data.forEach(e=>{
         entList.innerHTML+=`
         <div class="card" onclick="window.location.href='detail.html?type=entertainment&id=${e.id}'">
-            <img src="${e.img}">
+            <img src="${resolveImageUrl(e.img,'entertainment')}" onerror="${getImageOnError('entertainment')}">
             <div class="card-content">
                 <h3>${e.name}</h3>
                 <p>${e.desc}</p>
@@ -630,7 +1034,7 @@ function renderFood(data){
     data.forEach(f=>{
         foodList.innerHTML+=`
         <div class="card" onclick="window.location.href='detail.html?type=food&id=${f.id}'">
-            <img src="${f.img}" onerror="this.src='https://via.placeholder.com/400x300?text=No+Image'">
+            <img src="${resolveImageUrl(f.img,'food')}" onerror="${getImageOnError('food')}">
             <div class="card-content">
                 <h3>${f.name}</h3>
                 <p>${f.desc}</p>
@@ -645,7 +1049,7 @@ function renderHotels(data){
     data.forEach(h=>{
         hotelList.innerHTML+=`
         <div class="card" onclick="window.location.href='detail.html?type=hotel&id=${h.id}'">
-            <img src="${h.img}" onerror="this.src='https://via.placeholder.com/400x300?text=No+Image'">
+            <img src="${resolveImageUrl(h.img,'hotel')}" onerror="${getImageOnError('hotel')}">
             <div class="card-content">
                 <h3>${h.name}</h3>
                 <p>${h.desc}</p>
@@ -663,7 +1067,7 @@ function renderMedical(data){
     data.forEach(m=>{
         medList.innerHTML+=`
         <div class="card" onclick="window.location.href='detail.html?type=medical&id=${m.id}'">
-            <img src="${m.img}" onerror="this.src='https://via.placeholder.com/400x300?text=No+Image'">
+            <img src="${resolveImageUrl(m.img,'medical')}" onerror="${getImageOnError('medical')}">
             <div class="card-content">
                 <h3>${m.name}</h3>
                 <p>${m.desc}</p>
@@ -681,7 +1085,7 @@ function renderStores(data){
     data.forEach(s=>{
         storeList.innerHTML+=`
         <div class="card" onclick="window.location.href='detail.html?type=store&id=${s.id}'">
-            <img src="${s.img}" onerror="this.src='https://via.placeholder.com/400x300?text=No+Image'">
+            <img src="${resolveImageUrl(s.img,'store')}" onerror="${getImageOnError('store')}">
             <div class="card-content">
                 <h3>${s.name}</h3>
                 <p>${s.desc}</p>
@@ -802,7 +1206,7 @@ if (!data.length) {
 data.forEach((f,index)=>{
     list.innerHTML+=`
 <div class="card" onclick="window.location.href='detail.html?type=festival&id=${f.id}'">
-    <img src="${f.img}">
+    <img src="${resolveImageUrl(f.img,'festival')}" onerror="${getImageOnError('festival')}">
     <div class="card-content">
         <h3>${f.name}</h3>
         <p><b>${f.province}</b></p>
@@ -942,6 +1346,7 @@ storeResults.sort((a,b)=>a.distance-b.distance);
 storeResults=storeResults.slice(0,5);
 
 showNearestFestivals(nearest, entResults, foodResults, hotelResults, medicalResults, storeResults);
+openModule('list');
 
 });
 
@@ -954,7 +1359,7 @@ function showNearestFestivals(festivalsData, entertainData, foodData, hotelData,
     festivalsData.forEach((f,i)=>{
         html+=`\n
 <div class="card">\n
-<img src="${f.img}">\n
+<img src="${resolveImageUrl(f.img,'festival')}" onerror="${getImageOnError('festival')}">\n
 <div class="card-content">\n
 <h3>${i+1}. ${f.name}</h3>\n
 <p><b>${f.province}</b></p>\n
@@ -973,7 +1378,7 @@ function showNearestFestivals(festivalsData, entertainData, foodData, hotelData,
         entertainData.forEach((e,i)=>{
             html+=`\n
 <div class="card">\n
-<img src="${e.img}" onerror="this.src='https://via.placeholder.com/400x300?text=No+Image'">\n
+<img src="${resolveImageUrl(e.img,'entertainment')}" onerror="${getImageOnError('entertainment')}">\n
 <div class="card-content">\n
 <h3>${i+1}. ${e.name}</h3>\n
 <p>Khoảng cách: ${e.distance.toFixed(1)} km</p>\n
@@ -992,7 +1397,7 @@ function showNearestFestivals(festivalsData, entertainData, foodData, hotelData,
         foodData.forEach((f,i)=>{
             html+=`\n
 <div class="card">\n
-<img src="${f.img}" onerror="this.src='https://via.placeholder.com/400x300?text=No+Image'">\n
+<img src="${resolveImageUrl(f.img,'food')}" onerror="${getImageOnError('food')}">\n
 <div class="card-content">\n
 <h3>${i+1}. ${f.name}</h3>\n
 <p>Khoảng cách: ${f.distance.toFixed(1)} km</p>\n
@@ -1011,7 +1416,7 @@ function showNearestFestivals(festivalsData, entertainData, foodData, hotelData,
         hotelData.forEach((h,i)=>{
             html+=`\n
 <div class="card">\n
-<img src="${h.img}" onerror="this.src='https://via.placeholder.com/400x300?text=No+Image'">\n
+<img src="${resolveImageUrl(h.img,'hotel')}" onerror="${getImageOnError('hotel')}">\n
 <div class="card-content">\n
 <h3>${i+1}. ${h.name}</h3>\n
 <p>Khoảng cách: ${h.distance.toFixed(1)} km</p>\n
@@ -1030,7 +1435,7 @@ function showNearestFestivals(festivalsData, entertainData, foodData, hotelData,
         medicalData.forEach((m,i)=>{
             html+=`\n
 <div class="card">\n
-<img src="${m.img}" onerror="this.src='https://via.placeholder.com/400x300?text=No+Image'">\n
+<img src="${resolveImageUrl(m.img,'medical')}" onerror="${getImageOnError('medical')}">\n
 <div class="card-content">\n
 <h3>${i+1}. ${m.name}</h3>\n
 <p>Khoảng cách: ${m.distance.toFixed(1)} km</p>\n
@@ -1049,7 +1454,7 @@ function showNearestFestivals(festivalsData, entertainData, foodData, hotelData,
         storeData.forEach((s,i)=>{
             html+=`\n
 <div class="card">\n
-<img src="${s.img}" onerror="this.src='https://via.placeholder.com/400x300?text=No+Image'">\n
+<img src="${resolveImageUrl(s.img,'store')}" onerror="${getImageOnError('store')}">\n
 <div class="card-content">\n
 <h3>${i+1}. ${s.name}</h3>\n
 <p>Khoảng cách: ${s.distance.toFixed(1)} km</p>\n
@@ -1106,6 +1511,9 @@ document.getElementById("searchBox").addEventListener("input", function() {
         (!province || f.province === province)
     );
     render(filtered);
+    if (keyword.trim().length > 0) {
+        openModule('list');
+    }
 });
 
 // Thêm vào lịch sử khi nhấn Enter
