@@ -143,6 +143,55 @@ color:rgba(255,255,255,0.9);
 box-shadow:0 0 0 4px rgba(255,255,255,0.2), 0 14px 28px rgba(38,15,10,0.18);
 }
 
+.location-permission-banner{
+margin:14px auto 0;
+max-width:min(760px,92vw);
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:14px;
+padding:12px 14px;
+border-radius:14px;
+background:rgba(255,248,238,0.2);
+border:1px solid rgba(255,255,255,0.36);
+backdrop-filter:blur(4px);
+box-shadow:0 12px 24px rgba(38,15,10,0.12);
+}
+
+.location-permission-content{
+color:#fff;
+}
+
+.location-permission-content strong{
+display:block;
+font-size:16px;
+letter-spacing:0.2px;
+}
+
+.location-permission-content p{
+margin:4px 0 0;
+font-size:13px;
+opacity:0.94;
+}
+
+.location-permission-actions{
+display:flex;
+gap:8px;
+flex-wrap:wrap;
+justify-content:flex-end;
+}
+
+.location-secondary-btn{
+background:rgba(255,255,255,0.14);
+border:1px solid rgba(255,255,255,0.36);
+box-shadow:none;
+}
+
+.location-secondary-btn:hover{
+box-shadow:none;
+transform:none;
+}
+
 button{
 background:linear-gradient(135deg, var(--brand) 0%, var(--brand-dark) 100%);
 color:white;
@@ -344,6 +393,81 @@ grid-template-columns:repeat(3,1fr);
 gap:10px;
 }
 
+.partner-cta-row{
+display:flex;
+gap:10px;
+margin-top:14px;
+flex-wrap:wrap;
+}
+
+.partner-cta-btn{
+text-decoration:none;
+display:inline-flex;
+align-items:center;
+justify-content:center;
+padding:10px 14px;
+border-radius:14px;
+font-weight:700;
+}
+
+.partner-cta-btn.alt{
+background:linear-gradient(145deg, #fff6e9 0%, #ffdba7 100%);
+color:#6d321c;
+border:1px solid rgba(217,74,43,0.14);
+}
+
+.collab-packages{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:14px;
+}
+
+.package-tag{
+display:inline-flex;
+padding:4px 10px;
+border-radius:999px;
+background:rgba(217,74,43,0.12);
+border:1px solid rgba(217,74,43,0.2);
+font-size:11px;
+font-weight:700;
+color:#8f2919;
+margin-bottom:8px;
+}
+
+.package-price{
+font-size:24px;
+color:#8f2b1b;
+font-family:"Cormorant Garamond",serif;
+margin:2px 0 8px;
+}
+
+.package-list{
+margin:0;
+padding-left:18px;
+color:#503a2f;
+line-height:1.55;
+}
+
+.package-list li{
+margin-bottom:4px;
+}
+
+.package-footer{
+margin-top:12px;
+display:flex;
+gap:8px;
+flex-wrap:wrap;
+}
+
+.package-note{
+margin-top:14px;
+padding:12px 14px;
+border-radius:12px;
+background:rgba(255,236,207,0.55);
+border:1px dashed rgba(217,74,43,0.28);
+color:#6c402f;
+}
+
 .home-showcase{
 max-width:1100px;
 margin:20px auto;
@@ -376,6 +500,8 @@ gap:14px;
 
 .story-grid{
 grid-template-columns:1.2fr 1fr 1fr;
+touch-action:pan-y;
+-webkit-overflow-scrolling:touch;
 }
 
 .story-card,
@@ -686,6 +812,396 @@ margin:0 0 10px;
 line-height:1.55;
 }
 
+.search button.loading{
+opacity:0.88;
+pointer-events:none;
+filter:saturate(0.85);
+}
+
+.search button.loading::after{
+content:"";
+display:inline-block;
+width:12px;
+height:12px;
+margin-left:8px;
+border-radius:50%;
+border:2px solid rgba(255,255,255,0.35);
+border-top-color:#fff;
+vertical-align:-2px;
+animation:spinNear .7s linear infinite;
+}
+
+#festivalList.nearby-view{
+display:block;
+}
+
+.nearby-shell{
+display:flex;
+flex-direction:column;
+gap:20px;
+width:100%;
+max-width:100%;
+min-width:0;
+box-sizing:border-box;
+}
+
+.nearby-hero{
+padding:18px;
+border-radius:16px;
+background:linear-gradient(145deg, #fffaf3 0%, #ffe2bf 55%, #ffd09a 100%);
+border:1px solid rgba(217,74,43,0.18);
+box-shadow:0 12px 26px rgba(70,28,19,0.12);
+width:100%;
+max-width:100%;
+min-width:0;
+box-sizing:border-box;
+}
+
+.nearby-hero h2{
+margin:0 0 8px;
+font-family:"Cormorant Garamond",serif;
+font-size:34px;
+line-height:1.05;
+color:#5a2a18;
+}
+
+.nearby-meta{
+display:flex;
+flex-wrap:wrap;
+gap:8px;
+margin-top:10px;
+}
+
+.nearby-tabs{
+display:flex;
+gap:8px;
+flex-wrap:nowrap;
+overflow-x:auto;
+padding:2px 2px 6px;
+scrollbar-width:thin;
+}
+
+.nearby-tab-btn{
+flex:0 0 auto;
+padding:9px 14px;
+border-radius:999px;
+border:1px solid rgba(217,74,43,0.2);
+background:rgba(255,255,255,0.84);
+color:#703621;
+font-size:13px;
+font-weight:700;
+cursor:pointer;
+white-space:nowrap;
+transition:all .22s ease;
+}
+
+.nearby-tab-btn.active{
+background:linear-gradient(135deg, var(--brand) 0%, var(--brand-dark) 100%);
+color:#fff;
+box-shadow:0 8px 16px rgba(181,48,26,0.25);
+border-color:rgba(181,48,26,0.36);
+}
+
+.nearby-pane{display:none;}
+.nearby-pane.show{display:flex;width:100%;max-width:100%;min-width:0;}
+
+.nearby-chip{
+display:inline-flex;
+align-items:center;
+padding:7px 12px;
+border-radius:999px;
+font-size:13px;
+background:rgba(255,255,255,0.74);
+border:1px solid rgba(217,74,43,0.2);
+color:#6f3924;
+}
+
+.nearby-group{
+display:flex;
+flex-direction:column;
+gap:10px;
+position:relative;
+width:100%;
+max-width:100%;
+min-width:0;
+box-sizing:border-box;
+}
+
+.nearby-group-head{
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:10px;
+flex-wrap:wrap;
+padding:10px 14px;
+border-radius:12px;
+background:rgba(255,250,243,0.9);
+border:1px solid rgba(217,74,43,0.14);
+width:100%;
+max-width:100%;
+box-sizing:border-box;
+}
+
+.nearby-group-head h3{
+margin:0;
+font-family:"Cormorant Garamond",serif;
+font-size:30px;
+color:#5a2a18;
+line-height:1;
+}
+
+.nearby-count{
+font-size:12px;
+padding:6px 10px;
+border-radius:999px;
+background:rgba(255,232,201,0.9);
+border:1px solid rgba(217,74,43,0.2);
+color:#7c3a21;
+}
+
+.nearby-group-actions{
+display:flex;
+align-items:center;
+gap:8px;
+flex-wrap:wrap;
+justify-content:flex-end;
+max-width:100%;
+min-width:0;
+}
+
+.nearby-nav-btn,
+.nearby-more-btn,
+.nearby-scroll-btn{
+padding:7px 10px;
+border-radius:999px;
+border:1px solid rgba(217,74,43,0.2);
+background:rgba(255,255,255,0.88);
+color:#7c3a21;
+font-weight:700;
+font-size:12px;
+box-shadow:none;
+}
+
+.nearby-nav-btn{
+width:34px;
+height:34px;
+display:inline-flex;
+align-items:center;
+justify-content:center;
+padding:0;
+font-size:18px;
+line-height:1;
+}
+
+.nearby-more-btn{
+padding:8px 12px;
+}
+
+.nearby-scroll-btn{
+padding:8px 14px;
+background:linear-gradient(135deg, #fff5e6 0%, #ffd7a6 100%);
+border-color:rgba(217,74,43,0.26);
+}
+
+.nearby-grid{
+display:flex;
+gap:14px;
+overflow-x:auto;
+overflow-y:hidden;
+scroll-snap-type:x mandatory;
+padding:2px 2px 8px;
+scrollbar-width:thin;
+scrollbar-color:rgba(181,48,26,0.45) rgba(255,236,210,0.8);
+cursor:grab;
+}
+
+.nearby-grid-wrap{
+position:relative;
+padding:0 38px;
+width:100%;
+max-width:100%;
+min-width:0;
+box-sizing:border-box;
+}
+
+.nearby-drag-hint{
+font-size:12px;
+font-weight:600;
+color:#8a4a2f;
+margin:2px 2px 6px;
+}
+
+.nearby-overlay-nav{
+position:absolute;
+top:50%;
+transform:translateY(-50%);
+width:38px;
+height:38px;
+border-radius:999px;
+display:flex;
+align-items:center;
+justify-content:center;
+z-index:3;
+background:linear-gradient(135deg, rgba(255,247,233,0.96) 0%, rgba(255,217,166,0.96) 100%);
+border:1px solid rgba(217,74,43,0.22);
+color:#7b3a22;
+box-shadow:0 10px 18px rgba(70,28,19,0.12);
+cursor:pointer;
+font-size:20px;
+font-weight:700;
+}
+
+.nearby-overlay-nav.left{
+left:0;
+}
+
+.nearby-overlay-nav.right{
+right:0;
+}
+
+.nearby-grid-wrap:not(.can-scroll-left) .nearby-overlay-nav.left,
+.nearby-grid-wrap:not(.can-scroll-right) .nearby-overlay-nav.right{
+opacity:0.35;
+pointer-events:none;
+}
+
+.nearby-grid-fade{
+position:absolute;
+top:0;
+bottom:10px;
+width:34px;
+pointer-events:none;
+opacity:0;
+transition:opacity .2s ease;
+}
+
+.nearby-grid-fade.left{
+left:0;
+background:linear-gradient(90deg, rgba(246,238,228,0.96) 0%, rgba(246,238,228,0) 100%);
+}
+
+.nearby-grid-fade.right{
+right:0;
+background:linear-gradient(270deg, rgba(246,238,228,0.98) 0%, rgba(246,238,228,0) 100%);
+}
+
+.nearby-grid-wrap.can-scroll-left .nearby-grid-fade.left,
+.nearby-grid-wrap.can-scroll-right .nearby-grid-fade.right{
+opacity:1;
+}
+
+.nearby-grid.is-dragging{
+cursor:grabbing;
+scroll-snap-type:none;
+}
+
+.nearby-grid.is-dragging .nearby-card{
+user-select:none;
+pointer-events:none;
+}
+
+.nearby-grid::-webkit-scrollbar{
+height:9px;
+}
+
+.nearby-grid::-webkit-scrollbar-track{
+background:rgba(255,236,210,0.8);
+border-radius:999px;
+}
+
+.nearby-grid::-webkit-scrollbar-thumb{
+background:rgba(181,48,26,0.5);
+border-radius:999px;
+}
+
+.nearby-card{
+opacity:0;
+transform:translateY(12px);
+animation:nearCardIn .45s ease forwards;
+animation-delay:var(--delay, 0s);
+flex:0 0 min(320px, 82vw);
+scroll-snap-align:start;
+}
+
+.nearby-distance{
+display:inline-flex;
+padding:5px 9px;
+border-radius:999px;
+font-size:12px;
+font-weight:700;
+color:#7f361d;
+background:rgba(255,232,201,0.95);
+border:1px solid rgba(217,74,43,0.2);
+margin-bottom:10px;
+}
+
+.nearby-empty,
+.nearby-loading,
+.nearby-error{
+padding:18px;
+border-radius:14px;
+border:1px dashed rgba(217,74,43,0.28);
+background:rgba(255,248,237,0.88);
+color:#7b3922;
+}
+
+.nearby-error-actions{
+display:flex;
+flex-wrap:wrap;
+gap:10px;
+margin-top:12px;
+}
+
+.nearby-guide-steps{
+margin:10px 0 0;
+padding-left:18px;
+color:#6c321f;
+line-height:1.6;
+}
+
+.nearby-guide-steps li{
+margin:4px 0;
+}
+
+.nearby-help-btn{
+padding:9px 13px;
+border-radius:999px;
+font-size:13px;
+font-weight:700;
+border:1px solid rgba(217,74,43,0.24);
+background:rgba(255,255,255,0.9);
+color:#7b3922;
+box-shadow:none;
+}
+
+.nearby-loading-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+gap:14px;
+margin-top:14px;
+}
+
+.nearby-skeleton{
+height:132px;
+border-radius:14px;
+background:linear-gradient(90deg, rgba(248,229,202,0.75) 0%, rgba(255,245,233,0.95) 50%, rgba(248,229,202,0.75) 100%);
+background-size:220% 100%;
+animation:nearShimmer 1.25s linear infinite;
+}
+
+@keyframes nearCardIn{
+to{opacity:1;transform:translateY(0);}
+}
+
+@keyframes nearShimmer{
+0%{background-position:220% 0;}
+100%{background-position:-220% 0;}
+}
+
+@keyframes spinNear{
+to{transform:rotate(360deg);}
+}
+
 footer{
 background:linear-gradient(135deg, var(--brand-deep) 0%, var(--brand-dark) 100%);
 color:white;
@@ -774,6 +1290,42 @@ border-radius:18px;
     .module-btn{
         font-size:12px;
         letter-spacing:0.5px;
+    }
+
+    .partner-cta-row{
+        flex-direction:column;
+    }
+
+    .partner-cta-btn{
+        width:100%;
+    }
+
+    .nearby-hero h2{
+        font-size:30px;
+    }
+
+    .nearby-card{
+        flex-basis:86vw;
+    }
+
+    .nearby-grid-wrap{
+        padding:0 30px;
+    }
+
+    .nearby-overlay-nav{
+        width:32px;
+        height:32px;
+        font-size:18px;
+    }
+
+    .location-permission-banner{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+
+    .location-permission-actions{
+        width:100%;
+        justify-content:flex-start;
     }
 }
 
@@ -1474,6 +2026,195 @@ transform:translateY(-2px);
 .chatbot-notice{margin:0 10px;}
 }
 
+/* ===== AUTH ===== */
+.auth-launch-btn{
+position:fixed;
+top:16px;
+right:16px;
+z-index:990;
+padding:10px 14px;
+border-radius:12px;
+border:1px solid rgba(255,255,255,0.26);
+background:rgba(94,23,17,0.78);
+color:#fff;
+font-weight:700;
+backdrop-filter:blur(8px);
+box-shadow:0 12px 24px rgba(42,26,18,0.22);
+}
+
+.auth-modal{
+position:fixed;
+inset:0;
+display:none;
+z-index:1200;
+background:rgba(30,16,10,0.42);
+align-items:center;
+justify-content:center;
+padding:18px;
+}
+
+.auth-modal.show{
+display:flex;
+}
+
+.auth-card{
+width:min(420px,100%);
+background:linear-gradient(180deg, rgba(255,253,249,0.98), rgba(255,243,226,0.98));
+border:1px solid rgba(217,74,43,0.2);
+border-radius:20px;
+box-shadow:0 26px 54px rgba(42,26,18,0.25);
+padding:16px;
+position:relative;
+}
+
+.auth-head{
+display:flex;
+justify-content:space-between;
+align-items:flex-start;
+gap:10px;
+margin-bottom:12px;
+}
+
+.auth-head h3{
+margin:0;
+font-family:"Cormorant Garamond",serif;
+font-size:30px;
+color:#4b2a1d;
+}
+
+.auth-head p{
+margin:4px 0 0;
+font-size:13px;
+color:#6a4e40;
+}
+
+.auth-close-btn{
+background:rgba(217,74,43,0.1);
+color:#8f2b1b;
+border:1px solid rgba(217,74,43,0.2);
+width:34px;
+height:34px;
+padding:0;
+border-radius:10px;
+box-shadow:none;
+font-size:20px;
+line-height:1;
+}
+
+.auth-tabs{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:8px;
+margin-bottom:10px;
+}
+
+.auth-tab{
+padding:9px 10px;
+border-radius:10px;
+border:1px solid rgba(217,74,43,0.18);
+background:#fff4e0;
+color:#7a3526;
+font-weight:700;
+box-shadow:none;
+}
+
+.auth-tab.active{
+background:linear-gradient(135deg, var(--brand), var(--brand-dark));
+color:#fff;
+border-color:transparent;
+}
+
+.auth-panel{display:none;}
+.auth-panel.show{display:block;}
+
+.auth-form{
+display:flex;
+flex-direction:column;
+gap:10px;
+}
+
+.auth-field{
+padding:11px 12px;
+border-radius:12px;
+border:1px solid rgba(217,74,43,0.2);
+background:#fffdf9;
+font-family:"Be Vietnam Pro",sans-serif;
+}
+
+.auth-note{
+margin:4px 0 0;
+font-size:12px;
+color:#79594a;
+}
+
+.auth-notice{
+margin-top:10px;
+padding:9px 10px;
+border-radius:10px;
+font-size:13px;
+display:none;
+}
+
+.auth-notice.show{display:block;}
+
+.auth-notice.ok{
+background:rgba(48,153,90,0.13);
+border:1px solid rgba(48,153,90,0.35);
+color:#1f6f45;
+}
+
+.auth-notice.err{
+background:rgba(198,60,47,0.12);
+border:1px solid rgba(198,60,47,0.28);
+color:#8f2719;
+}
+
+.auth-user-bar{
+margin-top:10px;
+padding:9px 10px;
+border-radius:10px;
+background:rgba(255,238,209,0.7);
+border:1px dashed rgba(217,74,43,0.28);
+display:none;
+}
+
+.auth-user-bar.show{display:block;}
+
+.auth-user-row{
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:8px;
+}
+
+.auth-logout-btn{
+padding:8px 10px;
+border-radius:10px;
+font-size:12px;
+}
+
+.auth-profile-link{
+display:inline-flex;
+align-items:center;
+justify-content:center;
+padding:8px 10px;
+border-radius:10px;
+font-size:12px;
+font-weight:700;
+text-decoration:none;
+background:linear-gradient(145deg, #fff8ec 0%, #ffe1b6 100%);
+color:#6c3422;
+border:1px solid rgba(217,74,43,0.18);
+}
+
+@media (max-width:620px){
+.auth-launch-btn{
+top:10px;
+right:10px;
+padding:9px 12px;
+}
+}
+
 </style>
 
 </head>
@@ -1486,7 +2227,19 @@ transform:translateY(-2px);
 
 <div class="search">
     <input id="searchBox" placeholder="Tìm lễ hội hoặc tỉnh...">
-    <button onclick="findNearFestival()">📍 Lễ hội gần tôi</button>
+    <button id="nearMeBtn" onclick="findNearFestival()">📍 Lễ hội gần tôi</button>
+</div>
+
+<div id="locationPermissionBanner" class="location-permission-banner" style="display:none;">
+    <div class="location-permission-content">
+        <strong id="locationBannerTitle">Bật vị trí ngay trong web</strong>
+        <p id="locationBannerText">Bấm nút bên phải để trình duyệt hiện hộp xin quyền vị trí.</p>
+    </div>
+    <div class="location-permission-actions">
+        <button id="locationAllowBtn" type="button" onclick="handleLocationBannerPrimary()">Cho phép vị trí ngay</button>
+        <button id="locationCachedBtn" type="button" class="location-secondary-btn" style="display:none;" onclick="useCachedNearLocation()">Dùng vị trí đã lưu</button>
+        <button type="button" class="location-secondary-btn" onclick="dismissLocationBanner()">Ẩn</button>
+    </div>
 </div>
 
 
@@ -1498,6 +2251,10 @@ transform:translateY(-2px);
         <div>
             <h2 class="highlight-title">Mùa lễ hội Việt Nam 2026</h2>
             <p class="highlight-text">Khám phá nhanh các lễ hội đặc sắc theo vùng miền, tìm điểm ăn uống và tiện ích gần nhất chỉ với một lần bấm định vị.</p>
+            <div class="partner-cta-row">
+                <a class="partner-cta-btn" href="partnership.html">Bảng giá hợp tác 2026</a>
+                <a class="partner-cta-btn alt" href="mailto:dmhuan.24174600112@sv.uneti.edu.vn?subject=Yeu%20cau%20bao%20gia%20hop%20tac">Nhận báo giá trong 24h</a>
+            </div>
         </div>
         <div class="highlight-stats">
             <div class="stat-box">
@@ -1757,31 +2514,60 @@ transform:translateY(-2px);
 
 <section id="collaboration" class="module-panel">
 <h2>Hợp tác & Quảng cáo</h2>
-<div class="grid">
-<div class="card">
-<div class="card-content">
-<h3>Đặt banner quảng cáo</h3>
-<p>Liên hệ để đặt banner quảng cáo trên trang web của chúng tôi.</p>
+<p class="module-hint">Dành cho homestay, nhà hàng, đơn vị tour và thương hiệu muốn tiếp cận khách du lịch theo mùa lễ hội.</p>
+<div class="collab-packages">
+    <article class="card">
+        <div class="card-content">
+            <span class="package-tag">Starter</span>
+            <h3>Gói nổi bật địa phương</h3>
+            <p class="package-price">1.490.000đ / tháng</p>
+            <ul class="package-list">
+                <li>1 vị trí ghim nổi bật trên bản đồ theo tỉnh.</li>
+                <li>Hiển thị trong mục tiện ích gần lễ hội.</li>
+                <li>Nhận tối đa 30 lead quan tâm mỗi tháng.</li>
+            </ul>
+            <div class="package-footer">
+                <a class="partner-cta-btn" href="mailto:dmhuan.24174600112@sv.uneti.edu.vn?subject=Dang%20ky%20goi%20Starter">Đăng ký Starter</a>
+            </div>
+        </div>
+    </article>
+    <article class="card">
+        <div class="card-content">
+            <span class="package-tag">Pro</span>
+            <h3>Gói media & lead</h3>
+            <p class="package-price">3.490.000đ / tháng</p>
+            <ul class="package-list">
+                <li>Ưu tiên hiển thị ở trang chủ theo khu vực.</li>
+                <li>1 bài giới thiệu thương hiệu mỗi tháng.</li>
+                <li>Miễn phí 2 bài đăng đầu tiên, từ bài thứ 3 tính phí 199.000đ/bài.</li>
+                <li>Form nhận lead có lọc nhu cầu cụ thể.</li>
+            </ul>
+            <div class="package-footer">
+                <a class="partner-cta-btn" href="mailto:dmhuan.24174600112@sv.uneti.edu.vn?subject=Dang%20ky%20goi%20Pro">Đăng ký Pro</a>
+            </div>
+        </div>
+    </article>
+    <article class="card">
+        <div class="card-content">
+            <span class="package-tag">Local Partner</span>
+            <h3>Gói tour liên kết</h3>
+            <p class="package-price">Từ 8% CPA / doanh thu</p>
+            <ul class="package-list">
+                <li>Dành cho đơn vị lữ hành và xe đưa đón.</li>
+                <li>Thanh toán theo đơn thành công.</li>
+                <li>Dashboard theo dõi nguồn khách theo lễ hội.</li>
+            </ul>
+            <div class="package-footer">
+                <a class="partner-cta-btn" href="partnership.html">Xem chính sách hợp tác</a>
+            </div>
+        </div>
+    </article>
 </div>
-</div>
-<div class="card">
-<div class="card-content">
-<h3>Viết bài PR</h3>
-<p>Dịch vụ viết bài PR về lễ hội và văn hóa Việt Nam.</p>
-</div>
-</div>
-<div class="card">
-<div class="card-content">
-<h3>Hợp tác tour</h3>
-<p>Hợp tác tổ chức tour du lịch lễ hội truyền thống.</p>
-</div>
-</div>
-<div class="card">
-<div class="card-content">
-<h3>Affiliate</h3>
-<p>Chương trình affiliate cho đối tác kinh doanh.</p>
-</div>
-</div>
+<div class="package-note">
+    Chính sách đăng bài: miễn phí 2 bài đăng đầu tiên cho đối tác mới, từ lần đăng thứ 3 áp dụng mức 199.000đ/bài.
+    <br>
+    Liên hệ nhanh: <strong>dmhuan.24174600112@sv.uneti.edu.vn</strong> • Hotline: <strong>03334571837</strong>.
+    Hồ sơ đối tác cần: ngành hàng, khu vực phục vụ, ngân sách dự kiến và mục tiêu (lead, booking, nhận diện).
 </div>
 </section>
 
@@ -1791,6 +2577,55 @@ transform:translateY(-2px);
 <p>Nền tảng số khám phá lễ hội và văn hóa Việt Nam</p>
 
 </footer>
+
+<button id="authLaunchBtn" class="auth-launch-btn" aria-label="Mở đăng nhập">Tài khoản</button>
+
+<section id="authModal" class="auth-modal" aria-label="Đăng nhập và đăng ký">
+    <div class="auth-card" role="dialog" aria-modal="true" aria-labelledby="authTitle">
+        <div class="auth-head">
+            <div>
+                <h3 id="authTitle">Tài khoản</h3>
+                <p>Đăng ký miễn phí và quản lý phiên đăng nhập.</p>
+            </div>
+            <button id="authCloseBtn" class="auth-close-btn" aria-label="Đóng">×</button>
+        </div>
+
+        <div class="auth-tabs">
+            <button id="authTabLogin" class="auth-tab active" type="button">Đăng nhập</button>
+            <button id="authTabRegister" class="auth-tab" type="button">Đăng ký</button>
+        </div>
+
+        <div id="authLoginPanel" class="auth-panel show">
+            <form id="authLoginForm" class="auth-form">
+                <input id="authLoginEmail" class="auth-field" type="email" placeholder="Email" required>
+                <input id="authLoginPassword" class="auth-field" type="password" placeholder="Mật khẩu" required>
+                <button type="submit">Đăng nhập</button>
+            </form>
+            <p class="auth-note">Mật khẩu tối thiểu 6 ký tự.</p>
+        </div>
+
+        <div id="authRegisterPanel" class="auth-panel">
+            <form id="authRegisterForm" class="auth-form">
+                <input id="authRegisterName" class="auth-field" type="text" placeholder="Họ và tên" required>
+                <input id="authRegisterEmail" class="auth-field" type="email" placeholder="Email" required>
+                <input id="authRegisterPassword" class="auth-field" type="password" placeholder="Mật khẩu (ít nhất 6 ký tự)" required>
+                <button type="submit">Tạo tài khoản</button>
+            </form>
+        </div>
+
+        <div id="authNotice" class="auth-notice"></div>
+
+        <div id="authUserBar" class="auth-user-bar">
+            <div class="auth-user-row">
+                <strong id="authUserName"></strong>
+                <div style="display:flex;gap:6px;align-items:center;">
+                    <a class="auth-profile-link" href="profile.html">Hồ sơ</a>
+                    <button id="authLogoutBtn" class="auth-logout-btn" type="button">Đăng xuất</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
 <button id="chatbotToggle" class="chatbot-fab" aria-label="Mở chatbot">💬</button>
 
@@ -2430,10 +3265,22 @@ var festivals=[
 {id:97,name:"Lễ hội Đua Bò",province:"An Giang",lat:10.36,lng:104.85,desc:"Lễ hội Khmer",img:"https://source.unsplash.com/400x300/?race"},
 {id:98,name:"Lễ hội Nghinh Ông",province:"Kiên Giang",lat:10.22,lng:103.96,desc:"Lễ hội biển",img:"https://source.unsplash.com/400x300/?sea"},
 {id:99,name:"Lễ hội Dinh Cậu",province:"Phú Quốc",lat:10.22,lng:103.96,desc:"Lễ hội ngư dân",img:"https://source.unsplash.com/400x300/?island"},
-{id:8,name:"Lễ hội Côn Sơn Kiếp Bạc",province:"Hải Dương",lat:21.12,lng:106.38,desc:"Tưởng nhớ Trần Hưng Đạo",img:"image/con-son-kiep-bac-thumb.jpg"},
-{id:9,name:"Lễ hội Đền Trần",province:"Nam Định",lat:20.43,lng:106.16,desc:"Phát ấn đầu năm",img:"image/OIP.jpg"},
-{id:10,name:"Lễ hội Chọi Trâu",province:"Hải Phòng",lat:20.85,lng:106.68,start:"2026-09-10",end:"2026-09-12",desc:"Lễ hội truyền thống Đồ Sơn",img:"image/lechoitrau.jpg"},
-// ... (sao chép đầy đủ 100 mục từ explore.html)
+{id:100,name:"Lễ hội Biển Phú Quốc",province:"Kiên Giang",lat:10.28,lng:103.96,desc:"Festival du lịch biển",img:"https://source.unsplash.com/400x300/?beach"},
+{id:101,name:"Lễ hội Ooc Om Bóc - Đua ghe Ngo",province:"Sóc Trăng",lat:9.603,lng:105.973,desc:"Lễ cúng trăng và đua ghe ngo đặc sắc",img:"https://source.unsplash.com/400x300/?khmer-festival"},
+{id:102,name:"Lễ hội Nghinh Ông Sông Đốc",province:"Cà Mau",lat:9.035,lng:105.046,desc:"Lễ hội cầu ngư tiêu biểu miền biển Tây",img:"https://source.unsplash.com/400x300/?fishing-boat"},
+{id:103,name:"Lễ hội vía Bà Ngũ Hành",province:"TP.HCM",lat:10.761,lng:106.698,desc:"Tín ngưỡng dân gian cộng đồng Hoa - Việt",img:"https://source.unsplash.com/400x300/?temple-vietnam"},
+{id:104,name:"Lễ hội Kỳ Yên Đình Bình Thủy",province:"Cần Thơ",lat:10.048,lng:105.762,desc:"Nghi lễ đình làng Nam Bộ giàu bản sắc",img:"https://source.unsplash.com/400x300/?vietnam-culture"},
+{id:105,name:"Lễ hội Dừa Bến Tre",province:"Bến Tre",lat:10.243,lng:106.376,desc:"Tôn vinh cây dừa và văn hóa sông nước",img:"https://source.unsplash.com/400x300/?coconut"},
+{id:106,name:"Lễ hội vía Bà Chúa Xứ Bàu Mướp",province:"Tây Ninh",lat:11.314,lng:106.099,desc:"Lễ hội tín ngưỡng địa phương vùng Đông Nam Bộ",img:"https://source.unsplash.com/400x300/?pilgrimage"},
+{id:107,name:"Lễ hội Tống Phong",province:"Bình Thuận",lat:10.933,lng:108.102,desc:"Nghi lễ cầu an, cầu mưa của cư dân ven biển",img:"https://source.unsplash.com/400x300/?coastal-culture"},
+{id:108,name:"Lễ hội Cầu Bông",province:"Bình Định",lat:13.782,lng:109.219,desc:"Lễ hội nông nghiệp cầu mùa truyền thống",img:"https://source.unsplash.com/400x300/?rice-field"},
+{id:109,name:"Lễ hội Đập Trống",province:"Quảng Nam",lat:15.585,lng:108.019,desc:"Nghi lễ độc đáo của người Cor",img:"https://source.unsplash.com/400x300/?drum"},
+{id:110,name:"Lễ hội Mừng lúa mới của người Raglai",province:"Khánh Hòa",lat:12.517,lng:108.935,desc:"Nét văn hóa mùa vụ của đồng bào Raglai",img:"https://source.unsplash.com/400x300/?ethnic"},
+{id:111,name:"Lễ hội A Riêu Ping",province:"Thừa Thiên Huế",lat:16.234,lng:107.151,desc:"Lễ hội truyền thống của đồng bào Tà Ôi",img:"https://source.unsplash.com/400x300/?minority-culture"},
+{id:112,name:"Lễ hội Đền Đức Thánh Trần Bảo Lộc",province:"Lâm Đồng",lat:11.546,lng:107.807,desc:"Không gian tâm linh kết hợp văn hóa cao nguyên",img:"https://source.unsplash.com/400x300/?highland-temple"},
+{id:113,name:"Lễ hội Gầu Tào của người Mông",province:"Lào Cai",lat:22.339,lng:103.844,desc:"Lễ hội cầu phúc đầu năm vùng cao",img:"https://source.unsplash.com/400x300/?mountain-festival"},
+{id:114,name:"Lễ hội Kin Chiêng Boóc Mạy",province:"Điện Biên",lat:21.386,lng:103.023,desc:"Nghi lễ cầu mùa của người Thái",img:"https://source.unsplash.com/400x300/?northwest-vietnam"},
+{id:115,name:"Lễ hội Chợ Phong Lưu Khâu Vai",province:"Hà Giang",lat:23.167,lng:105.068,desc:"Chợ tình độc đáo gắn với văn hóa vùng cao",img:"https://source.unsplash.com/400x300/?ethnic-market"}
 ];
 
 // DỮ LIỆU KHU VUI CHƠI
@@ -2503,7 +3350,15 @@ var foods=[
     {id:9,name:"Hủ tiếu Nam Vang",province:"TP.HCM",lat:10.7868,lng:106.6990,desc:"Món hủ tiếu đặc sản Sài Gòn",img:"https://source.unsplash.com/400x300/?noodle"},
     {id:10,name:"Cơm tấm Sài Gòn",province:"TP.HCM",lat:10.7756,lng:106.7009,desc:"Cơm tấm sườn bì chả",img:"https://source.unsplash.com/400x300/?rice-plate"},
     {id:11,name:"Lẩu mắm Cần Thơ",province:"Cần Thơ",lat:10.0452,lng:105.7469,desc:"Lẩu mắm đậm chất miền Tây",img:"https://source.unsplash.com/400x300/?hotpot"},
-    {id:12,name:"Bún kèn Phú Quốc",province:"Kiên Giang",lat:10.2272,lng:103.9679,desc:"Đặc sản bún kèn đảo ngọc",img:"https://source.unsplash.com/400x300/?vietnamese-food"}
+    {id:12,name:"Bún kèn Phú Quốc",province:"Kiên Giang",lat:10.2272,lng:103.9679,desc:"Đặc sản bún kèn đảo ngọc",img:"https://source.unsplash.com/400x300/?vietnamese-food"},
+    {id:13,name:"Bánh cuốn Thanh Trì",province:"Hà Nội",lat:21.0028,lng:105.8552,desc:"Bánh cuốn mỏng mềm ăn kèm chả",img:"https://source.unsplash.com/400x300/?rice-roll"},
+    {id:14,name:"Nem cua bể",province:"Hải Phòng",lat:20.8442,lng:106.6885,desc:"Nem vuông giòn rụm đặc trưng",img:"https://source.unsplash.com/400x300/?spring-roll"},
+    {id:15,name:"Cơm gà Tam Kỳ",province:"Quảng Nam",lat:15.5731,lng:108.4740,desc:"Cơm gà vàng ươm đậm vị",img:"https://source.unsplash.com/400x300/?chicken-rice"},
+    {id:16,name:"Bánh xèo miền Trung",province:"Đà Nẵng",lat:16.0589,lng:108.2215,desc:"Bánh xèo giòn với rau sống",img:"https://source.unsplash.com/400x300/?banh-xeo"},
+    {id:17,name:"Cao lầu Hội An",province:"Quảng Nam",lat:15.8801,lng:108.3380,desc:"Món mì đặc sản phố cổ",img:"https://source.unsplash.com/400x300/?cao-lau"},
+    {id:18,name:"Bánh căn Phan Rang",province:"Ninh Thuận",lat:11.5678,lng:108.9892,desc:"Bánh căn nóng hổi ăn cùng nước chấm",img:"https://source.unsplash.com/400x300/?street-food"},
+    {id:19,name:"Bánh hỏi cháo lòng",province:"Bình Định",lat:13.7822,lng:109.2194,desc:"Đặc sản sáng của người Quy Nhơn",img:"https://source.unsplash.com/400x300/?vietnam-breakfast"},
+    {id:20,name:"Bánh pía Sóc Trăng",province:"Sóc Trăng",lat:9.6033,lng:105.9735,desc:"Đặc sản ngọt nổi tiếng miền Tây",img:"https://source.unsplash.com/400x300/?pastry"}
 ];
 
 // tiện ích: khách sạn
@@ -2519,7 +3374,15 @@ var hotels=[
     {id:9,name:"Sai Gon Riverside",province:"TP.HCM",lat:10.7708,lng:106.6996,desc:"Khách sạn trung tâm quận 1",img:"https://source.unsplash.com/400x300/?hotel-lobby"},
     {id:10,name:"Can Tho Ninh Kieu Hotel",province:"Cần Thơ",lat:10.0342,lng:105.7885,desc:"Khách sạn gần bến Ninh Kiều",img:"https://source.unsplash.com/400x300/?river-hotel"},
     {id:11,name:"Vung Tau Marina Hotel",province:"Bà Rịa - Vũng Tàu",lat:10.3459,lng:107.0843,desc:"Khách sạn nghỉ dưỡng ven biển",img:"https://source.unsplash.com/400x300/?seaside-hotel"},
-    {id:12,name:"Phu Quoc Island Stay",province:"Kiên Giang",lat:10.2219,lng:103.9710,desc:"Khách sạn gần trung tâm đảo",img:"https://source.unsplash.com/400x300/?island-resort"}
+    {id:12,name:"Phu Quoc Island Stay",province:"Kiên Giang",lat:10.2219,lng:103.9710,desc:"Khách sạn gần trung tâm đảo",img:"https://source.unsplash.com/400x300/?island-resort"},
+    {id:13,name:"Sapa Valley Hotel",province:"Lào Cai",lat:22.3366,lng:103.8438,desc:"Khách sạn gần trung tâm Sa Pa",img:"https://source.unsplash.com/400x300/?mountain-hotel"},
+    {id:14,name:"Ha Giang Loop Stay",province:"Hà Giang",lat:22.8240,lng:104.9830,desc:"Lưu trú tiện cho khám phá cao nguyên",img:"https://source.unsplash.com/400x300/?homestay"},
+    {id:15,name:"Moc Chau Green Resort",province:"Sơn La",lat:20.8468,lng:104.7075,desc:"Nghỉ dưỡng giữa đồi chè",img:"https://source.unsplash.com/400x300/?eco-resort"},
+    {id:16,name:"Da Lat Pine Hotel",province:"Lâm Đồng",lat:11.9409,lng:108.4585,desc:"Khách sạn gần trung tâm Đà Lạt",img:"https://source.unsplash.com/400x300/?dalat-hotel"},
+    {id:17,name:"Buon Ma Thuot Central Hotel",province:"Đắk Lắk",lat:12.6675,lng:108.0378,desc:"Khách sạn trung tâm thành phố",img:"https://source.unsplash.com/400x300/?business-hotel"},
+    {id:18,name:"Mui Ne Sand Resort",province:"Bình Thuận",lat:10.9571,lng:108.2865,desc:"Resort ven biển Mũi Né",img:"https://source.unsplash.com/400x300/?beach-villa"},
+    {id:19,name:"Con Dao Bay Hotel",province:"Bà Rịa - Vũng Tàu",lat:8.6806,lng:106.6080,desc:"Khách sạn gần cảng Côn Đảo",img:"https://source.unsplash.com/400x300/?island-hotel"},
+    {id:20,name:"Chau Doc Riverside Lodge",province:"An Giang",lat:10.7046,lng:105.1162,desc:"Lưu trú gần khu du lịch Núi Sam",img:"https://source.unsplash.com/400x300/?lodge"}
 ];
 
 // tiện ích: y tế
@@ -2535,13 +3398,33 @@ var medicals=[
     {id:9,name:"Bệnh viện Chợ Rẫy",province:"TP.HCM",lat:10.7567,lng:106.6596,desc:"Bệnh viện tuyến cuối phía Nam",img:"https://source.unsplash.com/400x300/?emergency"},
     {id:10,name:"Bệnh viện Nhân dân 115",province:"TP.HCM",lat:10.7721,lng:106.6635,desc:"Bệnh viện đa khoa lớn tại TP.HCM",img:"https://source.unsplash.com/400x300/?doctor"},
     {id:11,name:"Bệnh viện Đa khoa Cần Thơ",province:"Cần Thơ",lat:10.0340,lng:105.7709,desc:"Bệnh viện phục vụ khu vực miền Tây",img:"https://source.unsplash.com/400x300/?medical-team"},
-    {id:12,name:"Bệnh viện Lê Lợi",province:"Bà Rịa - Vũng Tàu",lat:10.3523,lng:107.0869,desc:"Bệnh viện tại trung tâm Vũng Tàu",img:"https://source.unsplash.com/400x300/?hospital-care"}
+    {id:12,name:"Bệnh viện Lê Lợi",province:"Bà Rịa - Vũng Tàu",lat:10.3523,lng:107.0869,desc:"Bệnh viện tại trung tâm Vũng Tàu",img:"https://source.unsplash.com/400x300/?hospital-care"},
+    {id:13,name:"Bệnh viện Đa khoa Lào Cai",province:"Lào Cai",lat:22.4856,lng:103.9750,desc:"Bệnh viện đa khoa tỉnh",img:"https://source.unsplash.com/400x300/?health"},
+    {id:14,name:"Bệnh viện Đa khoa Hà Giang",province:"Hà Giang",lat:22.8245,lng:104.9834,desc:"Cơ sở y tế chính của tỉnh",img:"https://source.unsplash.com/400x300/?hospital-ward"},
+    {id:15,name:"Bệnh viện Đa khoa Sơn La",province:"Sơn La",lat:21.3251,lng:103.9188,desc:"Bệnh viện phục vụ khu vực Tây Bắc",img:"https://source.unsplash.com/400x300/?health-center"},
+    {id:16,name:"Bệnh viện Đa khoa Lâm Đồng",province:"Lâm Đồng",lat:11.9461,lng:108.4412,desc:"Bệnh viện lớn tại Đà Lạt",img:"https://source.unsplash.com/400x300/?medical-room"},
+    {id:17,name:"Bệnh viện Đa khoa Đắk Lắk",province:"Đắk Lắk",lat:12.6761,lng:108.0438,desc:"Bệnh viện đa khoa khu vực Tây Nguyên",img:"https://source.unsplash.com/400x300/?hospital-care"},
+    {id:18,name:"Bệnh viện Đa khoa Bình Thuận",province:"Bình Thuận",lat:10.9308,lng:108.1026,desc:"Cơ sở y tế tuyến tỉnh",img:"https://source.unsplash.com/400x300/?medical-campus"},
+    {id:19,name:"Bệnh viện Đa khoa Kiên Giang",province:"Kiên Giang",lat:10.0125,lng:105.0801,desc:"Bệnh viện trung tâm tỉnh",img:"https://source.unsplash.com/400x300/?clinic-building"},
+    {id:20,name:"Bệnh viện Đa khoa An Giang",province:"An Giang",lat:10.5372,lng:105.1261,desc:"Bệnh viện đa khoa khu vực Châu Đốc",img:"https://source.unsplash.com/400x300/?hospital-front"}
 ];
 
 // tiện ích: cửa hàng tiện lợi
 var stores=[
     {id:1,name:"Circle K Hà Nội",province:"Hà Nội",lat:21.0281,lng:105.8533,desc:"Chuỗi cửa hàng tiện lợi 24/7",img:"https://source.unsplash.com/400x300/?store"},
-    {id:2,name:"7-Eleven Đà Nẵng",province:"Đà Nẵng",lat:16.0544,lng:108.2022,desc:"Cửa hàng tiện lợi nổi tiếng tại ĐN",img:"https://source.unsplash.com/400x300/?convenience"}
+    {id:2,name:"7-Eleven Đà Nẵng",province:"Đà Nẵng",lat:16.0544,lng:108.2022,desc:"Cửa hàng tiện lợi nổi tiếng tại ĐN",img:"https://source.unsplash.com/400x300/?convenience"},
+    {id:3,name:"WinMart+ Hải Phòng",province:"Hải Phòng",lat:20.8501,lng:106.6888,desc:"Cửa hàng tiện lợi trung tâm",img:"https://source.unsplash.com/400x300/?mini-market"},
+    {id:4,name:"GS25 Hạ Long",province:"Quảng Ninh",lat:20.9511,lng:107.0863,desc:"Cửa hàng mở cửa khu du lịch",img:"https://source.unsplash.com/400x300/?convenience-store"},
+    {id:5,name:"Circle K Huế",province:"Huế",lat:16.4663,lng:107.5888,desc:"Điểm mua sắm nhanh tại Huế",img:"https://source.unsplash.com/400x300/?grocery"},
+    {id:6,name:"WinMart+ Đà Nẵng",province:"Đà Nẵng",lat:16.0635,lng:108.2208,desc:"Cửa hàng tiện lợi gần sông Hàn",img:"https://source.unsplash.com/400x300/?retail-store"},
+    {id:7,name:"FamilyMart Nha Trang",province:"Khánh Hòa",lat:12.2385,lng:109.1962,desc:"Cửa hàng tiện lợi gần biển",img:"https://source.unsplash.com/400x300/?mart"},
+    {id:8,name:"WinMart+ Quy Nhơn",province:"Bình Định",lat:13.7811,lng:109.2180,desc:"Mua sắm nhanh khu trung tâm",img:"https://source.unsplash.com/400x300/?supermarket"},
+    {id:9,name:"GS25 TP.HCM",province:"TP.HCM",lat:10.7754,lng:106.7003,desc:"Chuỗi tiện lợi phổ biến tại Sài Gòn",img:"https://source.unsplash.com/400x300/?night-shop"},
+    {id:10,name:"7-Eleven TP.HCM",province:"TP.HCM",lat:10.7713,lng:106.6988,desc:"Điểm mua sắm 24/7 quận trung tâm",img:"https://source.unsplash.com/400x300/?city-store"},
+    {id:11,name:"WinMart+ Cần Thơ",province:"Cần Thơ",lat:10.0337,lng:105.7877,desc:"Cửa hàng tiện lợi gần bến Ninh Kiều",img:"https://source.unsplash.com/400x300/?food-store"},
+    {id:12,name:"Circle K Vũng Tàu",province:"Bà Rịa - Vũng Tàu",lat:10.3468,lng:107.0837,desc:"Cửa hàng tiện lợi khu du lịch biển",img:"https://source.unsplash.com/400x300/?shop"},
+    {id:13,name:"WinMart+ Phú Quốc",province:"Kiên Giang",lat:10.2230,lng:103.9682,desc:"Mua sắm nhanh tại đảo ngọc",img:"https://source.unsplash.com/400x300/?convenience-mart"},
+    {id:14,name:"GS25 Cà Mau",province:"Cà Mau",lat:9.1764,lng:105.1515,desc:"Cửa hàng tiện lợi trung tâm thành phố",img:"https://source.unsplash.com/400x300/?small-store"}
 ];
 
 function normalizeLocationText(text) {
@@ -3099,9 +3982,356 @@ medicals.forEach(function(med){
 /* HIỂN THỊ DANH SÁCH */
 
 var list=document.getElementById("festivalList");
+var NEAR_LOCATION_CACHE_KEY='lehoi_last_location';
+var locationBannerState={
+    dismissed:false,
+    mode:'prompt'
+};
+var nearbyLastPayload=null;
+var nearbyUiState={
+    activeTab:'',
+    expanded:{}
+};
+var nearGeoState={
+    isRequesting:false,
+    userMarker:null
+};
+
+function setFestivalListMode(isNearbyMode){
+    if(!list) return;
+    list.classList.toggle('nearby-view', !!isNearbyMode);
+}
+
+function setNearMeButtonLoading(isLoading){
+    var nearBtn=document.getElementById('nearMeBtn');
+    if(!nearBtn) return;
+    nearBtn.classList.toggle('loading', !!isLoading);
+    nearBtn.textContent=isLoading ? 'Đang tìm quanh bạn' : '📍 Lễ hội gần tôi';
+}
+
+function showNearMeLoadingState(){
+    setFestivalListMode(true);
+    list.innerHTML=`
+<div class="nearby-loading">
+<strong>Đang định vị và tính khoảng cách gần nhất...</strong>
+<div class="nearby-loading-grid">
+<div class="nearby-skeleton"></div>
+<div class="nearby-skeleton"></div>
+<div class="nearby-skeleton"></div>
+<div class="nearby-skeleton"></div>
+</div>
+</div>`;
+}
+
+function showNearMeError(message){
+    setFestivalListMode(true);
+    list.innerHTML=`<div class="nearby-error"><strong>Không thể lấy vị trí hiện tại.</strong><p>${escHtml(message || 'Vui lòng kiểm tra quyền truy cập vị trí và thử lại.')}</p></div>`;
+}
+
+function cacheNearLocation(lat,lng){
+    try{
+        localStorage.setItem(NEAR_LOCATION_CACHE_KEY, JSON.stringify({
+            lat:Number(lat),
+            lng:Number(lng),
+            updatedAt:Date.now()
+        }));
+    }catch(e){}
+}
+
+function readCachedNearLocation(){
+    try{
+        var raw=localStorage.getItem(NEAR_LOCATION_CACHE_KEY);
+        if(!raw) return null;
+        var data=JSON.parse(raw);
+        if(!data || typeof data.lat!=='number' || typeof data.lng!=='number') return null;
+        return data;
+    }catch(e){
+        return null;
+    }
+}
+
+function getCachedNearLocationLabel(){
+    var cached=readCachedNearLocation();
+    if(!cached || !cached.updatedAt) return '';
+    var diffMin=Math.round((Date.now()-cached.updatedAt)/60000);
+    if(diffMin<1) return 'vừa lưu';
+    if(diffMin<60) return diffMin + ' phút trước';
+    var diffHour=Math.round(diffMin/60);
+    return diffHour + ' giờ trước';
+}
+
+function setUserLocationMarker(lat,lng,label){
+    if(nearGeoState.userMarker){
+        nearGeoState.userMarker.setLatLng([lat,lng]);
+    }else{
+        nearGeoState.userMarker=L.marker([lat,lng]).addTo(map);
+    }
+    nearGeoState.userMarker.bindPopup(label || '📍 Bạn đang ở đây');
+    nearGeoState.userMarker.openPopup();
+}
+
+function showNearMePermissionGuide(title,message,steps){
+    setFestivalListMode(true);
+    var cached=readCachedNearLocation();
+    var actionHtml='<button type="button" class="nearby-help-btn" onclick="findNearFestival()">Thử lại</button>';
+    if(cached){
+        actionHtml += '<button type="button" class="nearby-help-btn" onclick="useCachedNearLocation()">Dùng vị trí đã lưu (' + escHtml(getCachedNearLocationLabel()) + ')</button>';
+    }
+    var stepsHtml='';
+    if(Array.isArray(steps) && steps.length){
+        stepsHtml='<ol class="nearby-guide-steps">' + steps.map(function(step){ return '<li>' + escHtml(step) + '</li>'; }).join('') + '</ol>';
+    }
+    list.innerHTML='<div class="nearby-error"><strong>' + escHtml(title || 'Không thể lấy vị trí hiện tại.') + '</strong><p>' + escHtml(message || 'Vui lòng kiểm tra quyền truy cập vị trí và thử lại.') + '</p>' + stepsHtml + '<div class="nearby-error-actions">' + actionHtml + '</div></div>';
+}
+
+function dismissLocationBanner(){
+    locationBannerState.dismissed=true;
+    var banner=document.getElementById('locationPermissionBanner');
+    if(banner) banner.style.display='none';
+}
+
+function handleLocationBannerPrimary(){
+    if(locationBannerState.mode==='denied'){
+        openModule('list');
+        showNearMePermissionGuide(
+            'Quyền vị trí đang bị chặn',
+            'Trình duyệt sẽ không hiện hộp xin quyền nữa khi bạn đã từng bấm Từ chối.',
+            [
+                'Bấm biểu tượng ổ khóa ở bên trái thanh địa chỉ.',
+                'Tìm mục Vị trí (Location) và chọn Cho phép (Allow).',
+                'Tải lại trang rồi bấm lại nút "Lễ hội gần tôi".'
+            ]
+        );
+        return;
+    }
+    findNearFestival();
+}
+
+function buildNearbyResults(userLat,userLng){
+    var nearest=festivals.map(function(f){
+        return Object.assign({}, f, { distance:getDistance(userLat,userLng,f.lat,f.lng) });
+    }).sort(function(a,b){ return a.distance-b.distance; }).slice(0,10);
+
+    var entResults=entertainments.map(function(e){
+        return Object.assign({}, e, { distance:getDistance(userLat,userLng,e.lat,e.lng) });
+    }).sort(function(a,b){ return a.distance-b.distance; }).slice(0,5);
+
+    var foodResults=foods.map(function(f){
+        return Object.assign({}, f, { distance:getDistance(userLat,userLng,f.lat,f.lng) });
+    }).sort(function(a,b){ return a.distance-b.distance; }).slice(0,5);
+
+    var hotelResults=hotels.map(function(h){
+        return Object.assign({}, h, { distance:getDistance(userLat,userLng,h.lat,h.lng) });
+    }).sort(function(a,b){ return a.distance-b.distance; }).slice(0,5);
+
+    var medicalResults=medicals.map(function(med){
+        return Object.assign({}, med, { distance:getDistance(userLat,userLng,med.lat,med.lng) });
+    }).sort(function(a,b){ return a.distance-b.distance; }).slice(0,5);
+
+    var storeResults=stores.map(function(s){
+        return Object.assign({}, s, { distance:getDistance(userLat,userLng,s.lat,s.lng) });
+    }).sort(function(a,b){ return a.distance-b.distance; }).slice(0,5);
+
+    return {
+        nearest:nearest,
+        entResults:entResults,
+        foodResults:foodResults,
+        hotelResults:hotelResults,
+        medicalResults:medicalResults,
+        storeResults:storeResults
+    };
+}
+
+function renderNearByCoordinates(userLat,userLng,sourceLabel){
+    setUserLocationMarker(userLat,userLng,sourceLabel || '📍 Bạn đang ở đây');
+    map.setView([userLat,userLng],10);
+    var nearby=buildNearbyResults(userLat,userLng);
+    showNearestFestivals(nearby.nearest, nearby.entResults, nearby.foodResults, nearby.hotelResults, nearby.medicalResults, nearby.storeResults);
+    refreshLocationPermissionBanner();
+}
+
+function useCachedNearLocation(){
+    var cached=readCachedNearLocation();
+    if(!cached){
+        showNearMePermissionGuide('Chưa có vị trí đã lưu', 'Hãy cấp quyền vị trí ít nhất một lần để dùng lại nhanh khi cần.');
+        return;
+    }
+    openModule('list');
+    renderNearByCoordinates(cached.lat, cached.lng, '📍 Vị trí đã lưu trước đó');
+}
+
+function getGeolocationPermissionState(){
+    if(!navigator.permissions || !navigator.permissions.query){
+        return Promise.resolve('unknown');
+    }
+    return navigator.permissions.query({ name:'geolocation' })
+        .then(function(status){ return status && status.state ? status.state : 'unknown'; })
+        .catch(function(){ return 'unknown'; });
+}
+
+async function refreshLocationPermissionBanner(){
+    var banner=document.getElementById('locationPermissionBanner');
+    var title=document.getElementById('locationBannerTitle');
+    var text=document.getElementById('locationBannerText');
+    var allowBtn=document.getElementById('locationAllowBtn');
+    var cachedBtn=document.getElementById('locationCachedBtn');
+    if(!banner || !title || !text || !allowBtn || !cachedBtn) return;
+
+    if(locationBannerState.dismissed){
+        banner.style.display='none';
+        return;
+    }
+
+    var permissionState=await getGeolocationPermissionState();
+    if(permissionState==='granted'){
+        banner.style.display='none';
+        return;
+    }
+
+    banner.style.display='flex';
+    var hasCached=!!readCachedNearLocation();
+    cachedBtn.style.display=hasCached ? 'inline-flex' : 'none';
+
+    if(permissionState==='denied'){
+        locationBannerState.mode='denied';
+        title.textContent='Quyền vị trí đang bị tắt';
+        text.textContent='Bạn cần bật lại quyền vị trí trong trình duyệt rồi tải lại trang.';
+        allowBtn.textContent='Xem cách bật quyền';
+    }else{
+        locationBannerState.mode='prompt';
+        title.textContent='Bật vị trí ngay trong web';
+        text.textContent='Bấm "Cho phép vị trí ngay" để trình duyệt hiện popup xin quyền.';
+        allowBtn.textContent='Cho phép vị trí ngay';
+    }
+}
+
+function getCurrentPositionSafe(options){
+    return new Promise(function(resolve,reject){
+        navigator.geolocation.getCurrentPosition(resolve,reject,options);
+    });
+}
+
+function activateNearbyTab(tabKey){
+    if(!list) return;
+    nearbyUiState.activeTab=tabKey || nearbyUiState.activeTab;
+    var tabs=list.querySelectorAll('.nearby-tab-btn');
+    tabs.forEach(function(tab){
+        tab.classList.toggle('active', tab.getAttribute('data-tab')===tabKey);
+    });
+    var panes=list.querySelectorAll('.nearby-pane');
+    panes.forEach(function(pane){
+        pane.classList.toggle('show', pane.getAttribute('data-tab')===tabKey);
+    });
+}
+
+function scrollNearbyGrid(tabKey, direction){
+    var grid=document.getElementById('nearGrid-' + tabKey);
+    if(!grid) return;
+    var firstCard=grid.querySelector('.nearby-card');
+    var step=firstCard ? (firstCard.offsetWidth + 14) : 300;
+    grid.scrollBy({ left: step * direction, behavior:'smooth' });
+}
+
+function toggleNearbyExpanded(tabKey){
+    nearbyUiState.expanded[tabKey]=!nearbyUiState.expanded[tabKey];
+    if(!nearbyLastPayload) return;
+    showNearestFestivals(
+        nearbyLastPayload.festivalsData,
+        nearbyLastPayload.entertainData,
+        nearbyLastPayload.foodData,
+        nearbyLastPayload.hotelData,
+        nearbyLastPayload.medicalData,
+        nearbyLastPayload.storeData,
+        tabKey
+    );
+}
+
+function enableNearbyDragScroll(){
+    if(!list) return;
+    var grids=list.querySelectorAll('.nearby-grid');
+    grids.forEach(function(grid){
+        if(grid.dataset.dragBound==='1') return;
+        grid.dataset.dragBound='1';
+
+        var state={
+            isPointerDown:false,
+            startX:0,
+            startScrollLeft:0,
+            moved:false
+        };
+
+        grid.addEventListener('pointerdown', function(event){
+            if(event.pointerType==='mouse' && event.button!==0) return;
+            state.isPointerDown=true;
+            state.startX=event.clientX;
+            state.startScrollLeft=grid.scrollLeft;
+            state.moved=false;
+            grid.classList.add('is-dragging');
+            try{ grid.setPointerCapture(event.pointerId); }catch(e){}
+        });
+
+        grid.addEventListener('pointermove', function(event){
+            if(!state.isPointerDown) return;
+            var deltaX=event.clientX - state.startX;
+            if(Math.abs(deltaX)>6) state.moved=true;
+            grid.scrollLeft=state.startScrollLeft - deltaX;
+        });
+
+        function stopDragging(event){
+            if(!state.isPointerDown) return;
+            state.isPointerDown=false;
+            grid.classList.remove('is-dragging');
+            if(event){
+                try{ grid.releasePointerCapture(event.pointerId); }catch(e){}
+            }
+            if(state.moved){
+                grid.dataset.suppressClick='1';
+                window.setTimeout(function(){
+                    delete grid.dataset.suppressClick;
+                }, 120);
+            }
+        }
+
+        grid.addEventListener('pointerup', stopDragging);
+        grid.addEventListener('pointercancel', stopDragging);
+        grid.addEventListener('pointerleave', function(event){
+            if(state.isPointerDown && event.pointerType==='mouse'){
+                stopDragging(event);
+            }
+        });
+
+        grid.addEventListener('click', function(event){
+            if(grid.dataset.suppressClick==='1'){
+                event.preventDefault();
+                event.stopPropagation();
+            }
+        }, true);
+
+        grid.addEventListener('wheel', function(event){
+            if(Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return;
+            event.preventDefault();
+            grid.scrollLeft += event.deltaY;
+            updateNearbyGridFadeState();
+        }, { passive:false });
+    });
+    updateNearbyGridFadeState();
+}
+
+function updateNearbyGridFadeState(){
+    if(!list) return;
+    var wraps=list.querySelectorAll('.nearby-grid-wrap');
+    wraps.forEach(function(wrap){
+        var grid=wrap.querySelector('.nearby-grid');
+        if(!grid) return;
+        var maxScrollLeft=Math.max(0, grid.scrollWidth - grid.clientWidth);
+        wrap.classList.toggle('can-scroll-left', grid.scrollLeft > 8);
+        wrap.classList.toggle('can-scroll-right', grid.scrollLeft < maxScrollLeft - 8);
+    });
+}
 
 function render(data){
 
+setFestivalListMode(false);
 list.innerHTML="";
 if (!data.length) {
     list.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:#e53935;font-size:18px;">Không có lễ hội phù hợp</div>';
@@ -3162,200 +4392,190 @@ return R*c;
 
 /* TÌM 10 LỄ HỘI GẦN NHẤT */
 
-function findNearFestival(){
+async function findNearFestival(){
 
-if(!navigator.geolocation){
-
-alert("Trình duyệt không hỗ trợ GPS");
+if(nearGeoState.isRequesting){
 return;
-
 }
 
-navigator.geolocation.getCurrentPosition(function(position){
+if(!navigator.geolocation){
+showNearMePermissionGuide('Thiết bị chưa hỗ trợ định vị', 'Trình duyệt của bạn không hỗ trợ GPS. Bạn có thể dùng vị trí đã lưu nếu có.');
+return;
+}
 
-var userLat=position.coords.latitude;
-var userLng=position.coords.longitude;
+if(!window.isSecureContext && window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1'){
+showNearMePermissionGuide('Cần kết nối bảo mật', 'Định vị chỉ hoạt động ổn định trên HTTPS. Hãy mở website bằng HTTPS hoặc localhost.');
+return;
+}
 
-L.marker([userLat,userLng])
-.addTo(map)
-.bindPopup("📍 Bạn đang ở đây")
-.openPopup();
-
-map.setView([userLat,userLng],10);
-
-let results=festivals.map(f=>{
-
-let distance=getDistance(userLat,userLng,f.lat,f.lng);
-
-return {...f,distance};
-
-});
-
-results.sort((a,b)=>a.distance-b.distance);
-
-let nearest=results.slice(0,10);
-
-// tìm khu vui chơi và ẩm thực gần người dùng
-let entResults=entertainments.map(e=>{
-    let distance=getDistance(userLat,userLng,e.lat,e.lng);
-    return {...e,distance};
-});
-entResults.sort((a,b)=>a.distance-b.distance);
-entResults=entResults.slice(0,5);
-
-let foodResults=foods.map(f=>{
-    let distance=getDistance(userLat,userLng,f.lat,f.lng);
-    return {...f,distance};
-});
-foodResults.sort((a,b)=>a.distance-b.distance);
-foodResults=foodResults.slice(0,5);
-
-// tiện ích gần
-let hotelResults=hotels.map(h=>{
-    let distance=getDistance(userLat,userLng,h.lat,h.lng);
-    return {...h,distance};
-});
-hotelResults.sort((a,b)=>a.distance-b.distance);
-hotelResults=hotelResults.slice(0,5);
-
-let medicalResults=medicals.map(med=>{
-    let distance=getDistance(userLat,userLng,med.lat,med.lng);
-    return {...med,distance};
-});
-medicalResults.sort((a,b)=>a.distance-b.distance);
-medicalResults=medicalResults.slice(0,5);
-
-let storeResults=stores.map(s=>{
-    let distance=getDistance(userLat,userLng,s.lat,s.lng);
-    return {...s,distance};
-});
-storeResults.sort((a,b)=>a.distance-b.distance);
-storeResults=storeResults.slice(0,5);
-
-showNearestFestivals(nearest, entResults, foodResults, hotelResults, medicalResults, storeResults);
+nearGeoState.isRequesting=true;
+setNearMeButtonLoading(true);
 openModule('list');
+showNearMeLoadingState();
 
-});
+try{
+    var permissionState=await getGeolocationPermissionState();
+    if(permissionState==='denied'){
+        showNearMePermissionGuide(
+            'Quyền vị trí đang bị chặn',
+            'Trình duyệt sẽ không hiện hộp xin quyền nữa khi bạn đã từng bấm Từ chối.',
+            [
+                'Bấm biểu tượng ổ khóa ở bên trái thanh địa chỉ.',
+                'Tìm mục Vị trí (Location) và chọn Cho phép (Allow).',
+                'Tải lại trang rồi bấm lại nút "Lễ hội gần tôi".'
+            ]
+        );
+        return;
+    }
+
+    var position=await getCurrentPositionSafe({
+        enableHighAccuracy:true,
+        timeout:12000,
+        maximumAge:0
+    });
+
+    var userLat=position.coords.latitude;
+    var userLng=position.coords.longitude;
+    cacheNearLocation(userLat,userLng);
+    renderNearByCoordinates(userLat,userLng,'📍 Bạn đang ở đây');
+
+}catch(error){
+    var fallback=readCachedNearLocation();
+    if(error && error.code===3 && fallback){
+        renderNearByCoordinates(fallback.lat,fallback.lng,'📍 Vị trí đã lưu (do định vị chậm)');
+        return;
+    }
+
+    var errorMessage='Vui lòng bật quyền vị trí và thử lại.';
+    if(error && error.code===1) errorMessage='Bạn đã từ chối quyền vị trí. Hãy cho phép định vị để tìm lễ hội gần bạn.';
+    if(error && error.code===2) errorMessage='Không xác định được vị trí hiện tại. Hãy kiểm tra mạng hoặc GPS.';
+    if(error && error.code===3) errorMessage='Hết thời gian định vị. Hãy thử lại trong vài giây.';
+    var guideSteps=null;
+    if(error && error.code===1){
+        guideSteps=[
+            'Bấm biểu tượng ổ khóa cạnh địa chỉ website.',
+            'Đặt quyền Vị trí thành Cho phép (Allow).',
+            'Tải lại trang và thử lại để hiện popup cấp quyền.'
+        ];
+    }
+    showNearMePermissionGuide('Không thể lấy vị trí hiện tại', errorMessage, guideSteps);
+}finally{
+    nearGeoState.isRequesting=false;
+    setNearMeButtonLoading(false);
+    refreshLocationPermissionBanner();
+}
 
 }
 
 /* HIỂN THỊ 10 LỄ HỘI */
 
-function showNearestFestivals(festivalsData, entertainData, foodData, hotelData, medicalData, storeData){
-    var html="<h2>10 lễ hội gần bạn</h2>";
-    festivalsData.forEach((f,i)=>{
-        html+=`\n
-<div class="card">\n
-<img src="${resolveImageUrl(f.img,'festival')}" onerror="${getImageOnError('festival')}">\n
-<div class="card-content">\n
-<h3>${i+1}. ${f.name}</h3>\n
-<p><b>${f.province}</b></p>\n
-<p>Khoảng cách: ${f.distance.toFixed(1)} km</p>\n
-<p>${f.desc}</p>\n
-<a href="https://www.google.com/maps/dir/?api=1&destination=${f.lat},${f.lng}" target="_blank">\n
-<button>Chỉ đường</button>\n
-</a>\n
-</div>\n
-</div>\n
-`;
-    });
-    
-    if(entertainData && entertainData.length){
-        html+="<h2>Khu vui chơi gần bạn</h2>";
-        entertainData.forEach((e,i)=>{
-            html+=`\n
-<div class="card">\n
-<img src="${resolveImageUrl(e.img,'entertainment',e)}" onerror="${getImageOnError('entertainment',e)}">\n
-<div class="card-content">\n
-<h3>${i+1}. ${e.name}</h3>\n
-<p>Khoảng cách: ${e.distance.toFixed(1)} km</p>\n
-<p>${e.desc}</p>\n
-<a href="https://www.google.com/maps/dir/?api=1&destination=${e.lat},${e.lng}" target="_blank">\n
-<button>Chỉ đường</button>\n
-</a>\n
-</div>\n
-</div>\n
-`;
-        });
-    }
-    
-    if(foodData && foodData.length){
-        html+="<h2>Ẩm thực gần bạn</h2>";
-        foodData.forEach((f,i)=>{
-            html+=`\n
-<div class="card">\n
-<img src="${resolveImageUrl(f.img,'food',f)}" onerror="${getImageOnError('food',f)}">\n
-<div class="card-content">\n
-<h3>${i+1}. ${f.name}</h3>\n
-<p>Khoảng cách: ${f.distance.toFixed(1)} km</p>\n
-<p>${f.desc}</p>\n
-<a href="https://www.google.com/maps/dir/?api=1&destination=${f.lat},${f.lng}" target="_blank">\n
-<button>Chỉ đường</button>\n
-</a>\n
-</div>\n
-</div>\n
-`;
-        });
-    }
-    
-    if(hotelData && hotelData.length){
-        html+="<h2>Khách sạn gần bạn</h2>";
-        hotelData.forEach((h,i)=>{
-            html+=`\n
-<div class="card">\n
-<img src="${resolveImageUrl(h.img,'hotel',h)}" onerror="${getImageOnError('hotel',h)}">\n
-<div class="card-content">\n
-<h3>${i+1}. ${h.name}</h3>\n
-<p>Khoảng cách: ${h.distance.toFixed(1)} km</p>\n
-<p>${h.desc}</p>\n
-<a href="https://www.google.com/maps/dir/?api=1&destination=${h.lat},${h.lng}" target="_blank">\n
-<button>Chỉ đường</button>\n
-</a>\n
-</div>\n
-</div>\n
-`;
-        });
-    }
-    
-    if(medicalData && medicalData.length){
-        html+="<h2>Cơ sở y tế gần bạn</h2>";
-        medicalData.forEach((m,i)=>{
-            html+=`\n
-<div class="card">\n
-<img src="${resolveImageUrl(m.img,'medical',m)}" onerror="${getImageOnError('medical',m)}">\n
-<div class="card-content">\n
-<h3>${i+1}. ${m.name}</h3>\n
-<p>Khoảng cách: ${m.distance.toFixed(1)} km</p>\n
-<p>${m.desc}</p>\n
-<a href="https://www.google.com/maps/dir/?api=1&destination=${m.lat},${m.lng}" target="_blank">\n
-<button>Chỉ đường</button>\n
-</a>\n
-</div>\n
-</div>\n
-`;
-        });
-    }
-    
-    if(storeData && storeData.length){
-        html+="<h2>Cửa hàng tiện lợi gần bạn</h2>";
-        storeData.forEach((s,i)=>{
-            html+=`\n
-<div class="card">\n
-<img src="${resolveImageUrl(s.img,'store',s)}" onerror="${getImageOnError('store',s)}">\n
-<div class="card-content">\n
-<h3>${i+1}. ${s.name}</h3>\n
-<p>Khoảng cách: ${s.distance.toFixed(1)} km</p>\n
-<p>${s.desc}</p>\n
-<a href="https://www.google.com/maps/dir/?api=1&destination=${s.lat},${s.lng}" target="_blank">\n
-<button>Chỉ đường</button>\n
-</a>\n
-</div>\n
-</div>\n
-`;
-        });
-    }
-    
-    document.getElementById("festivalList").innerHTML=html;
+function showNearestFestivals(festivalsData, entertainData, foodData, hotelData, medicalData, storeData, preferredTabKey){
+setFestivalListMode(true);
+nearbyLastPayload={
+festivalsData:festivalsData,
+entertainData:entertainData,
+foodData:foodData,
+hotelData:hotelData,
+medicalData:medicalData,
+storeData:storeData
+};
+var groups=[
+{ key:'festival', title:'Lễ hội gần bạn', shortTitle:'Lễ hội', icon:'🎉', items:festivalsData, type:'festival', topN:10, previewCount:4 },
+{ key:'entertainment', title:'Khu vui chơi gần bạn', shortTitle:'Vui chơi', icon:'🎡', items:entertainData, type:'entertainment', topN:5, previewCount:4 },
+{ key:'food', title:'Ẩm thực gần bạn', shortTitle:'Ẩm thực', icon:'🍜', items:foodData, type:'food', topN:5, previewCount:4 },
+{ key:'hotel', title:'Khách sạn gần bạn', shortTitle:'Khách sạn', icon:'🏨', items:hotelData, type:'hotel', topN:5, previewCount:4 },
+{ key:'medical', title:'Cơ sở y tế gần bạn', shortTitle:'Y tế', icon:'🩺', items:medicalData, type:'medical', topN:5, previewCount:4 },
+{ key:'store', title:'Cửa hàng tiện lợi gần bạn', shortTitle:'Cửa hàng', icon:'🛒', items:storeData, type:'store', topN:5, previewCount:4 }
+];
+
+var totalItems=0;
+groups.forEach(function(g){ totalItems += (g.items || []).length; });
+if(!totalItems){
+list.innerHTML='<div class="nearby-empty">Không tìm thấy dữ liệu gần vị trí hiện tại.</div>';
+return;
+}
+
+var html='';
+html += '<div class="nearby-shell">';
+html += '<div class="nearby-hero">';
+html += '<h2>Khám phá quanh vị trí của bạn</h2>';
+html += '<p>Kết quả đã được sắp xếp theo khoảng cách tăng dần để bạn chọn nhanh điểm đến phù hợp.</p>';
+html += '<div class="nearby-meta">';
+html += '<span class="nearby-chip">' + totalItems + ' địa điểm đề xuất</span>';
+html += '<span class="nearby-chip">Ưu tiên khoảng cách gần nhất</span>';
+html += '<span class="nearby-chip">Chỉ đường Google Maps tức thì</span>';
+html += '</div>';
+
+var availableGroups=groups.filter(function(group){ return (group.items || []).length > 0; });
+if(availableGroups.length > 1){
+html += '<div class="nearby-tabs" role="tablist" aria-label="Nhóm kết quả gần bạn">';
+availableGroups.forEach(function(group, idx){
+var isActive=idx===0 ? ' active' : '';
+html += '<button type="button" class="nearby-tab-btn' + isActive + '" data-tab="' + group.key + '" onclick="activateNearbyTab(\'' + group.key + '\')">' + group.icon + ' ' + group.shortTitle + '</button>';
+});
+html += '</div>';
+}
+html += '</div>';
+
+var animationIndex=0;
+groups.forEach(function(group){
+var items=group.items || [];
+if(!items.length) return;
+var maxCount=group.topN || items.length;
+var baseItems=items.slice(0,maxCount);
+var isExpanded=!!nearbyUiState.expanded[group.key];
+var previewCount=group.previewCount || 4;
+var visibleItems=isExpanded ? baseItems : baseItems.slice(0,previewCount);
+var hasMore=baseItems.length > previewCount;
+var defaultPaneClass = availableGroups.length > 1 ? '' : ' show';
+if(availableGroups.length > 1 && availableGroups[0] && availableGroups[0].key === group.key){
+defaultPaneClass=' show';
+}
+html += '<section class="nearby-group nearby-pane' + defaultPaneClass + '" data-tab="' + group.key + '">';
+html += '<div class="nearby-group-head"><h3>' + group.icon + ' ' + group.title + '</h3><div class="nearby-group-actions"><span class="nearby-count">' + baseItems.length + ' kết quả</span><button type="button" class="nearby-scroll-btn" onclick="scrollNearbyGrid(\'' + group.key + '\',1)">Xem tiếp →</button><button type="button" class="nearby-nav-btn" onclick="scrollNearbyGrid(\'' + group.key + '\',-1)" aria-label="Cuộn trái">‹</button><button type="button" class="nearby-nav-btn" onclick="scrollNearbyGrid(\'' + group.key + '\',1)" aria-label="Cuộn phải">›</button>';
+if(hasMore){
+html += '<button type="button" class="nearby-more-btn" onclick="toggleNearbyExpanded(\'' + group.key + '\')">' + (isExpanded ? 'Thu gọn' : 'Xem thêm') + '</button>';
+}
+html += '</div></div>';
+html += '<div class="nearby-drag-hint">Kéo ngang để xem thêm</div>';
+html += '<div class="nearby-grid-wrap">';
+html += '<button type="button" class="nearby-overlay-nav left" onclick="scrollNearbyGrid(\'' + group.key + '\',-1)" aria-label="Xem mục trước">‹</button>';
+html += '<div class="nearby-grid-fade left"></div>';
+html += '<div class="nearby-grid" id="nearGrid-' + group.key + '">';
+visibleItems.forEach(function(item,idx){
+animationIndex += 1;
+var delay=Math.min(animationIndex * 0.03, 0.5).toFixed(2);
+var imageType=group.type === 'festival' ? 'festival' : group.type;
+var imageOnError=getImageOnError(imageType,item);
+var cardTitle=(group.type === 'festival' ? (idx + 1) + '. ' : '') + escHtml(item.name || 'Địa điểm gần bạn');
+html += '<article class="card nearby-card" style="--delay:' + delay + 's">';
+html += '<img src="' + resolveImageUrl(item.img,imageType,item) + '" onerror="' + imageOnError + '">';
+html += '<div class="card-content">';
+html += '<h3>' + cardTitle + '</h3>';
+if(item.province) html += '<p><b>' + escHtml(item.province) + '</b></p>';
+if(typeof item.distance === 'number') html += '<span class="nearby-distance">Cách bạn ' + item.distance.toFixed(1) + ' km</span>';
+html += '<p>' + escHtml(item.desc || 'Địa điểm nổi bật gần bạn.') + '</p>';
+html += '<a href="https://www.google.com/maps/dir/?api=1&destination=' + item.lat + ',' + item.lng + '" target="_blank" rel="noopener noreferrer"><button>Chỉ đường</button></a>';
+html += '</div></article>';
+});
+html += '</div>';
+html += '<div class="nearby-grid-fade right"></div>';
+html += '<button type="button" class="nearby-overlay-nav right" onclick="scrollNearbyGrid(\'' + group.key + '\',1)" aria-label="Xem mục tiếp theo">›</button>';
+html += '</div></section>';
+});
+
+html += '</div>';
+list.innerHTML=html;
+enableNearbyDragScroll();
+Array.prototype.forEach.call(list.querySelectorAll('.nearby-grid'), function(grid){
+    grid.addEventListener('scroll', updateNearbyGridFadeState, { passive:true });
+});
+window.requestAnimationFrame(updateNearbyGridFadeState);
+if(availableGroups.length > 0){
+var targetTabKey=preferredTabKey || nearbyUiState.activeTab || availableGroups[0].key;
+var isTabAvailable=availableGroups.some(function(group){ return group.key===targetTabKey; });
+activateNearbyTab(isTabAvailable ? targetTabKey : availableGroups[0].key);
+}
 }
 
 // Lịch sử tìm kiếm
@@ -3400,7 +4620,15 @@ document.getElementById("searchBox").addEventListener("input", function() {
 document.getElementById("searchBox").addEventListener("keypress", function(e) {
     if (e.key === 'Enter') {
         let keyword = this.value.trim();
-        if (keyword) addToHistory(keyword);
+        if (keyword) {
+            addToHistory(keyword);
+            logUserActivity({
+                action: 'search',
+                type: 'festival',
+                keyword: keyword,
+                location: 'index'
+            });
+        }
     }
 });
 
@@ -3421,6 +4649,188 @@ function escHtml(str) {
         .replace(/>/g, '&gt;')
         .replace(/"/g, '&quot;')
         .replace(/'/g, '&#39;');
+}
+
+// ===== AUTH =====
+var AUTH_TOKEN_KEY = 'lehoi_auth_token';
+var authState = {
+    token: localStorage.getItem(AUTH_TOKEN_KEY) || '',
+    user: null
+};
+
+function setAuthNotice(message, isError) {
+    var notice = document.getElementById('authNotice');
+    if (!notice) return;
+    if (!message) {
+        notice.className = 'auth-notice';
+        notice.textContent = '';
+        return;
+    }
+    notice.className = 'auth-notice show ' + (isError ? 'err' : 'ok');
+    notice.textContent = message;
+}
+
+function setAuthTab(tab) {
+    var isLogin = tab === 'login';
+    var loginTab = document.getElementById('authTabLogin');
+    var registerTab = document.getElementById('authTabRegister');
+    var loginPanel = document.getElementById('authLoginPanel');
+    var registerPanel = document.getElementById('authRegisterPanel');
+    if (!loginTab || !registerTab || !loginPanel || !registerPanel) return;
+
+    loginTab.classList.toggle('active', isLogin);
+    registerTab.classList.toggle('active', !isLogin);
+    loginPanel.classList.toggle('show', isLogin);
+    registerPanel.classList.toggle('show', !isLogin);
+    setAuthNotice('');
+}
+
+function setAuthUser(user, token) {
+    authState.user = user || null;
+    authState.token = token || '';
+    if (authState.token) localStorage.setItem(AUTH_TOKEN_KEY, authState.token);
+    else localStorage.removeItem(AUTH_TOKEN_KEY);
+    refreshAuthUi();
+}
+
+function refreshAuthUi() {
+    var launchBtn = document.getElementById('authLaunchBtn');
+    var userBar = document.getElementById('authUserBar');
+    var userName = document.getElementById('authUserName');
+    if (launchBtn) {
+        launchBtn.textContent = authState.user ? ('Xin chào, ' + (authState.user.name || 'bạn')) : 'Tài khoản';
+    }
+    if (userBar) {
+        userBar.classList.toggle('show', !!authState.user);
+    }
+    setNearMeButtonLoading(false);
+    
+    if (userName) {
+        userName.textContent = authState.user ? ((authState.user.name || '') + ' • ' + (authState.user.email || '')) : '';
+    }
+}
+
+function resolveAuthApiUrl(path) {
+    var customBase = (window.LEHOI_AUTH_API_BASE || '').trim();
+    var normalizedPath = path || '';
+    if (normalizedPath.charAt(0) !== '/') normalizedPath = '/' + normalizedPath;
+
+    if (customBase) {
+        return customBase.replace(/\/+$/, '') + normalizedPath;
+    }
+
+    if (window.location.protocol === 'http:' || window.location.protocol === 'https:') {
+        if (window.location.port && window.location.port !== '3000') {
+            return window.location.protocol + '//' + window.location.hostname + ':3000' + normalizedPath;
+        }
+        return window.location.origin + normalizedPath;
+    }
+
+    return 'http://localhost:3000' + normalizedPath;
+}
+
+async function authRequest(path, options, allowNoToken) {
+    var reqOptions = Object.assign({ method: 'GET' }, options || {});
+    reqOptions.headers = Object.assign({ 'Content-Type': 'application/json' }, reqOptions.headers || {});
+    if (authState.token) {
+        reqOptions.headers.Authorization = 'Bearer ' + authState.token;
+    }
+    if (!allowNoToken && !authState.token && path !== '/api/auth/login' && path !== '/api/auth/register') {
+        throw new Error('Bạn chưa đăng nhập.');
+    }
+
+    var response = await fetch(resolveAuthApiUrl(path), reqOptions);
+    var data = null;
+    try {
+        data = await response.json();
+    } catch (e) {
+        data = null;
+    }
+
+    if (!response.ok) {
+        var message = data && (data.error || data.message) ? (data.error || data.message) : 'Không thể kết nối máy chủ. Vui lòng chạy server bằng node server.js';
+        throw new Error(message);
+    }
+    return data || {};
+}
+
+async function fetchAuthMe() {
+    if (!authState.token) {
+        setAuthUser(null, '');
+        return;
+    }
+    try {
+        var data = await authRequest('/api/auth/me', { method: 'GET' }, true);
+        if (data && data.user) {
+            setAuthUser(data.user, authState.token);
+        } else {
+            setAuthUser(null, '');
+        }
+    } catch (e) {
+        setAuthUser(null, '');
+    }
+}
+
+async function handleLoginSubmit(event) {
+    event.preventDefault();
+    var email = (document.getElementById('authLoginEmail').value || '').trim();
+    var password = document.getElementById('authLoginPassword').value || '';
+    if (!email || !password) {
+        setAuthNotice('Vui lòng nhập đủ email và mật khẩu.', true);
+        return;
+    }
+
+    try {
+        setAuthNotice('Đang đăng nhập...', false);
+        var data = await authRequest('/api/auth/login', {
+            method: 'POST',
+            body: JSON.stringify({ email: email, password: password })
+        }, true);
+        setAuthUser(data.user || null, data.token || '');
+        setAuthNotice('Đăng nhập thành công.', false);
+    } catch (e) {
+        setAuthNotice(e.message || 'Đăng nhập thất bại.', true);
+    }
+}
+
+async function handleRegisterSubmit(event) {
+    event.preventDefault();
+    var name = (document.getElementById('authRegisterName').value || '').trim();
+    var email = (document.getElementById('authRegisterEmail').value || '').trim();
+    var password = document.getElementById('authRegisterPassword').value || '';
+
+    if (!name || !email || !password) {
+        setAuthNotice('Vui lòng nhập đầy đủ thông tin đăng ký.', true);
+        return;
+    }
+    if (password.length < 6) {
+        setAuthNotice('Mật khẩu cần ít nhất 6 ký tự.', true);
+        return;
+    }
+
+    try {
+        setAuthNotice('Đang tạo tài khoản...', false);
+        var data = await authRequest('/api/auth/register', {
+            method: 'POST',
+            body: JSON.stringify({ name: name, email: email, password: password })
+        }, true);
+        setAuthUser(data.user || null, data.token || '');
+        setAuthNotice('Đăng ký thành công. Bạn đã được đăng nhập.', false);
+    } catch (e) {
+        setAuthNotice(e.message || 'Đăng ký thất bại.', true);
+    }
+}
+
+async function handleLogout() {
+    try {
+        if (authState.token) {
+            await authRequest('/api/auth/logout', { method: 'POST' }, true);
+        }
+    } catch (e) {
+        // Tiếp tục xóa phiên cục bộ kể cả khi server lỗi.
+    }
+    setAuthUser(null, '');
+    setAuthNotice('Bạn đã đăng xuất.', false);
 }
 
 function getAllKnownProvinces() {
@@ -3756,6 +5166,58 @@ window.addEventListener('DOMContentLoaded', function() {
     });
 
     addChatMessage('Xin chào. Mình là Trợ lý AI Lễ hội Việt. Hỏi mình về lễ hội, ăn gì, chơi gì hoặc xin lịch trình 1 ngày nhé.', 'bot');
+});
+
+window.addEventListener('DOMContentLoaded', function() {
+    var modal = document.getElementById('authModal');
+    var launchBtn = document.getElementById('authLaunchBtn');
+    var closeBtn = document.getElementById('authCloseBtn');
+    var tabLogin = document.getElementById('authTabLogin');
+    var tabRegister = document.getElementById('authTabRegister');
+    var loginForm = document.getElementById('authLoginForm');
+    var registerForm = document.getElementById('authRegisterForm');
+    var logoutBtn = document.getElementById('authLogoutBtn');
+
+    if (launchBtn && modal) {
+        launchBtn.addEventListener('click', function() {
+            modal.classList.add('show');
+            setAuthNotice('');
+            if (authState.user) {
+                setAuthTab('login');
+            }
+        });
+    }
+    if (closeBtn && modal) {
+        closeBtn.addEventListener('click', function() {
+            modal.classList.remove('show');
+        });
+    }
+    if (modal) {
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                modal.classList.remove('show');
+            }
+        });
+    }
+    if (tabLogin) {
+        tabLogin.addEventListener('click', function() { setAuthTab('login'); });
+    }
+    if (tabRegister) {
+        tabRegister.addEventListener('click', function() { setAuthTab('register'); });
+    }
+    if (loginForm) {
+        loginForm.addEventListener('submit', handleLoginSubmit);
+    }
+    if (registerForm) {
+        registerForm.addEventListener('submit', handleRegisterSubmit);
+    }
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', handleLogout);
+    }
+
+    refreshAuthUi();
+    fetchAuthMe();
+    refreshLocationPermissionBanner();
 });
 
 </script>

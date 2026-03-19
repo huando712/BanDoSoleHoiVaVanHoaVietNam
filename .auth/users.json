@@ -1,0 +1,59 @@
+[
+  {
+    "id": "59650d3a-815a-41e1-a812-d787dfa2955c",
+    "name": "hún",
+    "email": "lienm675@gmail.com",
+    "passwordHash": "0b1ae227d635599abadc8b18d0b5fc12:9b0dbd1d62886bd58116f6fcad035dd6d0c9eec01be6032314cd00764810a00f4a040f2d7216df56849f95eb9524d9347eb982eebf427b3551b8dffa88210795",
+    "createdAt": "2026-03-19T03:54:53.538Z",
+    "profile": {
+      "displayName": "hún",
+      "phone": "",
+      "birthDate": "",
+      "gender": "",
+      "city": "",
+      "bio": "",
+      "avatarUrl": "",
+      "language": "vi",
+      "favoriteRegions": [],
+      "receiveEmailUpdates": true,
+      "receiveSmsUpdates": false,
+      "favoriteFestivalIds": [],
+      "updatedAt": "2026-03-19T03:54:56.138Z"
+    },
+    "activities": [
+      {
+        "id": "25417718-c589-415f-8ae6-1de883a7a403",
+        "action": "view_detail",
+        "type": "festival",
+        "itemId": 9,
+        "itemName": "Lễ hội Đền Trần",
+        "keyword": "",
+        "location": "detail",
+        "meta": {},
+        "createdAt": "2026-03-19T03:59:45.874Z"
+      },
+      {
+        "id": "1a73d9ec-6e36-4190-8643-2c6c3f4b975c",
+        "action": "open_profile",
+        "type": "profile",
+        "itemId": null,
+        "itemName": "",
+        "keyword": "",
+        "location": "",
+        "meta": {},
+        "createdAt": "2026-03-19T03:59:09.113Z"
+      },
+      {
+        "id": "00b43bde-9047-416a-8b35-0e4090427b0e",
+        "action": "open_profile",
+        "type": "profile",
+        "itemId": null,
+        "itemName": "",
+        "keyword": "",
+        "location": "",
+        "meta": {},
+        "createdAt": "2026-03-19T03:54:56.186Z"
+      }
+    ]
+  }
+]

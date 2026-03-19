@@ -70,6 +70,30 @@ color:#e53935;
 line-height:1.6;
 }
 
+.personalized-box{
+display:none;
+margin-bottom:16px;
+padding:12px 14px;
+border-radius:12px;
+background:linear-gradient(135deg, rgba(255,245,221,0.92), rgba(255,233,200,0.92));
+border:1px solid rgba(229,57,53,0.25);
+text-align:left;
+}
+
+.personalized-box.show{
+display:block;
+}
+
+.personalized-box h3{
+margin:0 0 6px;
+color:#8f2b1b;
+}
+
+.personalized-box p{
+margin:0;
+color:#553d2f;
+}
+
 .back-button{
 background:#e53935;
 color:white;
@@ -116,6 +140,8 @@ padding:30px;
 </nav>
 
 <section>
+
+<div id="personalizedBox" class="personalized-box"></div>
 
 <div class="detail-card" id="detailContent">
 
@@ -256,7 +282,22 @@ var festivals=[
 {id:97,name:"Lễ hội Đua Bò",province:"An Giang",lat:10.36,lng:104.85,desc:"Lễ hội Khmer",img:"https://source.unsplash.com/400x300/?race",detail:"The An Giang Buffalo Racing Festival celebrates Khmer buffalo racing traditions, honoring agricultural prosperity and community celebration. This festival honors buffalo racing and agricultural traditions. The celebration features traditional buffalo races, folk music performances, and cultural exhibitions. Participants dress in traditional Khmer clothing and participate in racing activities. The festival includes traditional crafts displays featuring buffalo-themed artwork and local handicrafts. Traditional food offerings emphasize Khmer specialties and community sharing. The celebration reflects the deep connection between Khmer communities and their agricultural traditions. The festival demonstrates how cultural practices preserve traditional knowledge about animal husbandry. Traditional music and dance performances showcase the region's cultural heritage. The festival preserves important aspects of Khmer cultural heritage while maintaining agricultural significance. The celebration emphasizes themes of prosperity, community, and cultural continuity."},
 {id:98,name:"Lễ hội Nghinh Ông",province:"Kiên Giang",lat:10.22,lng:103.96,desc:"Lễ hội biển",img:"https://source.unsplash.com/400x300/?sea",detail:"The Kiên Giang Nghinh Ông Festival celebrates maritime spiritual traditions, honoring sea deities and fishing community protection. This festival honors maritime protection and fishing traditions. The celebration features traditional sea rituals, folk music performances, and cultural exhibitions. Participants dress in traditional fishing clothing and participate in maritime ceremonies. The festival includes traditional crafts displays featuring maritime-themed artwork and local handicrafts. Traditional food offerings emphasize seafood specialties and community sharing. The celebration reflects the deep connection between Vietnamese communities and their coastal environment. The festival demonstrates how cultural practices preserve traditional knowledge about maritime protection. Traditional music and dance performances showcase the region's cultural heritage. The festival preserves important aspects of Vietnamese maritime heritage while maintaining community significance. The celebration emphasizes themes of protection, community, and coastal culture."},
 {id:99,name:"Lễ hội Dinh Cậu",province:"Phú Quốc",lat:10.22,lng:103.96,desc:"Lễ hội ngư dân",img:"https://source.unsplash.com/400x300/?island",detail:"The Phú Quốc Dinh Cậu Festival celebrates island spiritual traditions, honoring local deities and island community protection. This festival honors island protection and fishing traditions. The celebration features traditional island rituals, folk music performances, and cultural exhibitions. Participants dress in traditional fishing clothing and participate in island ceremonies. The festival includes traditional crafts displays featuring island-themed artwork and local handicrafts. Traditional food offerings emphasize seafood specialties and community sharing. The celebration reflects the deep connection between island communities and their spiritual traditions. The festival demonstrates how cultural practices preserve traditional knowledge about island protection. Traditional music and dance performances showcase the region's cultural heritage. The festival preserves important aspects of island cultural heritage while maintaining community significance. The celebration emphasizes themes of protection, community, and island culture."},
-{id:100,name:"Lễ hội Biển Phú Quốc",province:"Kiên Giang",lat:10.28,lng:103.96,desc:"Festival du lịch biển",img:"https://source.unsplash.com/400x300/?beach",detail:"The Phú Quốc Sea Festival celebrates the island's coastal beauty and tourism potential, honoring maritime culture and island development. This festival celebrates coastal beauty and tourism development. The celebration features beach festivals, traditional boat parades, and cultural performances. Participants engage in water sports, traditional music performances, and community activities. The festival includes traditional crafts displays featuring maritime-themed artwork and local handicrafts. Traditional food offerings emphasize seafood specialties and community sharing. The celebration reflects the deep connection between island communities and their coastal environment. The festival demonstrates how cultural practices preserve traditional knowledge about maritime traditions. Traditional music and dance performances showcase the region's cultural heritage. The festival preserves important aspects of island cultural heritage while promoting tourism. The celebration emphasizes themes of beauty, community, and coastal culture."}
+{id:100,name:"Lễ hội Biển Phú Quốc",province:"Kiên Giang",lat:10.28,lng:103.96,desc:"Festival du lịch biển",img:"https://source.unsplash.com/400x300/?beach",detail:"The Phú Quốc Sea Festival celebrates the island's coastal beauty and tourism potential, honoring maritime culture and island development. This festival celebrates coastal beauty and tourism development. The celebration features beach festivals, traditional boat parades, and cultural performances. Participants engage in water sports, traditional music performances, and community activities. The festival includes traditional crafts displays featuring maritime-themed artwork and local handicrafts. Traditional food offerings emphasize seafood specialties and community sharing. The celebration reflects the deep connection between island communities and their coastal environment. The festival demonstrates how cultural practices preserve traditional knowledge about maritime traditions. Traditional music and dance performances showcase the region's cultural heritage. The festival preserves important aspects of island cultural heritage while promoting tourism. The celebration emphasizes themes of beauty, community, and coastal culture."},
+{id:101,name:"Lễ hội Ooc Om Bóc - Đua ghe Ngo",province:"Sóc Trăng",lat:9.603,lng:105.973,desc:"Lễ cúng trăng và đua ghe ngo đặc sắc",img:"https://source.unsplash.com/400x300/?khmer-festival",detail:"Lễ hội Ooc Om Bóc tại Sóc Trăng là điểm nhấn văn hóa Khmer Nam Bộ với nghi thức cúng trăng trang trọng và đua ghe ngo sôi động. Đây là dịp cộng đồng cầu mùa màng tốt tươi, tri ân thiên nhiên và quảng bá bản sắc địa phương."},
+{id:102,name:"Lễ hội Nghinh Ông Sông Đốc",province:"Cà Mau",lat:9.035,lng:105.046,desc:"Lễ hội cầu ngư tiêu biểu miền biển Tây",img:"https://source.unsplash.com/400x300/?fishing-boat",detail:"Lễ hội Nghinh Ông Sông Đốc gắn với đời sống ngư dân vùng cực Nam, mang ý nghĩa cầu biển lặng cá đầy khoang. Hoạt động rước Ông, tế lễ và sinh hoạt cộng đồng tạo nên không khí linh thiêng nhưng gần gũi."},
+{id:103,name:"Lễ hội vía Bà Ngũ Hành",province:"TP.HCM",lat:10.761,lng:106.698,desc:"Tín ngưỡng dân gian cộng đồng Hoa - Việt",img:"https://source.unsplash.com/400x300/?temple-vietnam",detail:"Lễ vía Bà Ngũ Hành phản ánh sự giao thoa văn hóa Hoa - Việt tại đô thị lớn, nơi cư dân cầu bình an và phúc lộc. Lễ hội nổi bật với nghi thức dâng hương, hát bội và hoạt động thiện nguyện cộng đồng."},
+{id:104,name:"Lễ hội Kỳ Yên Đình Bình Thủy",province:"Cần Thơ",lat:10.048,lng:105.762,desc:"Nghi lễ đình làng Nam Bộ giàu bản sắc",img:"https://source.unsplash.com/400x300/?vietnam-culture",detail:"Kỳ Yên tại đình Bình Thủy là nghi lễ quan trọng trong văn hóa đình làng Nam Bộ, tưởng nhớ tiền hiền và cầu quốc thái dân an. Phần hội có đờn ca tài tử, ẩm thực dân gian và các hoạt động giao lưu xóm ấp."},
+{id:105,name:"Lễ hội Dừa Bến Tre",province:"Bến Tre",lat:10.243,lng:106.376,desc:"Tôn vinh cây dừa và văn hóa sông nước",img:"https://source.unsplash.com/400x300/?coconut",detail:"Lễ hội Dừa Bến Tre quảng bá nông sản chủ lực cùng tinh thần sáng tạo của người dân xứ dừa. Không gian lễ hội kết hợp trưng bày sản phẩm, biểu diễn nghệ thuật và trải nghiệm văn hóa miệt vườn."},
+{id:106,name:"Lễ hội vía Bà Chúa Xứ Bàu Mướp",province:"Tây Ninh",lat:11.314,lng:106.099,desc:"Lễ hội tín ngưỡng địa phương vùng Đông Nam Bộ",img:"https://source.unsplash.com/400x300/?pilgrimage",detail:"Lễ vía Bà Chúa Xứ Bàu Mướp là điểm hành hương nổi bật ở Tây Ninh, thu hút đông đảo người dân cầu an và cầu tài. Lễ hội thể hiện nét tín ngưỡng dân gian bền bỉ của cư dân Nam Bộ."},
+{id:107,name:"Lễ hội Tống Phong",province:"Bình Thuận",lat:10.933,lng:108.102,desc:"Nghi lễ cầu an, cầu mưa của cư dân ven biển",img:"https://source.unsplash.com/400x300/?coastal-culture",detail:"Tống Phong là nghi thức truyền thống nhằm xua điều xấu, cầu mưa thuận gió hòa cho cộng đồng ven biển Bình Thuận. Lễ hội có giá trị nhân văn cao, gắn kết làng chài và giữ gìn phong tục cổ."},
+{id:108,name:"Lễ hội Cầu Bông",province:"Bình Định",lat:13.782,lng:109.219,desc:"Lễ hội nông nghiệp cầu mùa truyền thống",img:"https://source.unsplash.com/400x300/?rice-field",detail:"Lễ hội Cầu Bông phản ánh đời sống nông nghiệp truyền thống của cư dân miền Trung với mong ước mùa màng bội thu. Các nghi lễ cúng tế và trình diễn dân gian tạo nên không khí đậm chất làng quê."},
+{id:109,name:"Lễ hội Đập Trống",province:"Quảng Nam",lat:15.585,lng:108.019,desc:"Nghi lễ độc đáo của người Cor",img:"https://source.unsplash.com/400x300/?drum",detail:"Đập Trống là lễ hội đặc sắc của người Cor, biểu trưng cho sự hòa hợp cộng đồng và tinh thần lễ hội núi rừng. Âm thanh trống, điệu múa vòng và lễ vật truyền thống là điểm nhấn không thể thiếu."},
+{id:110,name:"Lễ hội Mừng lúa mới của người Raglai",province:"Khánh Hòa",lat:12.517,lng:108.935,desc:"Nét văn hóa mùa vụ của đồng bào Raglai",img:"https://source.unsplash.com/400x300/?ethnic",detail:"Lễ mừng lúa mới của người Raglai tôn vinh thành quả lao động và tri ân thần linh sau vụ mùa. Đây là dịp cộng đồng sum họp, diễn tấu nhạc cụ dân tộc và truyền dạy phong tục cho thế hệ trẻ."},
+{id:111,name:"Lễ hội A Riêu Ping",province:"Thừa Thiên Huế",lat:16.234,lng:107.151,desc:"Lễ hội truyền thống của đồng bào Tà Ôi",img:"https://source.unsplash.com/400x300/?minority-culture",detail:"A Riêu Ping là lễ hội quan trọng của người Tà Ôi nhằm cầu mùa và cầu phúc cho bản làng. Các nghi thức truyền thống, trang phục thổ cẩm và văn nghệ dân gian tạo nên bản sắc rất riêng của vùng Trường Sơn."},
+{id:112,name:"Lễ hội Đền Đức Thánh Trần Bảo Lộc",province:"Lâm Đồng",lat:11.546,lng:107.807,desc:"Không gian tâm linh kết hợp văn hóa cao nguyên",img:"https://source.unsplash.com/400x300/?highland-temple",detail:"Lễ hội tại đền Đức Thánh Trần ở Bảo Lộc kết nối tín ngưỡng thờ Đức Thánh Trần với đời sống văn hóa cao nguyên. Sự kiện quy tụ nghi lễ dâng hương, sinh hoạt cộng đồng và hoạt động thiện tâm."},
+{id:113,name:"Lễ hội Gầu Tào của người Mông",province:"Lào Cai",lat:22.339,lng:103.844,desc:"Lễ hội cầu phúc đầu năm vùng cao",img:"https://source.unsplash.com/400x300/?mountain-festival",detail:"Gầu Tào là lễ hội đầu năm quan trọng của người Mông, cầu sức khỏe, may mắn và sự sinh sôi cho gia đình. Không gian lễ hội rộn ràng với khèn Mông, ném pao và các trò chơi dân gian vùng cao."},
+{id:114,name:"Lễ hội Kin Chiêng Boóc Mạy",province:"Điện Biên",lat:21.386,lng:103.023,desc:"Nghi lễ cầu mùa của người Thái",img:"https://source.unsplash.com/400x300/?northwest-vietnam",detail:"Kin Chiêng Boóc Mạy là lễ hội truyền thống của người Thái ở Điện Biên, gắn với tín ngưỡng nông nghiệp và nghi thức cầu mùa. Lễ hội giúp bảo tồn dân ca, dân vũ và tri thức bản địa Tây Bắc."},
+{id:115,name:"Lễ hội Chợ Phong Lưu Khâu Vai",province:"Hà Giang",lat:23.167,lng:105.068,desc:"Chợ tình độc đáo gắn với văn hóa vùng cao",img:"https://source.unsplash.com/400x300/?ethnic-market",detail:"Chợ Phong Lưu Khâu Vai là không gian giao lưu văn hóa - tình cảm đặc biệt của đồng bào vùng cao Hà Giang. Lễ hội góp phần gìn giữ phong tục bản địa và phát triển du lịch cộng đồng bền vững."}
 
 ];
 
@@ -266,16 +307,60 @@ var festivals=[
 var entertainments=[{id:1,name:"Công viên nước Hồ Tây",province:"Hà Nội",lat:21.0733,lng:105.8010,desc:"Khu vui chơi mát mẻ gần Hà Nội",img:"https://source.unsplash.com/400x300/?waterpark"},{id:2,name:"Công viên Văn hóa Đầm Sen",province:"TP.HCM",lat:10.7758,lng:106.6320,desc:"Khu giải trí lớn ở Sài Gòn",img:"https://source.unsplash.com/400x300/?themepark"},{id:3,name:"Sun World Hạ Long",province:"Quảng Ninh",lat:20.9850,lng:107.0480,desc:"Công viên chủ đề tại Hạ Long",img:"https://source.unsplash.com/400x300/?universe"}];
 
 // điểm ẩm thực gần lễ hội
-var foods=[{id:1,name:"Phở Bát Đàn",province:"Hà Nội",lat:21.0285,lng:105.8530,desc:"Phở truyền thống Hà Nội",img:"https://source.unsplash.com/400x300/?pho"},{id:2,name:"Bánh mì Phượng",province:"Đà Nẵng",lat:16.0678,lng:108.2143,desc:"Bánh mì nổi tiếng tại Đà Nẵng",img:"https://source.unsplash.com/400x300/?bread"},{id:3,name:"Hủ tiếu Nam Vang",province:"TP.HCM",lat:10.7868,lng:106.6990,desc:"Món hủ tiếu đặc sản Sài Gòn",img:"https://source.unsplash.com/400x300/?noodle"}];
+var foods=[
+{id:1,name:"Phở Bát Đàn",province:"Hà Nội",lat:21.0285,lng:105.8530,desc:"Phở truyền thống Hà Nội",img:"https://source.unsplash.com/400x300/?pho"},
+{id:2,name:"Bún chả Hàng Quạt",province:"Hà Nội",lat:21.0314,lng:105.8498,desc:"Bún chả than hoa đậm vị",img:"https://source.unsplash.com/400x300/?bun-cha"},
+{id:3,name:"Bánh đa cua Cầu Đất",province:"Hải Phòng",lat:20.8539,lng:106.6881,desc:"Đặc sản bánh đa cua đất cảng",img:"https://source.unsplash.com/400x300/?crab-noodle"},
+{id:4,name:"Bún bò Huế O Cương",province:"Huế",lat:16.4637,lng:107.5909,desc:"Bún bò Huế vị truyền thống",img:"https://source.unsplash.com/400x300/?beef-noodle"},
+{id:5,name:"Mì Quảng Bà Mua",province:"Đà Nẵng",lat:16.0544,lng:108.2022,desc:"Mì Quảng chuẩn vị Đà Nẵng",img:"https://source.unsplash.com/400x300/?mi-quang"},
+{id:6,name:"Bún cá Nha Trang",province:"Khánh Hòa",lat:12.2388,lng:109.1967,desc:"Bún cá thanh ngọt miền biển",img:"https://source.unsplash.com/400x300/?fish-noodle"},
+{id:7,name:"Hủ tiếu Nam Vang",province:"TP.HCM",lat:10.7868,lng:106.6990,desc:"Món hủ tiếu đặc sản Sài Gòn",img:"https://source.unsplash.com/400x300/?noodle"},
+{id:8,name:"Cơm tấm Sài Gòn",province:"TP.HCM",lat:10.7756,lng:106.7009,desc:"Cơm tấm sườn bì chả",img:"https://source.unsplash.com/400x300/?rice-plate"},
+{id:9,name:"Lẩu mắm Cần Thơ",province:"Cần Thơ",lat:10.0452,lng:105.7469,desc:"Lẩu mắm đậm chất miền Tây",img:"https://source.unsplash.com/400x300/?hotpot"},
+{id:10,name:"Bún kèn Phú Quốc",province:"Kiên Giang",lat:10.2272,lng:103.9679,desc:"Đặc sản bún kèn đảo ngọc",img:"https://source.unsplash.com/400x300/?vietnamese-food"}
+];
 
 // tiện ích: khách sạn
-var hotels=[{id:1,name:"Khách sạn Hà Nội - Elegance",province:"Hà Nội",lat:21.0280,lng:105.8542,desc:"Khách sạn 4 sao trung tâm Hà Nội",img:"https://source.unsplash.com/400x300/?hotel"},{id:2,name:"Khách sạn Sài Gòn - Riverside",province:"TP.HCM",lat:10.7708,lng:106.6996,desc:"Khách sạn ven sông Sài Gòn",img:"https://source.unsplash.com/400x300/?building"}];
+var hotels=[
+{id:1,name:"Hanoi Elegance Central",province:"Hà Nội",lat:21.0280,lng:105.8542,desc:"Khách sạn trung tâm phố cổ",img:"https://source.unsplash.com/400x300/?hotel"},
+{id:2,name:"Lotte Hotel Hanoi",province:"Hà Nội",lat:21.0338,lng:105.8132,desc:"Khách sạn cao tầng view thành phố",img:"https://source.unsplash.com/400x300/?luxury-hotel"},
+{id:3,name:"Halong Bay Premier",province:"Quảng Ninh",lat:20.9526,lng:107.0871,desc:"Lưu trú gần vịnh Hạ Long",img:"https://source.unsplash.com/400x300/?bay-hotel"},
+{id:4,name:"Imperial Huế",province:"Huế",lat:16.4661,lng:107.5900,desc:"Khách sạn gần sông Hương",img:"https://source.unsplash.com/400x300/?boutique-hotel"},
+{id:5,name:"Danang Riverside Hotel",province:"Đà Nẵng",lat:16.0610,lng:108.2235,desc:"Khách sạn ven sông Hàn",img:"https://source.unsplash.com/400x300/?city-hotel"},
+{id:6,name:"Nha Trang Ocean View",province:"Khánh Hòa",lat:12.2358,lng:109.1969,desc:"Khách sạn gần biển Nha Trang",img:"https://source.unsplash.com/400x300/?beach-resort"},
+{id:7,name:"Sai Gon Riverside",province:"TP.HCM",lat:10.7708,lng:106.6996,desc:"Khách sạn trung tâm quận 1",img:"https://source.unsplash.com/400x300/?hotel-lobby"},
+{id:8,name:"Can Tho Ninh Kieu Hotel",province:"Cần Thơ",lat:10.0342,lng:105.7885,desc:"Khách sạn gần bến Ninh Kiều",img:"https://source.unsplash.com/400x300/?river-hotel"},
+{id:9,name:"Vung Tau Marina Hotel",province:"Bà Rịa - Vũng Tàu",lat:10.3459,lng:107.0843,desc:"Khách sạn nghỉ dưỡng ven biển",img:"https://source.unsplash.com/400x300/?seaside-hotel"},
+{id:10,name:"Phu Quoc Island Stay",province:"Kiên Giang",lat:10.2219,lng:103.9710,desc:"Khách sạn gần trung tâm đảo",img:"https://source.unsplash.com/400x300/?island-resort"}
+];
 
 // tiện ích: y tế
-var medicals=[{id:1,name:"Bệnh viện Trung ương Huế",province:"Huế",lat:16.4546,lng:107.5790,desc:"Bệnh viện tuyến trung ương",img:"https://source.unsplash.com/400x300/?hospital"},{id:2,name:"Phòng khám Đa khoa Quảng Ninh",province:"Quảng Ninh",lat:20.9600,lng:107.0482,desc:"Phòng khám y tế ở Hạ Long",img:"https://source.unsplash.com/400x300/?clinic"}];
+var medicals=[
+{id:1,name:"Bệnh viện Bạch Mai",province:"Hà Nội",lat:21.0005,lng:105.8412,desc:"Bệnh viện đa khoa tuyến trung ương",img:"https://source.unsplash.com/400x300/?hospital"},
+{id:2,name:"Bệnh viện Việt Đức",province:"Hà Nội",lat:21.0283,lng:105.8502,desc:"Bệnh viện ngoại khoa lớn",img:"https://source.unsplash.com/400x300/?medical"},
+{id:3,name:"Bệnh viện Đa khoa Quảng Ninh",province:"Quảng Ninh",lat:20.9600,lng:107.0482,desc:"Bệnh viện tỉnh tại Hạ Long",img:"https://source.unsplash.com/400x300/?hospital-building"},
+{id:4,name:"Bệnh viện Trung ương Huế",province:"Huế",lat:16.4546,lng:107.5790,desc:"Bệnh viện tuyến trung ương",img:"https://source.unsplash.com/400x300/?hospital"},
+{id:5,name:"Bệnh viện Đà Nẵng",province:"Đà Nẵng",lat:16.0701,lng:108.2207,desc:"Bệnh viện đa khoa lớn miền Trung",img:"https://source.unsplash.com/400x300/?healthcare"},
+{id:6,name:"Bệnh viện Đa khoa Khánh Hòa",province:"Khánh Hòa",lat:12.2462,lng:109.1909,desc:"Cơ sở y tế trung tâm Nha Trang",img:"https://source.unsplash.com/400x300/?medical-center"},
+{id:7,name:"Bệnh viện Chợ Rẫy",province:"TP.HCM",lat:10.7567,lng:106.6596,desc:"Bệnh viện tuyến cuối phía Nam",img:"https://source.unsplash.com/400x300/?emergency"},
+{id:8,name:"Bệnh viện Nhân dân 115",province:"TP.HCM",lat:10.7721,lng:106.6635,desc:"Bệnh viện đa khoa lớn tại TP.HCM",img:"https://source.unsplash.com/400x300/?doctor"},
+{id:9,name:"Bệnh viện Đa khoa Cần Thơ",province:"Cần Thơ",lat:10.0340,lng:105.7709,desc:"Bệnh viện phục vụ khu vực miền Tây",img:"https://source.unsplash.com/400x300/?medical-team"},
+{id:10,name:"Bệnh viện Đa khoa Kiên Giang",province:"Kiên Giang",lat:10.0125,lng:105.0801,desc:"Bệnh viện trung tâm tỉnh",img:"https://source.unsplash.com/400x300/?clinic-building"}
+];
 
 // tiện ích: cửa hàng tiện lợi
-var stores=[{id:1,name:"Circle K Hà Nội",province:"Hà Nội",lat:21.0281,lng:105.8533,desc:"Chuỗi cửa hàng tiện lợi 24/7",img:"https://source.unsplash.com/400x300/?store"},{id:2,name:"7-Eleven Đà Nẵng",province:"Đà Nẵng",lat:16.0544,lng:108.2022,desc:"Cửa hàng tiện lợi nổi tiếng tại ĐN",img:"https://source.unsplash.com/400x300/?convenience"}];
+var stores=[
+{id:1,name:"Circle K Hà Nội",province:"Hà Nội",lat:21.0281,lng:105.8533,desc:"Chuỗi cửa hàng tiện lợi 24/7",img:"https://source.unsplash.com/400x300/?store"},
+{id:2,name:"WinMart+ Hải Phòng",province:"Hải Phòng",lat:20.8501,lng:106.6888,desc:"Cửa hàng tiện lợi trung tâm",img:"https://source.unsplash.com/400x300/?mini-market"},
+{id:3,name:"GS25 Hạ Long",province:"Quảng Ninh",lat:20.9511,lng:107.0863,desc:"Cửa hàng mở cửa khu du lịch",img:"https://source.unsplash.com/400x300/?convenience-store"},
+{id:4,name:"Circle K Huế",province:"Huế",lat:16.4663,lng:107.5888,desc:"Điểm mua sắm nhanh tại Huế",img:"https://source.unsplash.com/400x300/?grocery"},
+{id:5,name:"7-Eleven Đà Nẵng",province:"Đà Nẵng",lat:16.0544,lng:108.2022,desc:"Cửa hàng tiện lợi nổi tiếng tại ĐN",img:"https://source.unsplash.com/400x300/?convenience"},
+{id:6,name:"FamilyMart Nha Trang",province:"Khánh Hòa",lat:12.2385,lng:109.1962,desc:"Cửa hàng tiện lợi gần biển",img:"https://source.unsplash.com/400x300/?mart"},
+{id:7,name:"GS25 TP.HCM",province:"TP.HCM",lat:10.7754,lng:106.7003,desc:"Chuỗi tiện lợi phổ biến tại Sài Gòn",img:"https://source.unsplash.com/400x300/?night-shop"},
+{id:8,name:"7-Eleven TP.HCM",province:"TP.HCM",lat:10.7713,lng:106.6988,desc:"Điểm mua sắm 24/7 quận trung tâm",img:"https://source.unsplash.com/400x300/?city-store"},
+{id:9,name:"WinMart+ Cần Thơ",province:"Cần Thơ",lat:10.0337,lng:105.7877,desc:"Cửa hàng tiện lợi gần bến Ninh Kiều",img:"https://source.unsplash.com/400x300/?food-store"},
+{id:10,name:"WinMart+ Phú Quốc",province:"Kiên Giang",lat:10.2230,lng:103.9682,desc:"Mua sắm nhanh tại đảo ngọc",img:"https://source.unsplash.com/400x300/?convenience-mart"}
+];
 
 function normalizeVietnameseText(text) {
     return String(text || "")
@@ -529,7 +614,112 @@ function getImageOnError(type) {
     return `this.onerror=null;this.src='${fallback}'`;
 }
 
-function displayDetail() {
+const AUTH_TOKEN_KEY = 'lehoi_auth_token';
+
+function resolveApiUrl(path) {
+    var customBase = (window.LEHOI_AUTH_API_BASE || '').trim();
+    if (customBase) return customBase.replace(/\/$/, '') + path;
+
+    var isFile = window.location.protocol === 'file:';
+    var isLocalHost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+    var notBackendPort = window.location.port && window.location.port !== '3000';
+    if (isFile || (isLocalHost && notBackendPort)) {
+        return 'http://localhost:3000' + path;
+    }
+    return path;
+}
+
+function getAuthToken() {
+    return localStorage.getItem(AUTH_TOKEN_KEY) || '';
+}
+
+async function authFetch(path, options) {
+    var token = getAuthToken();
+    if (!token) return null;
+    var headers = Object.assign({}, options && options.headers ? options.headers : {});
+    headers.Authorization = 'Bearer ' + token;
+    if (!headers['Content-Type'] && options && options.body) {
+        headers['Content-Type'] = 'application/json';
+    }
+
+    try {
+        var resp = await fetch(resolveApiUrl(path), Object.assign({}, options || {}, { headers: headers }));
+        if (!resp.ok) return null;
+        return await resp.json();
+    } catch (e) {
+        return null;
+    }
+}
+
+function getRegionByProvince(province) {
+    var p = normalizeVietnameseText(province || '');
+    var north = ['ha noi','bac ninh','hai phong','quang ninh','hai duong','nam dinh','phu tho','lao cai','lang son','ha giang','son la','thai binh','thai nguyen','tuyen quang','vinh phuc','ninh binh'];
+    var central = ['thanh hoa','nghe an','ha tinh','quang binh','quang tri','hue','thua thien hue','da nang','quang nam','quang ngai','binh dinh','phu yen','khanh hoa','ninh thuan','binh thuan','kon tum','gia lai','dak lak','dak nong','lam dong'];
+    if (north.some(function(x){ return p.includes(x); })) return 'bac';
+    if (central.some(function(x){ return p.includes(x); })) return 'trung';
+    return 'nam';
+}
+
+function buildPersonalizedText(item, type, profileData) {
+    if (!profileData || !profileData.profile) return '';
+    var profile = profileData.profile;
+    var messages = [];
+
+    if (type === 'festival' && Array.isArray(profile.favoriteFestivalIds) && profile.favoriteFestivalIds.includes(item.id)) {
+        messages.push('Lễ hội này nằm trong danh sách yêu thích của bạn.');
+    }
+
+    if (type === 'festival' && Array.isArray(profile.favoriteRegions) && profile.favoriteRegions.length) {
+        var region = getRegionByProvince(item.province);
+        if (profile.favoriteRegions.includes(region)) {
+            messages.push('Khu vực lễ hội này trùng với vùng bạn ưu tiên trong hồ sơ.');
+        }
+    }
+
+    if (profile.city) {
+        var cityNorm = normalizeVietnameseText(profile.city);
+        var provinceNorm = normalizeVietnameseText(item.province || '');
+        if (cityNorm && provinceNorm && (provinceNorm.includes(cityNorm) || cityNorm.includes(provinceNorm))) {
+            messages.push('Địa điểm này gần với tỉnh/thành bạn đã lưu trong hồ sơ.');
+        }
+    }
+
+    if (!messages.length && type === 'festival') {
+        messages.push('Bạn có thể thêm lễ hội này vào mục yêu thích trong trang Hồ sơ để nhận gợi ý cá nhân hóa tốt hơn.');
+    }
+
+    return messages.join(' ');
+}
+
+function renderPersonalizedBox(text, userName) {
+    var box = document.getElementById('personalizedBox');
+    if (!box) return;
+    if (!text) {
+        box.classList.remove('show');
+        box.innerHTML = '';
+        return;
+    }
+
+    box.innerHTML = '<h3>Gợi ý cho ' + (userName || 'bạn') + '</h3><p>' + text + '</p>';
+    box.classList.add('show');
+}
+
+async function logDetailActivity(type, item) {
+    if (!item) return;
+    await authFetch('/api/activity/log', {
+        method: 'POST',
+        body: JSON.stringify({
+            action: 'view_detail',
+            type: type || '',
+            itemId: item.id,
+            itemName: item.name,
+            location: 'detail'
+        }),
+        headers: { 'Content-Type': 'application/json' }
+    });
+}
+
+async function displayDetail() {
     const type = getQueryParam('type');
     const id = parseInt(getQueryParam('id'));
 
@@ -572,12 +762,23 @@ function displayDetail() {
                 <button>Chỉ đường</button>
             </a>
         `;
+
+        var profileData = await authFetch('/api/profile', { method: 'GET' });
+        if (profileData && profileData.profile) {
+            var personalizedText = buildPersonalizedText(item, type, profileData);
+            renderPersonalizedBox(personalizedText, profileData.user && profileData.user.name ? profileData.user.name : 'bạn');
+        }
+
+        await logDetailActivity(type, item);
     } else {
         document.getElementById('detailContent').innerHTML = '<p>Không tìm thấy thông tin.</p>';
+        renderPersonalizedBox('', '');
     }
 }
 
-window.onload = displayDetail;
+window.onload = function() {
+    displayDetail();
+};
 
 </script>
 
