@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Rounded square background -->
+  <rect width="512" height="512" rx="96" fill="#d94a2b"/>
+  <!-- Inner glow ring -->
+  <rect x="18" y="18" width="476" height="476" rx="82" fill="none" stroke="#ffc857" stroke-width="6" opacity="0.5"/>
+
+  <!-- Map pin body -->
+  <path d="M256 88
+    C196 88 148 138 148 198
+    C148 272 230 360 256 388
+    C282 360 364 272 364 198
+    C364 138 316 88 256 88Z"
+    fill="white" opacity="0.96"/>
+
+  <!-- Pin inner circle -->
+  <circle cx="256" cy="200" r="52" fill="#d94a2b"/>
+
+  <!-- 8-petal lotus / star inside circle -->
+  <!-- Main cross petals -->
+  <ellipse cx="256" cy="170" rx="11" ry="22" fill="#ffc857"/>
+  <ellipse cx="256" cy="230" rx="11" ry="22" fill="#ffc857"/>
+  <ellipse cx="226" cy="200" rx="22" ry="11" fill="#ffc857"/>
+  <ellipse cx="286" cy="200" rx="22" ry="11" fill="#ffc857"/>
+  <!-- Diagonal petals -->
+  <ellipse cx="235" cy="179" rx="11" ry="22" fill="#ffc857" transform="rotate(-45 235 179)"/>
+  <ellipse cx="277" cy="179" rx="11" ry="22" fill="#ffc857" transform="rotate(45 277 179)"/>
+  <ellipse cx="235" cy="221" rx="11" ry="22" fill="#ffc857" transform="rotate(45 235 221)"/>
+  <ellipse cx="277" cy="221" rx="11" ry="22" fill="#ffc857" transform="rotate(-45 277 221)"/>
+  <!-- Center dot -->
+  <circle cx="256" cy="200" r="14" fill="#fff3c4"/>
+
+  <!-- Stars accent top-left -->
+  <circle cx="72" cy="72" r="5" fill="#ffc857" opacity="0.6"/>
+  <circle cx="90" cy="58" r="3" fill="#ffc857" opacity="0.4"/>
+  <circle cx="58" cy="90" r="3" fill="#ffc857" opacity="0.4"/>
+  <!-- Stars accent top-right -->
+  <circle cx="440" cy="72" r="5" fill="#ffc857" opacity="0.6"/>
+  <circle cx="458" cy="58" r="3" fill="#ffc857" opacity="0.4"/>
+  <circle cx="454" cy="90" r="3" fill="#ffc857" opacity="0.4"/>
+
+  <!-- Bottom label area -->
+  <rect x="148" y="408" width="216" height="56" rx="28" fill="white" opacity="0.18"/>
+  <text x="256" y="447" font-family="Arial, sans-serif" font-size="28" font-weight="800" text-anchor="middle" fill="white" letter-spacing="2">LỄ HỘI</text>
+</svg>

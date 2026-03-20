@@ -10,8 +10,11 @@ dotenv.config();
 
 const app = express();
 const PORT = Number(process.env.PORT || 3000);
-const USERS_FILE = path.join(__dirname, ".auth", "users.json");
-const AVATAR_DIR = path.join(__dirname, ".auth", "avatars");
+// Vercel môi trường serverless: ghi file vào /tmp (ephermal)
+const IS_VERCEL = !!process.env.VERCEL;
+const DATA_DIR = IS_VERCEL ? '/tmp' : path.join(__dirname, '.auth');
+const USERS_FILE = path.join(DATA_DIR, 'users.json');
+const AVATAR_DIR = IS_VERCEL ? '/tmp/avatars' : path.join(__dirname, '.auth', 'avatars');
 const TOKEN_TTL_MS = 7 * 24 * 60 * 60 * 1000;
 const tokenSessions = new Map();
 
@@ -838,6 +841,11 @@ app.get("/api/health", (req, res) => {
   res.json({ ok: true, service: "festival-chatbot", time: new Date().toISOString() });
 });
 
-app.listen(PORT, () => {
-  console.log(`Festival chatbot server listening at http://localhost:${PORT}`);
-});
+// Chạy standalone (local) hoặc export cho Vercel
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`Festival chatbot server listening at http://localhost:${PORT}`);
+  });
+}
+
+module.exports = app;

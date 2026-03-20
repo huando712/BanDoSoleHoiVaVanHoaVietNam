@@ -1,0 +1,16 @@
+# Dependencies
+node_modules/
+
+# Environment (chứa API key - KHÔNG commit lên GitHub)
+.env
+
+# User data local
+.auth/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*

@@ -3,7 +3,17 @@
 
 <head>
 <meta charset="UTF-8">
-<title>Chi tiết - Bản đồ số Lễ hội và Văn hóa Việt Nam</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Chi tiết - Bản đồ Lễ hội & Văn hóa Việt Nam</title>
+<meta name="theme-color" content="#d94a2b">
+<!-- PWA -->
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/svg+xml" href="icon.svg">
+<link rel="apple-touch-icon" href="icon.svg">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Lễ hội VN">
 
 <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
 
@@ -52,14 +62,17 @@ max-width: 800px;
 }
 
 .detail-card{
-text-align: center;
+text-align:left;
 }
 
 .detail-card img{
 width:100%;
-max-width:400px;
+max-width:560px;
 border-radius:10px;
 margin-bottom:20px;
+display:block;
+margin-left:auto;
+margin-right:auto;
 }
 
 .detail-card h2{
@@ -68,6 +81,151 @@ color:#e53935;
 
 .detail-card p{
 line-height:1.6;
+}
+
+.detail-top-head{
+text-align:center;
+}
+
+.detail-subtitle{
+margin:0;
+font-size:18px;
+color:#5a3b2a;
+}
+
+.detail-chip-row{
+display:flex;
+flex-wrap:wrap;
+gap:8px;
+justify-content:center;
+margin:10px 0 18px;
+}
+
+.detail-chip{
+padding:6px 12px;
+border-radius:999px;
+font-size:12px;
+font-weight:700;
+background:rgba(229,57,53,0.1);
+color:#8f2b1b;
+border:1px solid rgba(229,57,53,0.2);
+}
+
+.detail-lead{
+padding:14px 16px;
+border-radius:12px;
+background:linear-gradient(145deg, rgba(255,250,241,0.95), rgba(255,236,209,0.85));
+border:1px solid rgba(229,57,53,0.16);
+color:#4e372a;
+}
+
+.detail-grid{
+margin-top:14px;
+display:grid;
+grid-template-columns:repeat(2,minmax(0,1fr));
+gap:12px;
+}
+
+.detail-block{
+padding:12px;
+border-radius:12px;
+background:rgba(255,255,255,0.86);
+border:1px solid rgba(229,57,53,0.14);
+box-shadow:0 6px 14px rgba(0,0,0,0.06);
+}
+
+.detail-block h3{
+margin:0 0 8px;
+font-size:18px;
+color:#9b2f24;
+}
+
+.detail-list{
+margin:0;
+padding-left:18px;
+line-height:1.55;
+color:#4a3529;
+}
+
+.detail-list li{ margin-bottom:4px; }
+
+.detail-meta{
+margin-top:14px;
+padding:12px;
+border-radius:12px;
+background:rgba(255,255,255,0.82);
+border:1px solid rgba(229,57,53,0.16);
+display:grid;
+gap:6px;
+}
+
+.detail-actions{
+display:flex;
+justify-content:center;
+margin-top:14px;
+}
+
+/* Audience Fit */
+.audience-fit{
+margin-top:16px;
+padding:14px 16px;
+border-radius:14px;
+background:linear-gradient(135deg,rgba(255,248,238,0.95),rgba(255,240,220,0.9));
+border:1px solid rgba(217,74,43,0.18);
+}
+.audience-fit h4{
+margin:0 0 10px;
+font-size:13px;
+font-weight:700;
+color:#972519;
+text-transform:uppercase;
+letter-spacing:.6px;
+}
+.audience-fit-rows{
+display:flex;
+flex-direction:column;
+gap:8px;
+}
+.audience-row{
+display:flex;
+align-items:center;
+gap:10px;
+}
+.audience-label{
+font-size:13px;
+font-weight:600;
+color:#2a1f18;
+width:90px;
+flex-shrink:0;
+}
+.audience-dots{
+display:flex;
+gap:5px;
+}
+.audience-dot{
+width:14px;
+height:14px;
+border-radius:50%;
+border:2px solid rgba(217,74,43,0.3);
+background:#f3dfc8;
+transition:background .2s;
+}
+.audience-dot.filled{
+background:#d94a2b;
+border-color:#d94a2b;
+}
+.audience-dot.half{
+background:linear-gradient(90deg,#d94a2b 50%,#f3dfc8 50%);
+border-color:#d94a2b;
+}
+.audience-tag{
+font-size:11px;
+color:#5f5148;
+font-style:italic;
+}
+
+@media (max-width:700px){
+    .detail-grid{grid-template-columns:1fr;}
 }
 
 .personalized-box{
@@ -442,6 +600,334 @@ function getFestivalTravelTip(theme) {
     return 'Để trải nghiệm trọn vẹn, bạn nên kết hợp tham quan di tích, thưởng thức đặc sản địa phương và đặt dịch vụ sớm vào mùa cao điểm.';
 }
 
+function getThemeLabelVietnamese(theme) {
+    if (theme === 'tam linh phat giao') return 'Tâm linh - Phật giáo';
+    if (theme === 'lich su tam linh') return 'Lịch sử - Tâm linh';
+    if (theme === 'van hoa bien') return 'Văn hóa biển';
+    if (theme === 'ban sac dan toc') return 'Bản sắc dân tộc';
+    if (theme === 'le hoi du lich') return 'Lễ hội du lịch';
+    return 'Văn hóa truyền thống';
+}
+
+function getBestTimeForFestival(theme) {
+    if (theme === 'tam linh phat giao' || theme === 'lich su tam linh') return 'Sáng sớm (06:30 - 09:00) hoặc chiều mát';
+    if (theme === 'van hoa bien') return 'Chiều tối để tránh nắng và đón phần hội';
+    if (theme === 'ban sac dan toc') return 'Theo lịch cộng đồng bản địa, nên đi trọn ngày';
+    if (theme === 'le hoi du lich') return 'Cuối tuần hoặc khung giờ chương trình chính';
+    return 'Theo lịch ban tổ chức và thời tiết địa phương';
+}
+
+function getFestivalChecklist(theme) {
+    if (theme === 'tam linh phat giao') return [
+        'Trang phục lịch sự, ưu tiên màu trung tính.',
+        'Mang nước và giày êm để đi bộ dài.',
+        'Đi sớm để thuận tiện dâng hương và tham quan.'
+    ];
+    if (theme === 'lich su tam linh') return [
+        'Dành thời gian nghe thuyết minh hoặc đọc bảng thông tin.',
+        'Chuẩn bị pin điện thoại/camera để lưu tư liệu.',
+        'Ưu tiên khung giờ ít đông nếu đi cùng người lớn tuổi.'
+    ];
+    if (theme === 'van hoa bien') return [
+        'Theo dõi thời tiết, mang nón và kem chống nắng.',
+        'Ưu tiên trang phục gọn nhẹ, chống trơn trượt.',
+        'Đi theo nhóm để thuận tiện di chuyển giữa các điểm.'
+    ];
+    if (theme === 'ban sac dan toc') return [
+        'Tôn trọng nghi thức, không quay phim khu vực cấm.',
+        'Ưu tiên sản phẩm thủ công do cộng đồng địa phương làm.',
+        'Tìm hiểu trước phong tục để có trải nghiệm văn minh.'
+    ];
+    return [
+        'Kiểm tra lịch hoạt động theo ngày để không bỏ lỡ điểm chính.',
+        'Đặt dịch vụ sớm trong mùa cao điểm.',
+        'Kết hợp thêm điểm ăn uống và vui chơi gần khu lễ hội.'
+    ];
+}
+
+function findNearbyByProvince(list, province, fallbackText) {
+    var matched = (list || []).filter(function(item) { return item.province === province; }).slice(0, 2);
+    if (!matched.length) return [fallbackText];
+    return matched.map(function(item) { return item.name; });
+}
+
+function getFestivalMustTry(theme, item) {
+    if (theme === 'tam linh phat giao') return [
+        'Tham gia nghi lễ dâng hương tại khu chính.',
+        'Đi trọn tuyến hành hương để cảm nhận không khí lễ hội.',
+        'Dành thời gian chụp ảnh và tìm hiểu kiến trúc tâm linh.'
+    ];
+    if (theme === 'lich su tam linh') return [
+        'Xem phần rước và nghi thức tưởng niệm trọng tâm.',
+        'Nghe thuyết minh về nhân vật hoặc di tích gắn với lễ hội.',
+        'Tham gia hoạt động dân gian cộng đồng nếu có.'
+    ];
+    if (theme === 'van hoa bien') return [
+        'Theo dõi nghi thức cầu ngư hoặc lễ rước trên biển.',
+        'Thưởng thức hải sản địa phương trong khung giờ chiều tối.',
+        'Trải nghiệm không gian văn nghệ cộng đồng ven biển.'
+    ];
+    if (theme === 'ban sac dan toc') return [
+        'Xem biểu diễn nhạc cụ, dân vũ và trang phục truyền thống.',
+        'Tham gia trò chơi dân gian do cộng đồng bản địa tổ chức.',
+        'Thưởng thức món ăn địa phương để hiểu chiều sâu văn hóa.'
+    ];
+    if (theme === 'le hoi du lich') return [
+        'Check-in khu biểu diễn chính và khu trưng bày chuyên đề.',
+        'Tham gia hoạt động trải nghiệm mở cho du khách.',
+        'Kết hợp tham quan thêm điểm nổi bật lân cận trong ngày.'
+    ];
+    return [
+        'Đến sớm để theo dõi đầy đủ phần lễ và phần hội.',
+        'Ưu tiên trải nghiệm hoạt động cộng đồng cốt lõi.',
+        'Kết hợp khám phá ẩm thực và đời sống văn hóa địa phương.'
+    ];
+}
+
+function buildFestivalDayTimeline(theme) {
+    if (theme === 'tam linh phat giao') return [
+        '07:00 - 09:00: Dâng hương, tham gia nghi thức chính.',
+        '09:30 - 11:30: Tham quan không gian chùa/điện/tháp.',
+        '14:00 - 17:00: Trải nghiệm hoạt động văn hóa cộng đồng.'
+    ];
+    if (theme === 'van hoa bien') return [
+        '06:30 - 08:30: Theo dõi nghi thức cầu ngư buổi sáng.',
+        '10:00 - 12:00: Khám phá chợ địa phương và ẩm thực biển.',
+        '16:00 - 20:00: Tham gia phần hội và chương trình nghệ thuật.'
+    ];
+    if (theme === 'ban sac dan toc') return [
+        '08:00 - 10:00: Tìm hiểu nghi lễ mở đầu của cộng đồng.',
+        '10:30 - 13:00: Trải nghiệm món ăn, chợ phiên, thủ công.',
+        '14:00 - 18:00: Xem biểu diễn dân ca, dân vũ, trò chơi dân gian.'
+    ];
+    return [
+        '08:00 - 10:00: Khai hội, nghi thức truyền thống.',
+        '10:30 - 13:00: Khám phá di tích và ẩm thực đặc sản.',
+        '15:00 - 19:00: Trải nghiệm phần hội, nghệ thuật cộng đồng.'
+    ];
+}
+
+function getSeasonAdvice() {
+    var m = new Date().getMonth() + 1;
+    if (m >= 1 && m <= 3) return 'Mùa xuân cao điểm lễ hội, nên đi sớm và đặt dịch vụ trước.';
+    if (m >= 4 && m <= 6) return 'Đầu hè thuận lợi cho hành trình kết hợp lễ hội và du lịch trải nghiệm.';
+    if (m >= 7 && m <= 9) return 'Mùa mưa ở nhiều địa phương, nên chuẩn bị phương án di chuyển linh hoạt.';
+    return 'Cuối năm phù hợp khám phá lễ hội kết hợp ẩm thực và không gian đêm.';
+}
+
+function getAudienceFit(type, theme) {
+    // scores: 1-5 for [family, couple, solo]
+    var fits = {
+        // Festivals by theme
+        'tam linh phat giao':  { family:5, couple:3, solo:5, tags:['Tâm linh sâu lắng','Phù hợp mọi lứa tuổi','Solo chiêm nghiệm rất ý nghĩa'] },
+        'lich su tam linh':    { family:5, couple:4, solo:4, tags:['Gia đình học lịch sử cùng nhau','Lịch trình kết đôi lãng mạn','Solo khám phá di sản'] },
+        'van hoa bien':        { family:4, couple:5, solo:4, tags:['Biển + lễ hội cho cả gia đình','Cặp đôi rất phù hợp','Solo trải nghiệm tự do'] },
+        'ban sac dan toc':     { family:5, couple:4, solo:5, tags:['Văn hóa phong phú cho gia đình','Cùng nhau khám phá bản làng','Solo hoà mình dân tộc'] },
+        'le hoi du lich':      { family:4, couple:5, solo:3, tags:['Sự kiện đặc sắc cho gia đình','Trải nghiệm cặp đôi đáng nhớ','Solo ổn, đông đúc'] },
+        'van hoa truyen thong':{ family:5, couple:4, solo:4, tags:['Giáo dục văn hoá cho gia đình','Khám phá truyền thống cùng nhau','Solo tìm hiểu sâu'] },
+        // Utilities
+        'food':        { family:5, couple:5, solo:4, tags:['Bữa ăn gia đình ấm cúng','Hẹn hò ẩm thực địa phương','Solo thưởng thức tự do'] },
+        'entertainment':{ family:5, couple:4, solo:3, tags:['Vui chơi cùng trẻ nhỏ tuyệt vời','Nhóm đôi năng động','Solo ổn, vui hơn theo nhóm'] },
+        'hotel':       { family:4, couple:5, solo:4, tags:['Phòng gia đình rộng rãi','Trải nghiệm lưu trú lãng mạn','Solo tiện nghi, linh hoạt'] },
+        'medical':     { family:5, couple:5, solo:5, tags:['An toàn cho cả gia đình','Đảm bảo sức khoẻ đôi bạn','Solo luôn cần biết điểm y tế'] },
+        'store':       { family:4, couple:3, solo:5, tags:['Mua sắm tiện lợi cho cả nhà','Ghé nhanh trong hành trình','Solo mua nhanh rất thuận'] },
+    };
+    var key = theme || type || 'van hoa truyen thong';
+    return fits[key] || { family:4, couple:4, solo:4, tags:['Phù hợp gia đình','Phù hợp cặp đôi','Phù hợp đi solo'] };
+}
+
+function buildAudienceFitHtml(fit) {
+    function dots(score) {
+        var h = '';
+        for (var i = 1; i <= 5; i++) {
+            if (i <= score) h += '<span class="audience-dot filled"></span>';
+            else h += '<span class="audience-dot"></span>';
+        }
+        return h;
+    }
+    return `
+    <div class="audience-fit">
+        <h4>Mức độ phù hợp</h4>
+        <div class="audience-fit-rows">
+            <div class="audience-row">
+                <span class="audience-label">👨‍👩‍👧 Gia đình</span>
+                <div class="audience-dots">${dots(fit.family)}</div>
+                <span class="audience-tag">${fit.tags[0]}</span>
+            </div>
+            <div class="audience-row">
+                <span class="audience-label">💑 Cặp đôi</span>
+                <div class="audience-dots">${dots(fit.couple)}</div>
+                <span class="audience-tag">${fit.tags[1]}</span>
+            </div>
+            <div class="audience-row">
+                <span class="audience-label">🧳 Solo</span>
+                <div class="audience-dots">${dots(fit.solo)}</div>
+                <span class="audience-tag">${fit.tags[2]}</span>
+            </div>
+        </div>
+    </div>`;
+}
+
+function getUtilityTypeLabel(type) {
+    if (type === 'entertainment') return 'Khu vui chơi';
+    if (type === 'food') return 'Ẩm thực';
+    if (type === 'hotel') return 'Khách sạn';
+    if (type === 'medical') return 'Y tế';
+    if (type === 'store') return 'Cửa hàng tiện lợi';
+    return 'Tiện ích';
+}
+
+function getUtilityBestTime(type) {
+    if (type === 'food') return '11:00 - 13:00 hoặc 17:30 - 20:30';
+    if (type === 'entertainment') return '15:00 - 21:00';
+    if (type === 'hotel') return 'Nhận phòng sau 14:00, đặt trước giờ cao điểm';
+    if (type === 'medical') return 'Ưu tiên giờ hành chính, khẩn cấp đi ngay';
+    if (type === 'store') return 'Mở rộng cả ngày, thuận tiện giờ tối';
+    return 'Tùy theo lịch trình của bạn';
+}
+
+function getUtilityHighlights(type, item) {
+    if (type === 'food') {
+        return [
+            'Món ăn mang bản sắc địa phương, phù hợp kết hợp trong hành trình lễ hội.',
+            'Dễ ghé theo nhóm nhỏ hoặc gia đình khi cần bữa ăn nhanh, chất lượng.',
+            'Không gian ẩm thực giúp bạn hiểu thêm văn hóa vùng miền qua hương vị.'
+        ];
+    }
+    if (type === 'entertainment') {
+        return [
+            'Phù hợp làm điểm trải nghiệm sau khi tham gia phần lễ chính.',
+            'Có thể kết hợp hoạt động ngoài trời và check-in theo nhóm bạn, gia đình.',
+            'Tạo thêm chiều sâu cho chuyến đi thay vì chỉ tham quan một điểm duy nhất.'
+        ];
+    }
+    if (type === 'hotel') {
+        return [
+            'Vị trí lưu trú thuận tiện giúp tối ưu lịch trình tham dự lễ hội.',
+            'Dễ kết hợp ăn uống, vui chơi và di chuyển tới điểm lễ chính.',
+            'Giảm áp lực di chuyển xa, phù hợp lịch trình nhiều hoạt động trong ngày.'
+        ];
+    }
+    if (type === 'medical') {
+        return [
+            'Là điểm y tế quan trọng hỗ trợ an toàn trong hành trình lễ hội.',
+            'Hữu ích khi cần xử lý tình huống sức khỏe phát sinh bất ngờ.',
+            'Nên lưu sẵn để chủ động trong khung giờ đông người, di chuyển xa.'
+        ];
+    }
+    if (type === 'store') {
+        return [
+            'Điểm dừng tiện lợi để bổ sung nước, đồ dùng, vật dụng cần thiết.',
+            'Phù hợp mua nhanh trước hoặc sau khi tham gia lễ hội.',
+            'Giúp lịch trình linh hoạt hơn khi đi theo nhóm hoặc gia đình.'
+        ];
+    }
+    return [
+        'Tiện ích hỗ trợ trực tiếp cho trải nghiệm lễ hội của bạn.',
+        'Dễ kết hợp vào hành trình trong ngày.',
+        'Giúp chuyến đi đầy đủ và thuận tiện hơn.'
+    ];
+}
+
+function getUtilityChecklist(type) {
+    if (type === 'food') return [
+        'Ưu tiên khung giờ tránh đông để trải nghiệm tốt hơn.',
+        'Hỏi rõ món đặc trưng để không bỏ lỡ trải nghiệm địa phương.',
+        'Kết hợp điểm ăn với lộ trình lễ hội để tiết kiệm thời gian.'
+    ];
+    if (type === 'entertainment') return [
+        'Kiểm tra thời gian mở cửa và khu vực hoạt động chính.',
+        'Ưu tiên đi theo nhóm để dễ di chuyển và chia sẻ chi phí.',
+        'Chuẩn bị trang phục phù hợp hoạt động ngoài trời.'
+    ];
+    if (type === 'hotel') return [
+        'Đặt phòng sớm vào mùa cao điểm lễ hội.',
+        'Kiểm tra khoảng cách tới điểm lễ hội chính trước khi chốt phòng.',
+        'Xác nhận giờ nhận/trả phòng để tối ưu lịch trình.'
+    ];
+    if (type === 'medical') return [
+        'Lưu sẵn địa chỉ và số liên hệ khi cần hỗ trợ nhanh.',
+        'Mang theo thông tin cá nhân cơ bản và thuốc đang sử dụng.',
+        'Ưu tiên đi cùng người thân trong tình huống khẩn cấp.'
+    ];
+    if (type === 'store') return [
+        'Mua sẵn nước và đồ dùng thiết yếu trước khi vào khu lễ.',
+        'Chuẩn bị tiền lẻ và vật dụng cá nhân khi di chuyển xa.',
+        'Kết hợp điểm mua sắm với điểm nghỉ ngắn để đỡ mệt.'
+    ];
+    return [
+        'Kiểm tra giờ hoạt động trước khi đi.',
+        'Ưu tiên điểm gần lịch trình chính.',
+        'Chuẩn bị phương án thay thế khi đông khách.'
+    ];
+}
+
+function getUtilityAudience(type) {
+    if (type === 'food') return 'Nhóm bạn, gia đình, du khách thích khám phá ẩm thực địa phương.';
+    if (type === 'entertainment') return 'Gia đình có trẻ nhỏ, nhóm bạn trẻ và khách du lịch trải nghiệm.';
+    if (type === 'hotel') return 'Du khách ở lại qua đêm, lịch trình 2-3 ngày hoặc đi theo đoàn.';
+    if (type === 'medical') return 'Mọi nhóm khách cần đảm bảo an toàn sức khỏe khi di chuyển.';
+    if (type === 'store') return 'Du khách cần mua nhanh vật dụng trong hành trình.';
+    return 'Phù hợp cho đa dạng nhóm người dùng.';
+}
+
+function getUtilityNearbyBundle(type, province) {
+    var fallback = {
+        food: ['Đặc sản địa phương', 'Quán ăn khu trung tâm'],
+        entertainment: ['Điểm vui chơi gần trung tâm', 'Không gian trải nghiệm cộng đồng'],
+        hotel: ['Lưu trú khu trung tâm', 'Khách sạn thuận tuyến'],
+        medical: ['Bệnh viện đa khoa khu vực', 'Điểm y tế hỗ trợ gần nhất'],
+        store: ['Cửa hàng tiện lợi 24/7', 'Điểm mua sắm nhanh gần tuyến chính']
+    };
+
+    var data = {
+        food: findNearbyByProvince(foods, province, fallback.food[0]),
+        entertainment: findNearbyByProvince(entertainments, province, fallback.entertainment[0]),
+        hotel: findNearbyByProvince(hotels, province, fallback.hotel[0]),
+        medical: findNearbyByProvince(medicals, province, fallback.medical[0]),
+        store: findNearbyByProvince(stores, province, fallback.store[0])
+    };
+
+    if (type === 'food') {
+        return {
+            nearbyA: data.entertainment,
+            nearbyALabel: 'Chơi gần đây',
+            nearbyB: data.hotel,
+            nearbyBLabel: 'Lưu trú gần đây'
+        };
+    }
+    if (type === 'entertainment') {
+        return {
+            nearbyA: data.food,
+            nearbyALabel: 'Ăn gần đây',
+            nearbyB: data.hotel,
+            nearbyBLabel: 'Lưu trú gần đây'
+        };
+    }
+    if (type === 'hotel') {
+        return {
+            nearbyA: data.food,
+            nearbyALabel: 'Ăn gần đây',
+            nearbyB: data.entertainment,
+            nearbyBLabel: 'Chơi gần đây'
+        };
+    }
+    if (type === 'medical') {
+        return {
+            nearbyA: data.hotel,
+            nearbyALabel: 'Lưu trú gần đây',
+            nearbyB: data.store,
+            nearbyBLabel: 'Mua sắm gần đây'
+        };
+    }
+    return {
+        nearbyA: data.food,
+        nearbyALabel: 'Ăn gần đây',
+        nearbyB: data.hotel,
+        nearbyBLabel: 'Lưu trú gần đây'
+    };
+}
+
 const manualFestivalDetailById = {
     1: 'Lễ hội Đền Hùng là dịp trọng đại để tưởng nhớ công đức các Vua Hùng, thường thu hút đông đảo người dân từ nhiều địa phương về dâng hương tại Phú Thọ. Phần lễ trang nghiêm kết hợp phần hội với hát xoan, trò chơi dân gian và không khí hướng về cội nguồn dân tộc.',
     2: 'Lễ hội Chùa Hương mở đầu mùa hành hương đầu năm, nổi bật với hành trình đi đò suối Yến và vãn cảnh quần thể chùa động linh thiêng. Du khách thường kết hợp lễ Phật, tham quan thắng cảnh và trải nghiệm văn hóa lễ hội truyền thống vùng ven đô Hà Nội.',
@@ -747,21 +1233,151 @@ async function displayDetail() {
     }
 
     if (item) {
-        let detailHtml = '';
-        if (item.detail) {
-            detailHtml = `<p><strong>Nội dung chi tiết:</strong> ${item.detail}</p>`;
+        if (type === 'festival') {
+            var theme = getFestivalTheme(item);
+            var themeLabel = getThemeLabelVietnamese(theme);
+            var highlight = getFestivalSpecificHighlight(item.name);
+            var activities = getFestivalActivities(theme);
+            var tip = getFestivalTravelTip(theme);
+            var bestTime = getBestTimeForFestival(theme);
+            var checklist = getFestivalChecklist(theme);
+            var mustTry = getFestivalMustTry(theme, item);
+            var timeline = buildFestivalDayTimeline(theme);
+            var seasonAdvice = getSeasonAdvice();
+            var nearbyFoods = findNearbyByProvince(foods, item.province, 'Đặc sản địa phương');
+            var nearbyFun = findNearbyByProvince(entertainments, item.province, 'Điểm vui chơi gần trung tâm');
+
+            document.getElementById('detailContent').innerHTML = `
+                <div class="detail-top-head">
+                    <h2>${item.name}</h2>
+                    <p class="detail-subtitle">${item.desc || 'Không gian lễ hội văn hóa đặc sắc'}</p>
+                    <div class="detail-chip-row">
+                        <span class="detail-chip">${themeLabel}</span>
+                        <span class="detail-chip">Khung giờ đẹp: ${bestTime}</span>
+                        <span class="detail-chip">Địa phương: ${item.province}</span>
+                    </div>
+                </div>
+                <img src="${resolveImageUrl(item.img, type)}" alt="${item.name}" onerror="${getImageOnError(type)}">
+                <div class="detail-lead">
+                    ${item.detail || ''}
+                </div>
+                <div class="detail-grid">
+                    <article class="detail-block">
+                        <h3>Điểm đặc sắc</h3>
+                        <p>${highlight}</p>
+                    </article>
+                    <article class="detail-block">
+                        <h3>Trải nghiệm nổi bật</h3>
+                        <p>${activities}</p>
+                    </article>
+                    <article class="detail-block">
+                        <h3>Checklist khi đi lễ hội</h3>
+                        <ul class="detail-list">
+                            <li>${checklist[0]}</li>
+                            <li>${checklist[1]}</li>
+                            <li>${checklist[2]}</li>
+                        </ul>
+                    </article>
+                    <article class="detail-block">
+                        <h3>Gợi ý kết hợp trong ngày</h3>
+                        <ul class="detail-list">
+                            <li><strong>Ăn gì gần đây:</strong> ${nearbyFoods.join(', ')}</li>
+                            <li><strong>Chơi gì gần đây:</strong> ${nearbyFun.join(', ')}</li>
+                            <li><strong>Mẹo nhanh:</strong> ${tip}</li>
+                        </ul>
+                    </article>
+                    <article class="detail-block">
+                        <h3>Top trải nghiệm phải thử</h3>
+                        <ul class="detail-list">
+                            <li>${mustTry[0]}</li>
+                            <li>${mustTry[1]}</li>
+                            <li>${mustTry[2]}</li>
+                        </ul>
+                    </article>
+                    <article class="detail-block">
+                        <h3>Timeline gợi ý 1 ngày</h3>
+                        <ul class="detail-list">
+                            <li>${timeline[0]}</li>
+                            <li>${timeline[1]}</li>
+                            <li>${timeline[2]}</li>
+                        </ul>
+                    </article>
+                </div>
+                ${buildAudienceFitHtml(getAudienceFit(null, theme))}
+                <div class="detail-meta">
+                    <div><strong>Tọa độ:</strong> ${item.lat}, ${item.lng}</div>
+                    <div><strong>Hình thức:</strong> ${themeLabel}</div>
+                    <div><strong>Gợi ý theo mùa:</strong> ${seasonAdvice}</div>
+                </div>
+                <div class="detail-actions">
+                    <a href="https://www.google.com/maps/dir/?api=1&destination=${item.lat},${item.lng}" target="_blank" rel="noopener noreferrer">
+                        <button>Chỉ đường</button>
+                    </a>
+                </div>
+            `;
+        } else {
+            var utilityTypeLabel = getUtilityTypeLabel(type);
+            var utilityHighlights = getUtilityHighlights(type, item);
+            var utilityChecklist = getUtilityChecklist(type);
+            var utilityAudience = getUtilityAudience(type);
+            var utilityBestTime = getUtilityBestTime(type);
+            var utilityNearby = getUtilityNearbyBundle(type, item.province);
+            var utilityNarrative = item.detail || (item.name + ' là điểm ' + utilityTypeLabel.toLowerCase() + ' đáng chú ý tại ' + (item.province || 'khu vực này') + ', phù hợp để kết hợp trong lịch trình khám phá lễ hội.');
+
+            document.getElementById('detailContent').innerHTML = `
+                <div class="detail-top-head">
+                    <h2>${item.name}</h2>
+                    <p class="detail-subtitle">${item.desc || (utilityTypeLabel + ' hữu ích cho hành trình của bạn')}</p>
+                    <div class="detail-chip-row">
+                        <span class="detail-chip">${utilityTypeLabel}</span>
+                        <span class="detail-chip">Khung giờ phù hợp: ${utilityBestTime}</span>
+                        <span class="detail-chip">Địa phương: ${item.province || 'Đang cập nhật'}</span>
+                    </div>
+                </div>
+                <img src="${resolveImageUrl(item.img, type)}" alt="${item.name}" onerror="${getImageOnError(type)}">
+                <div class="detail-lead">${utilityNarrative}</div>
+                <div class="detail-grid">
+                    <article class="detail-block">
+                        <h3>Điểm nổi bật</h3>
+                        <ul class="detail-list">
+                            <li>${utilityHighlights[0]}</li>
+                            <li>${utilityHighlights[1]}</li>
+                            <li>${utilityHighlights[2]}</li>
+                        </ul>
+                    </article>
+                    <article class="detail-block">
+                        <h3>Phù hợp cho ai</h3>
+                        <p>${utilityAudience}</p>
+                    </article>
+                    <article class="detail-block">
+                        <h3>Mẹo sử dụng hiệu quả</h3>
+                        <ul class="detail-list">
+                            <li>${utilityChecklist[0]}</li>
+                            <li>${utilityChecklist[1]}</li>
+                            <li>${utilityChecklist[2]}</li>
+                        </ul>
+                    </article>
+                    <article class="detail-block">
+                        <h3>Gợi ý kết hợp gần đây</h3>
+                        <ul class="detail-list">
+                            <li><strong>${utilityNearby.nearbyALabel}:</strong> ${utilityNearby.nearbyA.join(', ')}</li>
+                            <li><strong>${utilityNearby.nearbyBLabel}:</strong> ${utilityNearby.nearbyB.join(', ')}</li>
+                            <li><strong>Mẹo nhanh:</strong> Ưu tiên gom các điểm cùng khu vực để tiết kiệm thời gian di chuyển.</li>
+                        </ul>
+                    </article>
+                </div>
+                ${buildAudienceFitHtml(getAudienceFit(type, null))}
+                <div class="detail-meta">
+                    <div><strong>Tọa độ:</strong> ${item.lat}, ${item.lng}</div>
+                    <div><strong>Loại tiện ích:</strong> ${utilityTypeLabel}</div>
+                </div>
+                <div class="detail-actions">
+                    <a href="https://www.google.com/maps/dir/?api=1&destination=${item.lat},${item.lng}" target="_blank" rel="noopener noreferrer">
+                        <button>Chỉ đường</button>
+                    </a>
+                </div>
+            `;
         }
-        document.getElementById('detailContent').innerHTML = `
-            <h2>${item.name}</h2>
-            <img src="${resolveImageUrl(item.img, type)}" alt="${item.name}" onerror="${getImageOnError(type)}">
-            <p><strong>Tỉnh:</strong> ${item.province}</p>
-            <p>${item.desc}</p>
-            ${detailHtml}
-            <p><strong>Vị trí:</strong> ${item.lat}, ${item.lng}</p>
-            <a href="https://www.google.com/maps/dir/?api=1&destination=${item.lat},${item.lng}" target="_blank">
-                <button>Chỉ đường</button>
-            </a>
-        `;
 
         var profileData = await authFetch('/api/profile', { method: 'GET' });
         if (profileData && profileData.profile) {
@@ -780,6 +1396,12 @@ window.onload = function() {
     displayDetail();
 };
 
+</script>
+
+<script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('./sw.js').catch(()=>{});
+}
 </script>
 
 </body>

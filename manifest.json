@@ -1,0 +1,51 @@
+{
+  "name": "Bản đồ Lễ hội & Văn hóa Việt Nam",
+  "short_name": "Lễ hội VN",
+  "description": "Khám phá hơn 100 lễ hội và điểm văn hóa truyền thống Việt Nam trên bản đồ số tương tác.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#fff5e6",
+  "theme_color": "#d94a2b",
+  "lang": "vi",
+  "dir": "ltr",
+  "categories": ["travel", "education", "lifestyle"],
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "icon.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    },
+    {
+      "src": "icon.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Xem bản đồ lễ hội",
+      "short_name": "Bản đồ",
+      "description": "Mở bản đồ lễ hội Việt Nam",
+      "url": "./index.html#map",
+      "icons": [{ "src": "icon.svg", "sizes": "96x96" }]
+    },
+    {
+      "name": "Lịch lễ hội",
+      "short_name": "Lịch",
+      "description": "Xem lịch lễ hội theo tháng",
+      "url": "./index.html#calendar",
+      "icons": [{ "src": "icon.svg", "sizes": "96x96" }]
+    }
+  ],
+  "screenshots": []
+}
