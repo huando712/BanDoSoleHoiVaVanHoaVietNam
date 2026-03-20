@@ -5,16 +5,14 @@ const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
 const chatbotData = require("./chatbot-data");
+const db = require("./db");
 
 dotenv.config();
 
 const app = express();
 const PORT = Number(process.env.PORT || 3000);
-// Vercel môi trường serverless: ghi file vào /tmp (ephermal)
 const IS_VERCEL = !!process.env.VERCEL;
-const DATA_DIR = IS_VERCEL ? '/tmp' : path.join(__dirname, '.auth');
-const USERS_FILE = path.join(DATA_DIR, 'users.json');
-const AVATAR_DIR = IS_VERCEL ? '/tmp/avatars' : path.join(__dirname, '.auth', 'avatars');
+const AVATAR_DIR = IS_VERCEL ? "/tmp/avatars" : path.join(__dirname, ".auth", "avatars");
 const TOKEN_TTL_MS = 7 * 24 * 60 * 60 * 1000;
 const tokenSessions = new Map();
 
@@ -23,33 +21,10 @@ app.use(express.json({ limit: "1mb" }));
 app.use(express.static(__dirname));
 app.use("/avatars", express.static(AVATAR_DIR));
 
-function ensureUserStore() {
-  const dir = path.dirname(USERS_FILE);
-  if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir, { recursive: true });
-  }
-  if (!fs.existsSync(USERS_FILE)) {
-    fs.writeFileSync(USERS_FILE, "[]", "utf8");
-  }
-  if (!fs.existsSync(AVATAR_DIR)) {
-    fs.mkdirSync(AVATAR_DIR, { recursive: true });
-  }
-}
-
-function readUsers() {
+function ensureAvatarDir() {
   try {
-    ensureUserStore();
-    const text = fs.readFileSync(USERS_FILE, "utf8");
-    const parsed = JSON.parse(text);
-    return Array.isArray(parsed) ? parsed : [];
-  } catch (error) {
-    return [];
-  }
-}
-
-function writeUsers(users) {
-  ensureUserStore();
-  fs.writeFileSync(USERS_FILE, JSON.stringify(users, null, 2), "utf8");
+    if (!fs.existsSync(AVATAR_DIR)) fs.mkdirSync(AVATAR_DIR, { recursive: true });
+  } catch (_) {}
 }
 
 function normalizeEmail(email) {
@@ -186,7 +161,7 @@ function getSessionFromToken(token) {
   return session;
 }
 
-function authMiddleware(req, res, next) {
+async function authMiddleware(req, res, next) {
   const authHeader = String(req.headers.authorization || "");
   if (!authHeader.startsWith("Bearer ")) {
     res.status(401).json({ message: "Bạn chưa đăng nhập." });
@@ -199,8 +174,7 @@ function authMiddleware(req, res, next) {
     return;
   }
 
-  const users = readUsers();
-  const user = users.find((item) => item.id === session.userId);
+  const user = await db.findUserById(session.userId);
   if (!user) {
     tokenSessions.delete(token);
     res.status(401).json({ message: "Tài khoản không tồn tại." });
@@ -212,7 +186,7 @@ function authMiddleware(req, res, next) {
   next();
 }
 
-app.post("/api/auth/register", (req, res) => {
+app.post("/api/auth/register", async (req, res) => {
   const name = String(req.body?.name || "").trim();
   const email = normalizeEmail(req.body?.email);
   const password = String(req.body?.password || "");
@@ -226,8 +200,7 @@ app.post("/api/auth/register", (req, res) => {
     return;
   }
 
-  const users = readUsers();
-  const exists = users.some((item) => normalizeEmail(item.email) === email);
+  const exists = await db.findUserByEmail(email);
   if (exists) {
     res.status(409).json({ message: "Email đã được đăng ký." });
     return;
@@ -240,14 +213,13 @@ app.post("/api/auth/register", (req, res) => {
     passwordHash: hashPassword(password),
     createdAt: new Date().toISOString(),
   };
-  users.push(user);
-  writeUsers(users);
+  await db.createUser(user);
 
   const token = issueToken(user.id);
   res.status(201).json({ token, user: toSafeUser(user) });
 });
 
-app.post("/api/auth/login", (req, res) => {
+app.post("/api/auth/login", async (req, res) => {
   const email = normalizeEmail(req.body?.email);
   const password = String(req.body?.password || "");
 
@@ -256,8 +228,7 @@ app.post("/api/auth/login", (req, res) => {
     return;
   }
 
-  const users = readUsers();
-  const user = users.find((item) => normalizeEmail(item.email) === email);
+  const user = await db.findUserByEmail(email);
   if (!user || !verifyPassword(password, user.passwordHash)) {
     res.status(401).json({ message: "Email hoặc mật khẩu không đúng." });
     return;
@@ -276,18 +247,16 @@ app.post("/api/auth/logout", authMiddleware, (req, res) => {
   res.json({ ok: true });
 });
 
-app.get("/api/profile", authMiddleware, (req, res) => {
-  const users = readUsers();
-  const index = users.findIndex((item) => item.id === req.authUser.id);
-  if (index === -1) {
+app.get("/api/profile", authMiddleware, async (req, res) => {
+  const user = await db.findUserById(req.authUser.id);
+  if (!user) {
     res.status(404).json({ message: "Không tìm thấy hồ sơ người dùng." });
     return;
   }
 
-  const merged = withUserProfile(users[index]);
-  if (!users[index].profile || !Array.isArray(users[index].activities)) {
-    users[index] = merged;
-    writeUsers(users);
+  const merged = withUserProfile(user);
+  if (!user.profile || !Array.isArray(user.activities)) {
+    await db.updateUser(user.id, merged);
   }
 
   res.json({
@@ -301,15 +270,14 @@ app.get("/api/profile", authMiddleware, (req, res) => {
   });
 });
 
-app.put("/api/profile", authMiddleware, (req, res) => {
-  const users = readUsers();
-  const index = users.findIndex((item) => item.id === req.authUser.id);
-  if (index === -1) {
+app.put("/api/profile", authMiddleware, async (req, res) => {
+  const user = await db.findUserById(req.authUser.id);
+  if (!user) {
     res.status(404).json({ message: "Không tìm thấy hồ sơ người dùng." });
     return;
   }
 
-  const merged = withUserProfile(users[index]);
+  const merged = withUserProfile(user);
   const patch = sanitizeProfilePatch(req.body);
   merged.profile = {
     ...merged.profile,
@@ -321,8 +289,7 @@ app.put("/api/profile", authMiddleware, (req, res) => {
     merged.name = patch.displayName;
   }
 
-  users[index] = merged;
-  writeUsers(users);
+  await db.updateUser(user.id, merged);
 
   res.json({
     message: "Cập nhật hồ sơ thành công.",
@@ -331,7 +298,7 @@ app.put("/api/profile", authMiddleware, (req, res) => {
   });
 });
 
-app.put("/api/profile/password", authMiddleware, (req, res) => {
+app.put("/api/profile/password", authMiddleware, async (req, res) => {
   const currentPassword = String(req.body?.currentPassword || "");
   const newPassword = String(req.body?.newPassword || "");
 
@@ -344,23 +311,15 @@ app.put("/api/profile/password", authMiddleware, (req, res) => {
     return;
   }
 
-  const users = readUsers();
-  const index = users.findIndex((item) => item.id === req.authUser.id);
-  if (index === -1) {
-    res.status(404).json({ message: "Không tìm thấy tài khoản." });
-    return;
-  }
-  if (!verifyPassword(currentPassword, users[index].passwordHash)) {
+  if (!verifyPassword(currentPassword, req.authUser.passwordHash)) {
     res.status(401).json({ message: "Mật khẩu hiện tại không đúng." });
     return;
   }
 
-  users[index].passwordHash = hashPassword(newPassword);
-  users[index].profile = {
-    ...withUserProfile(users[index]).profile,
-    updatedAt: new Date().toISOString(),
-  };
-  writeUsers(users);
+  const merged = withUserProfile(req.authUser);
+  merged.passwordHash = hashPassword(newPassword);
+  merged.profile = { ...merged.profile, updatedAt: new Date().toISOString() };
+  await db.updateUser(req.authUser.id, merged);
 
   res.json({ message: "Đổi mật khẩu thành công." });
 });
@@ -376,7 +335,7 @@ app.get("/api/profile/festival-options", authMiddleware, (req, res) => {
   res.json({ items: options });
 });
 
-app.post("/api/profile/avatar", authMiddleware, (req, res) => {
+app.post("/api/profile/avatar", authMiddleware, async (req, res) => {
   const dataUrl = String(req.body?.dataUrl || "");
   if (!dataUrl.startsWith("data:image/")) {
     res.status(400).json({ message: "Dữ liệu ảnh không hợp lệ." });
@@ -408,23 +367,15 @@ app.post("/api/profile/avatar", authMiddleware, (req, res) => {
     return;
   }
 
-  ensureUserStore();
+  ensureAvatarDir();
   const fileName = `${req.authUser.id}-${Date.now()}.${ext}`;
   const filePath = path.join(AVATAR_DIR, fileName);
   fs.writeFileSync(filePath, buffer);
 
-  const users = readUsers();
-  const index = users.findIndex((item) => item.id === req.authUser.id);
-  if (index === -1) {
-    res.status(404).json({ message: "Không tìm thấy tài khoản." });
-    return;
-  }
-
-  const merged = withUserProfile(users[index]);
+  const merged = withUserProfile(req.authUser);
   merged.profile.avatarUrl = `/avatars/${fileName}`;
   merged.profile.updatedAt = new Date().toISOString();
-  users[index] = merged;
-  writeUsers(users);
+  await db.updateUser(req.authUser.id, merged);
 
   res.json({
     message: "Cập nhật ảnh đại diện thành công.",
@@ -433,37 +384,34 @@ app.post("/api/profile/avatar", authMiddleware, (req, res) => {
   });
 });
 
-app.post("/api/activity/log", authMiddleware, (req, res) => {
+app.post("/api/activity/log", authMiddleware, async (req, res) => {
   const payload = sanitizeActivityInput(req.body);
   if (!payload.action) {
     res.status(400).json({ message: "Thiếu hành động hoạt động." });
     return;
   }
 
-  const users = readUsers();
-  const index = users.findIndex((item) => item.id === req.authUser.id);
-  if (index === -1) {
+  const user = await db.findUserById(req.authUser.id);
+  if (!user) {
     res.status(404).json({ message: "Không tìm thấy tài khoản." });
     return;
   }
 
-  const merged = withUserProfile(users[index]);
+  const merged = withUserProfile(user);
   const activity = {
     id: crypto.randomUUID(),
     ...payload,
     createdAt: new Date().toISOString(),
   };
   appendActivity(merged, activity);
-  users[index] = merged;
-  writeUsers(users);
+  await db.updateUser(user.id, merged);
 
   res.status(201).json({ ok: true, activity });
 });
 
-app.get("/api/activity", authMiddleware, (req, res) => {
+app.get("/api/activity", authMiddleware, async (req, res) => {
   const limit = Math.max(1, Math.min(200, Number(req.query?.limit) || 50));
-  const users = readUsers();
-  const user = users.find((item) => item.id === req.authUser.id);
+  const user = await db.findUserById(req.authUser.id);
   if (!user) {
     res.status(404).json({ message: "Không tìm thấy tài khoản." });
     return;
@@ -472,19 +420,15 @@ app.get("/api/activity", authMiddleware, (req, res) => {
   res.json({ items: (merged.activities || []).slice(0, limit) });
 });
 
-app.delete("/api/activity", authMiddleware, (req, res) => {
-  const users = readUsers();
-  const index = users.findIndex((item) => item.id === req.authUser.id);
-  if (index === -1) {
+app.delete("/api/activity", authMiddleware, async (req, res) => {
+  const user = await db.findUserById(req.authUser.id);
+  if (!user) {
     res.status(404).json({ message: "Không tìm thấy tài khoản." });
     return;
   }
-
-  const merged = withUserProfile(users[index]);
+  const merged = withUserProfile(user);
   merged.activities = [];
-  users[index] = merged;
-  writeUsers(users);
-
+  await db.updateUser(user.id, merged);
   res.json({ message: "Đã xóa lịch sử hoạt động." });
 });
 
