@@ -1,1 +1,2 @@
 # -festival-map-vietnam
+Bản đồ số lễ hội Việt Nam là bản đồ trực tuyến thể hiện vị trí, thời gian và nội dung của các lễ hội trên khắp cả nước. Lễ hội phân bố ở cả ba miền, trong đó miền Bắc có mật độ dày đặc với nhiều lễ hội truyền thống, còn miền Trung và miền Nam mang nét đặc trưng riêng về văn hóa biển, cung đình và tín ngưỡng dân gian. Bản đồ số giúp người dùng dễ dàng tra cứu thông tin, phục vụ học tập, nghiên cứu và phát triển du lịch văn hóa.
