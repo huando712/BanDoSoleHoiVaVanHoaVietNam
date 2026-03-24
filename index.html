@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="vi">
 
 <head>
-<script src="lunar.js"></script>
 <meta charset="UTF-8">
+<script src="lunar.js" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Bản đồ Lễ hội & Văn hóa Việt Nam</title>
 <meta name="description" content="Khám phá hơn 100 lễ hội và điểm văn hóa truyền thống Việt Nam trên bản đồ số tương tác.">
@@ -91,16 +91,25 @@ bottom:80px;
 background:radial-gradient(circle, rgba(198,60,47,0.22) 0%, rgba(198,60,47,0) 72%);
 }
 
-header{
-background:url("https://images.unsplash.com/photo-1528127269322-539801943592");
+/* === HEADER SLIDESHOW === */
+.header-slide{
+position:absolute;
+inset:0;
 background-size:cover;
 background-position:center;
+transition:opacity 1.4s ease;
+opacity:0;
+}
+.header-slide.active{opacity:1;}
+
+header{
+background:#3b1510;
 padding:120px 20px;
 text-align:center;
 color:white;
 position:relative;
 overflow:hidden;
-box-shadow:inset 0 -70px 90px rgba(0,0,0,0.12);
+box-shadow:inset 0 -70px 90px rgba(0,0,0,0.18);
 }
 
 header::before{
@@ -108,14 +117,27 @@ content:"";
 position:absolute;
 inset:0;
 background:
-linear-gradient(180deg, rgba(0,0,0,0.14), rgba(0,0,0,0.28)),
-radial-gradient(circle at 20% 20%, rgba(255,255,255,0.14), transparent 30%),
-radial-gradient(circle at 80% 18%, rgba(255,255,255,0.1), transparent 28%);
+linear-gradient(180deg, rgba(0,0,0,0.18), rgba(0,0,0,0.42)),
+radial-gradient(circle at 20% 20%, rgba(255,255,255,0.1), transparent 30%),
+radial-gradient(circle at 80% 18%, rgba(255,255,255,0.08), transparent 28%);
+z-index:1;
+}
+
+/* Hoa văn trống đồng SVG overlay */
+header::after{
+content:"";
+position:absolute;
+inset:0;
+opacity:0.07;
+z-index:1;
+pointer-events:none;
+background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Ccircle cx='40' cy='40' r='36' fill='none' stroke='%23fff' stroke-width='1.2'/%3E%3Ccircle cx='40' cy='40' r='28' fill='none' stroke='%23fff' stroke-width='0.8'/%3E%3Ccircle cx='40' cy='40' r='20' fill='none' stroke='%23fff' stroke-width='0.8'/%3E%3Ccircle cx='40' cy='40' r='5' fill='%23fff'/%3E%3Cline x1='40' y1='4' x2='40' y2='76' stroke='%23fff' stroke-width='0.5'/%3E%3Cline x1='4' y1='40' x2='76' y2='40' stroke='%23fff' stroke-width='0.5'/%3E%3Cline x1='14' y1='14' x2='66' y2='66' stroke='%23fff' stroke-width='0.5'/%3E%3Cline x1='66' y1='14' x2='14' y2='66' stroke='%23fff' stroke-width='0.5'/%3E%3C/svg%3E");
+background-size:80px 80px;
 }
 
 header > *{
 position:relative;
-z-index:1;
+z-index:2;
 }
 
 header h1{
@@ -284,7 +306,7 @@ margin-top:8px;
 }
 
 .module-btn{
-padding:12px 14px;
+padding:14px 14px 12px;
 border-radius:16px;
 border:1px solid rgba(217,74,43,0.18);
 background:linear-gradient(145deg, #fff9ef 0%, #ffe5c4 100%);
@@ -292,18 +314,39 @@ color:#5a2f1c;
 font-weight:700;
 box-shadow:0 10px 20px rgba(42,26,18,0.1);
 text-transform:uppercase;
-font-size:13px;
+font-size:12px;
 letter-spacing:0.7px;
+display:flex;
+flex-direction:column;
+align-items:center;
+gap:5px;
+transition:transform .2s ease, box-shadow .2s ease, filter .2s ease;
 }
 
+.module-btn .btn-icon{
+font-size:22px;
+line-height:1;
+}
+
+.module-btn:nth-child(1){background:linear-gradient(145deg,#fff4ee,#ffd4c0);border-color:rgba(217,74,43,0.22);}
+.module-btn:nth-child(2){background:linear-gradient(145deg,#eefbff,#c0e8f7);border-color:rgba(0,150,200,0.22);color:#1a5a7a;}
+.module-btn:nth-child(3){background:linear-gradient(145deg,#fffbee,#fce8a0);border-color:rgba(200,150,0,0.22);color:#6a4800;}
+.module-btn:nth-child(4){background:linear-gradient(145deg,#fff0f0,#ffc8c8);border-color:rgba(200,40,40,0.18);color:#7a1a1a;}
+.module-btn:nth-child(5){background:linear-gradient(145deg,#f0fff4,#b8f5cd);border-color:rgba(30,160,80,0.22);color:#0f5a30;}
+.module-btn:nth-child(6){background:linear-gradient(145deg,#fffaee,#fdd990);border-color:rgba(200,140,0,0.22);color:#6b4400;}
+.module-btn:nth-child(7){background:linear-gradient(145deg,#f4eeff,#d8bfff);border-color:rgba(120,60,200,0.2);color:#4a1a8a;}
+.module-btn:nth-child(8){background:linear-gradient(145deg,#fff8ee,#ffc87a);border-color:rgba(210,100,0,0.22);color:#7a3800;}
+
 .module-btn:hover{
-transform:translateY(-2px);
+transform:translateY(-3px);
+box-shadow:0 14px 26px rgba(42,26,18,0.16);
+filter:saturate(1.1);
 }
 
 .module-btn.active{
-background:linear-gradient(135deg, var(--brand) 0%, var(--brand-dark) 100%);
-color:#fff;
-border-color:transparent;
+background:linear-gradient(135deg, var(--brand) 0%, var(--brand-dark) 100%) !important;
+color:#fff !important;
+border-color:transparent !important;
 }
 
 .module-hint{
@@ -366,6 +409,43 @@ margin:-56px auto 20px auto;
 padding:0 16px;
 position:relative;
 z-index:3;
+}
+
+/* === COUNTDOWN WIDGET === */
+.festival-countdown{
+background:linear-gradient(135deg,rgba(217,74,43,0.12),rgba(255,200,87,0.18));
+border:1px solid rgba(217,74,43,0.22);
+border-radius:14px;
+padding:14px 18px;
+margin-top:14px;
+display:none;
+}
+.festival-countdown.visible{ display:block; }
+.countdown-label{
+font-size:12px;
+font-weight:700;
+color:var(--brand);
+text-transform:uppercase;
+letter-spacing:.06em;
+margin-bottom:4px;
+}
+.countdown-name{
+font-size:15px;
+font-weight:700;
+color:var(--ink);
+margin-bottom:6px;
+}
+.countdown-days{
+font-size:28px;
+font-weight:800;
+color:var(--brand);
+line-height:1;
+}
+.countdown-days span{
+font-size:13px;
+font-weight:500;
+color:var(--muted);
+margin-left:4px;
 }
 
 .highlight-panel{
@@ -970,6 +1050,13 @@ animation-delay:.35s;
 animation-delay:.7s;
 }
 
+.stat-icon{
+display:block;
+font-size:28px;
+margin-bottom:4px;
+line-height:1;
+}
+
 .stat-box strong{
 display:block;
 font-size:24px;
@@ -1034,6 +1121,41 @@ opacity:0.9;
 width:100%;
 height:180px;
 object-fit:cover;
+display:block;
+}
+
+.card-img-wrap{
+position:relative;
+overflow:hidden;
+}
+
+.card-img-overlay{
+position:absolute;
+inset:0;
+background:linear-gradient(to top, rgba(70,18,10,0.82) 0%, rgba(80,20,10,0.38) 50%, transparent 100%);
+opacity:0;
+transition:opacity .3s ease;
+display:flex;
+align-items:flex-end;
+padding:10px 12px;
+}
+
+.card-img-overlay .card-province-tag{
+display:inline-flex;
+align-items:center;
+gap:4px;
+padding:4px 10px;
+border-radius:999px;
+font-size:11px;
+font-weight:700;
+color:#fff;
+background:rgba(255,255,255,0.18);
+border:1px solid rgba(255,255,255,0.35);
+backdrop-filter:blur(4px);
+}
+
+.card:hover .card-img-overlay{
+opacity:1;
 }
 
 .card-content{
@@ -1448,21 +1570,73 @@ footer{
 background:linear-gradient(135deg, var(--brand-deep) 0%, var(--brand-dark) 100%);
 color:white;
 text-align:center;
-padding:30px;
+padding:0 30px 32px;
 border-top:1px solid rgba(255,217,168,0.16);
+position:relative;
+overflow:hidden;
 }
 
-footer p:first-child{
+.footer-wave{
+width:100%;
+display:block;
+margin-bottom:24px;
+opacity:0.18;
+}
+
+.footer-logo{
 font-family:"Cormorant Garamond",serif;
-font-size:28px;
+font-size:30px;
 letter-spacing:0.6px;
 margin:0 0 6px;
 }
 
-footer p:last-child{
-margin:0;
-opacity:0.88;
+.footer-tagline{
+margin:0 0 18px;
+opacity:0.82;
 letter-spacing:0.25px;
+font-size:14px;
+}
+
+.footer-socials{
+display:flex;
+justify-content:center;
+gap:14px;
+margin-bottom:16px;
+}
+
+.footer-social-link{
+display:inline-flex;
+align-items:center;
+justify-content:center;
+width:38px;
+height:38px;
+border-radius:50%;
+background:rgba(255,255,255,0.12);
+border:1px solid rgba(255,255,255,0.22);
+font-size:17px;
+text-decoration:none;
+color:#fff;
+transition:background .2s ease, transform .2s ease;
+}
+
+.footer-social-link:hover{
+background:rgba(255,255,255,0.24);
+transform:translateY(-2px);
+}
+
+.footer-copy{
+font-size:12px;
+opacity:0.6;
+margin:0;
+}
+
+.footer-bg-pattern{
+position:absolute;
+inset:0;
+pointer-events:none;
+opacity:0.04;
+background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Ccircle cx='30' cy='30' r='26' fill='none' stroke='%23fff' stroke-width='1'/%3E%3Ccircle cx='30' cy='30' r='18' fill='none' stroke='%23fff' stroke-width='0.7'/%3E%3Ccircle cx='30' cy='30' r='4' fill='%23fff'/%3E%3C/svg%3E");
+background-size:60px 60px;
 }
 
 label{
@@ -1794,6 +1968,7 @@ padding:20px 14px;
   font-weight:600;
 }
 
+
 .cal-cell.cal-empty{
   min-height:0;
   pointer-events:none;
@@ -1831,6 +2006,48 @@ padding:20px 14px;
   display:none;
 }
 .cal-festival-list.cal-show{display:block;}
+
+/* Thu gọn / mở rộng */
+.cal-fl-body{
+  position:relative;
+  overflow:hidden;
+  transition:max-height .4s ease;
+}
+.cal-fl-body.collapsed{
+  max-height:264px;
+}
+.cal-fl-body.expanded{
+  max-height:9999px;
+}
+.cal-fl-fade{
+  position:absolute;
+  bottom:0;left:0;right:0;
+  height:80px;
+  background:linear-gradient(to bottom,transparent,#fffaf3 90%);
+  pointer-events:none;
+  transition:opacity .3s;
+}
+.cal-fl-body.expanded .cal-fl-fade{
+  opacity:0;
+}
+.cal-fl-toggle{
+  display:block;
+  width:100%;
+  margin-top:6px;
+  padding:9px 0;
+  border:1.5px solid rgba(217,74,43,0.25);
+  border-radius:10px;
+  background:transparent;
+  color:var(--brand);
+  font-size:13px;
+  font-weight:700;
+  font-family:inherit;
+  cursor:pointer;
+  transition:background .18s,color .18s;
+}
+.cal-fl-toggle:hover{
+  background:rgba(217,74,43,0.08);
+}
 
 .cal-fl-title{
   font-family:"Playfair Display",serif;
@@ -2706,13 +2923,86 @@ padding:9px 12px;
 }
 }
 
+/* === SPLASH SCREEN === */
+#splashScreen{
+position:fixed;
+inset:0;
+z-index:99999;
+background:var(--bg-cream);
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+gap:12px;
+transition:opacity 0.6s ease, visibility 0.6s ease;
+opacity:1;
+visibility:visible;
+}
+#splashScreen.hidden{
+opacity:0;
+visibility:hidden;
+pointer-events:none;
+}
+.splash-logo{
+font-size:56px;
+animation:splashBounce 1s ease infinite alternate;
+}
+@keyframes splashBounce{
+from{transform:translateY(0);}
+to{transform:translateY(-10px);}
+}
+.splash-title{
+font-size:22px;
+font-weight:700;
+color:var(--brand-dark);
+margin:0;
+}
+.splash-sub{
+font-size:14px;
+color:var(--muted);
+margin:0;
+}
+.splash-bar-wrap{
+width:180px;
+height:4px;
+background:rgba(217,74,43,0.15);
+border-radius:4px;
+overflow:hidden;
+}
+.splash-bar{
+height:100%;
+width:0;
+background:var(--brand);
+border-radius:4px;
+animation:splashFill 1.6s ease forwards;
+}
+@keyframes splashFill{
+from{width:0;}
+to{width:100%;}
+}
+
 </style>
 
 </head>
 
 <body>
 
+<!-- SPLASH SCREEN -->
+<div id="splashScreen">
+  <div class="splash-logo">🏮</div>
+  <p class="splash-title">Bản đồ Lễ hội Việt Nam</p>
+  <p class="splash-sub">Đang tải dữ liệu lễ hội...</p>
+  <div class="splash-bar-wrap"><div class="splash-bar"></div></div>
+</div>
+
 <header>
+
+<!-- Slideshow slides -->
+<div class="header-slide active" style="background-image:url('https://images.unsplash.com/photo-1528127269322-539801943592?w=1600&auto=format')"></div>
+<div class="header-slide" style="background-image:url('https://images.unsplash.com/photo-1596422846543-75c6fc197f07?w=1600&auto=format')"></div>
+<div class="header-slide" style="background-image:url('https://images.unsplash.com/photo-1569260917083-50cd6b8e2eb9?w=1600&auto=format')"></div>
+<div class="header-slide" style="background-image:url('https://images.unsplash.com/photo-1555400038-63f5ba517a47?w=1600&auto=format')"></div>
+<div class="header-slide" style="background-image:url('https://images.unsplash.com/photo-1549294413-26f195200c16?w=1600&auto=format')"></div>
 
 <h1>Vietnam Festival Explorer</h1>
 
@@ -2747,16 +3037,20 @@ padding:9px 12px;
                 <a class="partner-cta-btn alt" href="mailto:dmhuan.24174600112@sv.uneti.edu.vn?subject=Yeu%20cau%20bao%20gia%20hop%20tac">Nhận báo giá trong 24h</a>
             </div>
         </div>
+        <div id="festivalCountdown" class="festival-countdown"></div>
         <div class="highlight-stats">
             <div class="stat-box">
-                <strong>100+</strong>
+                <span class="stat-icon">🏛️</span>
+                <strong>275+</strong>
                 <span>Lễ hội truyền thống</span>
             </div>
             <div class="stat-box">
+                <span class="stat-icon">🗺️</span>
                 <strong>3 miền</strong>
                 <span>Lọc theo khu vực</span>
             </div>
             <div class="stat-box">
+                <span class="stat-icon">📍</span>
                 <strong>1 chạm</strong>
                 <span>Tìm điểm gần bạn</span>
             </div>
@@ -2768,14 +3062,14 @@ padding:9px 12px;
         <h2>Khám phá nhanh</h2>
         <p id="moduleHint" class="module-hint">Nhấn vào để hiển thị thông tin tương ứng.</p>
         <div class="module-grid">
-            <button class="module-btn" onclick="document.getElementById('map').scrollIntoView({behavior:'smooth'})">Bản đồ</button>
-            <button class="module-btn" data-target="supportMapPanel" onclick="openModule('supportMapPanel')">Bản đồ tiện ích</button>
-            <button class="module-btn" onclick="document.getElementById('calendarHome').scrollIntoView({behavior:'smooth'})">Lịch lễ hội</button>
-            <button class="module-btn" data-target="list" onclick="openModule('list')">Danh sách lễ hội</button>
-            <button class="module-btn" data-target="entertainment" onclick="openModule('entertainment')">Khu vui chơi</button>
-            <button class="module-btn" data-target="food" onclick="openModule('food')">Ẩm thực</button>
-            <button class="module-btn" data-target="utilities" onclick="openModule('utilities')">Tiện ích</button>
-            <button class="module-btn" data-target="collaboration" onclick="openModule('collaboration')">Hợp tác & quảng cáo</button>
+            <button class="module-btn" onclick="document.getElementById('map').scrollIntoView({behavior:'smooth'})"><span class="btn-icon">🗺️</span>Bản đồ</button>
+            <button class="module-btn" data-target="supportMapPanel" onclick="openModule('supportMapPanel')"><span class="btn-icon">🧭</span>Bản đồ tiện ích</button>
+            <button class="module-btn" onclick="document.getElementById('calendarHome').scrollIntoView({behavior:'smooth'})"><span class="btn-icon">📅</span>Lịch lễ hội</button>
+            <button class="module-btn" data-target="list" onclick="openModule('list')"><span class="btn-icon">🏮</span>Danh sách lễ hội</button>
+            <button class="module-btn" data-target="entertainment" onclick="openModule('entertainment')"><span class="btn-icon">🎡</span>Khu vui chơi</button>
+            <button class="module-btn" data-target="food" onclick="openModule('food')"><span class="btn-icon">🍜</span>Ẩm thực</button>
+            <button class="module-btn" data-target="utilities" onclick="openModule('utilities')"><span class="btn-icon">🔧</span>Tiện ích</button>
+            <button class="module-btn" data-target="collaboration" onclick="openModule('collaboration')"><span class="btn-icon">🤝</span>Hợp tác & QC</button>
         </div>
     </section>
 
@@ -2812,6 +3106,20 @@ padding:9px 12px;
 
 <section style="padding-bottom:0;">
     <h2>Bản đồ lễ hội</h2>
+    <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:12px;">
+      <label style="font-weight:600;">Lọc theo tháng:
+        <select id="mapMonthFilter" onchange="applyMapMonthFilter()" style="margin-left:6px;padding:6px 10px;border-radius:8px;border:1px solid rgba(217,74,43,0.3);background:var(--accent-soft);font-family:inherit;">
+          <option value="">Tất cả tháng</option>
+          <option value="1">Tháng 1</option><option value="2">Tháng 2</option>
+          <option value="3">Tháng 3</option><option value="4">Tháng 4</option>
+          <option value="5">Tháng 5</option><option value="6">Tháng 6</option>
+          <option value="7">Tháng 7</option><option value="8">Tháng 8</option>
+          <option value="9">Tháng 9</option><option value="10">Tháng 10</option>
+          <option value="11">Tháng 11</option><option value="12">Tháng 12</option>
+        </select>
+      </label>
+      <span id="mapMonthCount" style="font-size:13px;color:var(--muted);"></span>
+    </div>
     <div id="map"></div>
 </section>
 
@@ -3100,10 +3408,17 @@ padding:9px 12px;
 </section>
 
 <footer>
-
-<p>Vietnam Festival Explorer</p>
-<p>Nền tảng số khám phá lễ hội và văn hóa Việt Nam</p>
-
+<div class="footer-bg-pattern"></div>
+<svg class="footer-wave" viewBox="0 0 1200 40" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,20 C200,0 400,40 600,20 C800,0 1000,40 1200,20 L1200,0 L0,0 Z" fill="white"/></svg>
+<p class="footer-logo">🏮 Vietnam Festival Explorer</p>
+<p class="footer-tagline">Nền tảng số khám phá lễ hội và văn hóa Việt Nam</p>
+<div class="footer-socials">
+  <a class="footer-social-link" href="#" aria-label="Facebook" title="Facebook">📘</a>
+  <a class="footer-social-link" href="#" aria-label="YouTube" title="YouTube">📺</a>
+  <a class="footer-social-link" href="#" aria-label="TikTok" title="TikTok">🎵</a>
+  <a class="footer-social-link" href="mailto:dmhuan.24174600112@sv.uneti.edu.vn" aria-label="Email" title="Email">✉️</a>
+</div>
+<p class="footer-copy">© 2026 Vietnam Festival Explorer · Khám phá 275+ lễ hội trên toàn quốc</p>
 </footer>
 
 <button id="authLaunchBtn" class="auth-launch-btn" aria-label="Mở đăng nhập">Tài khoản</button>
@@ -3757,7 +4072,10 @@ function renderCalendar(month, year) {
         var festTag = '';
         if (hasFest) {
             var title = dayMap[d].map(function(f){return f.name;}).join(', ');
-            var label = dayMap[d][0].name + (multi ? ' +' + (dayMap[d].length-1) : '');
+            // Ưu tiên lễ hội bắt đầu đúng ngày này
+            var starting = dayMap[d].filter(function(f){ return f.start && new Date(f.start).getDate() === d && new Date(f.start).getMonth() === month; });
+            var primary = starting.length ? starting[0] : dayMap[d][0];
+            var label = primary.name;
             festTag = '<span class="cal-fest-tag" title="' + title + '">' + label + '</span>';
         }
 
@@ -3802,6 +4120,7 @@ function renderMonthFestivals(month, year, dayMap, daysInMonth) {
     }
 
     var html = '<h3 class="cal-fl-title">\uD83C\uDFAA Lễ hội trong ' + monthNames[month] + ' ' + year + '</h3>';
+    html += '<div class="cal-fl-body collapsed">';
     items.forEach(function(item) {
         var lunar1 = null, lunar2 = null;
         try { lunar1 = solar2lunar(item.d1, month + 1, year); } catch(e) {}
@@ -3823,6 +4142,11 @@ function renderMonthFestivals(month, year, dayMap, daysInMonth) {
         html += '</div>';
         html += '</div>';
     });
+    html += '<div class="cal-fl-fade"></div>';
+    html += '</div>';
+    if (items.length > 3) {
+        html += '<button class="cal-fl-toggle" onclick="toggleCalFestivalList(this)">▼ Xem thêm (' + items.length + ' lễ hội)</button>';
+    }
     listEl.innerHTML = html;
     listEl.classList.add('cal-show');
 }
@@ -3836,6 +4160,7 @@ function showCalFestivalList(day, month, year, festList) {
     var html = '<h3 class="cal-fl-title">\uD83D\uDCC5 Ngày ' + day + '/' + (month+1) + '/' + year;
     if (lunarStr) html += ' <span style="font-size:14px;color:var(--muted);font-weight:400;">(' + lunarStr + ')</span>';
     html += '</h3>';
+    html += '<div class="cal-fl-body collapsed">';
     festList.forEach(function(f) {
         html += '<div class="cal-fl-card" onclick="window.location.href=\'detail.html?type=festival&id=' + f.id + '\'">';
         html += '<div class="cal-fl-date">';
@@ -3850,9 +4175,27 @@ function showCalFestivalList(day, month, year, festList) {
         html += '</div>';
         html += '</div>';
     });
+    html += '<div class="cal-fl-fade"></div>';
+    html += '</div>';
+    if (festList.length > 3) {
+        html += '<button class="cal-fl-toggle" onclick="toggleCalFestivalList(this)">▼ Xem thêm (' + festList.length + ' lễ hội)</button>';
+    }
     listEl.innerHTML = html;
     listEl.classList.add('cal-show');
     listEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// Thu gọn / Mở rộng danh sách lễ hội trong lịch
+function toggleCalFestivalList(btn) {
+    var body = btn.previousElementSibling;
+    if (!body) return;
+    var isCollapsed = body.classList.contains('collapsed');
+    body.classList.toggle('collapsed', !isCollapsed);
+    body.classList.toggle('expanded', isCollapsed);
+    var total = body.querySelectorAll('.cal-fl-card').length;
+    btn.textContent = isCollapsed
+        ? '▲ Thu gọn'
+        : '▼ Xem thêm (' + total + ' lễ hội)';
 }
 
 // Sự kiện chuyển tháng
@@ -3917,54 +4260,54 @@ var markers=[];
 var festivals=[
 
 
-{id:1,name:"Lễ hội Đền Hùng",province:"Phú Thọ",lat:21.402837,lng:105.200086,start:"2026-04-21",end:"2026-04-23",desc:"Tưởng nhớ các Vua Hùng",img:"image/denhung.jpg"},
-{id:2,name:"Lễ hội Chùa Hương",province:"Hà Nội",lat:20.69754,lng:105.71567,start:"2026-02-12",end:"2026-03-06",desc:"Lễ hội hành hương Phật giáo",img:"image/chuahuongg.jpg"},
-{id:3,name:"Hội Lim",province:"Bắc Ninh",lat:21.12171,lng:106.06134,start:"2026-02-12",end:"2026-02-14",desc:"Lễ hội Quan họ",img:"image/hoilim.jpg"},
-{id:4,name:"Festival Huế",province:"Thừa Thiên Huế",lat:16.46194,lng:107.59546,start:"2026-04-26",end:"2026-05-02",desc:"Festival văn hóa Huế",img:"image/feshue.jpg"},
-{id:5,name:"Lễ hội Bà Chúa Xứ",province:"An Giang",lat:10.70561,lng:105.11590,start:"2026-04-23",end:"2026-04-27",desc:"Lễ hội tín ngưỡng Núi Sam",img:"image/le-hoi-ba-chua-xu-chau-doc-an-giang-2.webp"},
+{id:1,name:"Lễ hội Đền Hùng",province:"Phú Thọ",lat:21.367200559014385,lng:105.32058400099461,start:"2026-04-21",end:"2026-04-23",desc:"Tưởng nhớ các Vua Hùng",img:"image/denhung.jpg"},
+{id:2,name:"Lễ hội Chùa Hương",province:"Hà Nội",lat:21.367200559014385,lng:105.32058400099461,start:"2026-02-12",end:"2026-03-06",desc:"Lễ hội hành hương Phật giáo",img:"image/chuahuongg.jpg"},
+{id:3,name:"Hội Lim",province:"Bắc Ninh",lat:21.140333083413573,lng:106.01977929325449,start:"2026-02-12",end:"2026-02-14",desc:"Lễ hội Quan họ",img:"image/hoilim.jpg"},
+{id:4,name:"Festival Huế",province:"Thừa Thiên Huế",lat:16.4568009397725,lng:107.56184863558185,start:"2026-04-26",end:"2026-05-02",desc:"Festival văn hóa Huế",img:"image/feshue.jpg"},
+{id:5,name:"Lễ hội Bà Chúa Xứ",province:"An Giang",lat:10.682837715796891,lng:105.08012770721396,start:"2026-04-23",end:"2026-04-27",desc:"Lễ hội tín ngưỡng Núi Sam",img:"image/le-hoi-ba-chua-xu-chau-doc-an-giang-2.webp"},
 
-{id:6,name:"Lễ hội Gióng",province:"Hà Nội",lat:21.083,lng:105.82,desc:"Tôn vinh Thánh Gióng",img:"image/hoi-giong-ha-noi-8.jpg"},
-{id:7,name:"Lễ hội Yên Tử",province:"Quảng Ninh",lat:21.17,lng:106.73,desc:"Hành hương Yên Tử",img:"image/trekking-yen-tu-2.png"},
-{id:8,name:"Lễ hội Côn Sơn Kiếp Bạc",province:"Hải Dương",lat:21.12,lng:106.38,desc:"Tưởng nhớ Trần Hưng Đạo",img:"image/con-son-kiep-bac-thumb.jpg"},
-{id:9,name:"Lễ hội Đền Trần",province:"Nam Định",lat:20.43,lng:106.16,desc:"Phát ấn đầu năm",img:"image/OIP.jpg"},
+{id:6,name:"Lễ hội Gióng",province:"Hà Nội",lat:21.054730100452606,lng:105.96107196441818,desc:"Tôn vinh Thánh Gióng",img:"image/hoi-giong-ha-noi-8.jpg"},
+{id:7,name:"Lễ hội Yên Tử",province:"Quảng Ninh",lat:21.161761050484767,lng:106.7151645038766,desc:"Hành hương Yên Tử",img:"image/trekking-yen-tu-2.png"},
+{id:8,name:"Lễ hội Côn Sơn Kiếp Bạc",province:"Hải Dương",lat:21.148061368107946,lng:106.35023425517674,desc:"Tưởng nhớ Trần Hưng Đạo",img:"image/con-son-kiep-bac-thumb.jpg"},
+{id:9,name:"Lễ hội Đền Trần",province:"Nam Định",lat:20.4558304221236,lng:106.16789191966716,desc:"Phát ấn đầu năm",img:"image/OIP.jpg"},
 {id:10,name:"Lễ hội Chọi Trâu",province:"Hải Phòng",lat:20.85,lng:106.68,start:"2026-09-10",end:"2026-09-12",desc:"Lễ hội truyền thống Đồ Sơn",img:"image/lechoitrau.jpg"},
-{id:11,name:"Lễ hội Hoa Ban",province:"Điện Biên",lat:21.38,lng:103.02,desc:"Lễ hội người Thái",img:"https://media.mia.vn/uploads/blog-du-lich/le-hoi-hoa-ban-muong-lo-va-nhung-tinh-hoa-mien-tay-bac-1646217729.jpg"},
-{id:12,name:"Lễ hội Lồng Tồng",province:"Tuyên Quang",lat:21.82,lng:105.22,desc:"Xuống đồng đầu năm",img:"https://gotrangtri.vn/wp-content/uploads/2018/10/LongtongBackan1JPG-copy-1024x686.jpg"},
-{id:13,name:"Lễ hội Đền Bà Triệu",province:"Thanh Hóa",lat:19.75,lng:105.78,desc:"Tưởng nhớ Bà Triệu",img:"https://truyenhinhthanhhoa.qltns.mediacdn.vn/458221966042468352/2023/3/2/le-hoi-den-ba-trieu-di-san-phi-vat-the-quoc-gia-16777202372901134506959.jpg"},
-{id:14,name:"Lễ hội Cầu Ngư",province:"Đà Nẵng",lat:16.05,lng:108.2,desc:"Lễ hội ngư dân",img:"https://static.vinwonders.com/production/le-hoi-nghinh-ong-phu-quoc-1.jpg"},
-{id:15,name:"Lễ hội Kate",province:"Ninh Thuận",lat:11.67,lng:108.86,desc:"Lễ hội lớn người Chăm",img:"https://static.vinwonders.com/production/le-hoi-kate-ninh-thuan-3.jpg"},
+{id:11,name:"Lễ hội Hoa Ban",province:"Điện Biên",lat:21.387424980426843,lng:103.0136737956452,desc:"Lễ hội người Thái",img:"https://media.mia.vn/uploads/blog-du-lich/le-hoi-hoa-ban-muong-lo-va-nhung-tinh-hoa-mien-tay-bac-1646217729.jpg"},
+{id:12,name:"Lễ hội Lồng Tồng",province:"Tuyên Quang",lat:22.409395983436532,lng:105.62256810268161,desc:"Xuống đồng đầu năm",img:"https://gotrangtri.vn/wp-content/uploads/2018/10/LongtongBackan1JPG-copy-1024x686.jpg"},
+{id:13,name:"Lễ hội Đền Bà Triệu",province:"Thanh Hóa",lat:19.93098092454584,lng:105.81880452209083,desc:"Tưởng nhớ Bà Triệu",img:"https://truyenhinhthanhhoa.qltns.mediacdn.vn/458221966042468352/2023/3/2/le-hoi-den-ba-trieu-di-san-phi-vat-the-quoc-gia-16777202372901134506959.jpg"},
+{id:14,name:"Lễ hội Cầu Ngư",province:"Đà Nẵng",lat:17.873268866670305,lng:106.44946214600883,desc:"Lễ hội ngư dân",img:"https://static.vinwonders.com/production/le-hoi-nghinh-ong-phu-quoc-1.jpg"},
+{id:15,name:"Lễ hội Kate",province:"Ninh Thuận",lat:11.602105171505858,lng:108.94660055494386,desc:"Lễ hội lớn người Chăm",img:"https://static.vinwonders.com/production/le-hoi-kate-ninh-thuan-3.jpg"},
 
-{id:16,name:"Lễ hội Ok Om Bok",province:"Sóc Trăng",lat:9.6,lng:105.98,desc:"Cúng trăng Khmer",img:"https://cdn.tcdulichtphcm.vn/upload/4-2024/images/2024-11-14/-1731565736-134-width960height640.jpg"},
-{id:17,name:"Lễ hội Nghinh Ông",province:"Vũng Tàu",lat:10.34,lng:107.08,desc:"Cầu ngư ven biển",img:"https://media.vov.vn/sites/default/files/styles/large_watermark/public/2023-09/tu_sang_som_ngu_dan_vung_bien_vung_tau_da_dong_thuyen_ra_khoi_tien_hanh_nghi_thuc_don_ong_anh_luu_son.jpg"},
-{id:18,name:"Lễ hội Dinh Cô",province:"Vũng Tàu",lat:10.37,lng:107.1,desc:"Tín ngưỡng dân gian",img:"https://www.onsetbluesfestival.com/wp-content/uploads/2023/04/le-hoi-dinh-co-2-2048x1357.jpg"},
-{id:19,name:"Lễ hội Bà Thu Bồn",province:"Quảng Nam",lat:15.88,lng:108.33,desc:"Lễ hội tín ngưỡng",img:"-festival-map-vietnam/image/istockphoto-515999868-170667a.jpg"},
-{id:20,name:"Lễ hội Đền Cuông",province:"Nghệ An",lat:19.2,lng:105.68,desc:"Thờ An Dương Vương",img:"-festival-map-vietnam/image/unnamed.png"},
+{id:16,name:"Lễ hội Ok Om Bok",province:"Sóc Trăng",lat:9.61035544277581,lng:105.9769833223765,desc:"Cúng trăng Khmer",img:"https://cdn.tcdulichtphcm.vn/upload/4-2024/images/2024-11-14/-1731565736-134-width960height640.jpg"},
+{id:17,name:"Lễ hội Nghinh Ông",province:"Vũng Tàu",lat:10.927407947581214,lng:108.09624292685334,desc:"Cầu ngư ven biển",img:"https://media.vov.vn/sites/default/files/styles/large_watermark/public/2023-09/tu_sang_som_ngu_dan_vung_bien_vung_tau_da_dong_thuyen_ra_khoi_tien_hanh_nghi_thuc_don_ong_anh_luu_son.jpg"},
+{id:18,name:"Lễ hội Dinh Cô",province:"Vũng Tàu",lat:10.38674868514717,lng:107.2342065665666,desc:"Tín ngưỡng dân gian",img:"https://www.onsetbluesfestival.com/wp-content/uploads/2023/04/le-hoi-dinh-co-2-2048x1357.jpg"},
+{id:19,name:"Lễ hội Bà Thu Bồn",province:"Quảng Nam",lat:15.817474068889982,lng:108.07901026666603,desc:"Lễ hội tín ngưỡng",img:"-festival-map-vietnam/image/istockphoto-515999868-170667a.jpg"},
+{id:20,name:"Lễ hội Đền Cuông",province:"Nghệ An",lat:18.904742301788247,lng:105.6049307797635,desc:"Thờ An Dương Vương",img:"-festival-map-vietnam/image/unnamed.png"},
 
 {id:21,name:"Lễ hội Bà Chúa Kho",province:"Bắc Ninh",lat:21.18,lng:106.05,desc:"Cầu tài lộc",img:"https://poliva.vn/wp-content/uploads/2019/07/den-ba-chua-kho-4.jpg"},
-{id:22,name:"Lễ hội Chùa Keo",province:"Thái Bình",lat:20.45,lng:106.27,desc:"Lễ hội cổ truyền",img:"-festival-map-vietnam/image/16-places-to-pray-for-fortune-and-luck-are-considered-the-most-sacred-in-vietnam-20.jpg"},
-{id:23,name:"Lễ hội Đền Sóc",province:"Hà Nội",lat:21.2,lng:105.87,desc:"Thờ Thánh Gióng",img:"-festival-map-vietnam/image/49DB30A4-E57B-41F7-BBF3-5CCB6BA75670.jpeg"},
+{id:22,name:"Lễ hội Chùa Keo",province:"Thái Bình",lat:20.361167252691573,lng:106.2970965760548,desc:"Lễ hội cổ truyền",img:"-festival-map-vietnam/image/16-places-to-pray-for-fortune-and-luck-are-considered-the-most-sacred-in-vietnam-20.jpg"},
+{id:23,name:"Lễ hội Đền Sóc",province:"Hà Nội",lat:21.292353337793674,lng:105.83232458015765,desc:"Thờ Thánh Gióng",img:"-festival-map-vietnam/image/49DB30A4-E57B-41F7-BBF3-5CCB6BA75670.jpeg"},
 {id:24,name:"Lễ hội Phủ Giầy",province:"Nam Định",lat:20.42,lng:106.2,desc:"Thờ Mẫu Liễu Hạnh",img:"-festival-map-vietnam/image/le-hoi-phu-giay.jpg"},
-{id:25,name:"Lễ hội Chùa Dâu",province:"Bắc Ninh",lat:21.12,lng:106.04,desc:"Lễ hội Phật giáo cổ",img:"https://cdn.xanhsm.com/2024/11/a9dbf841-chua-dau-16.jpg"},
+{id:25,name:"Lễ hội Chùa Dâu",province:"Bắc Ninh",lat:21.13253264154131,lng:105.94810939563774,desc:"Lễ hội Phật giáo cổ",img:"https://cdn.xanhsm.com/2024/11/a9dbf841-chua-dau-16.jpg"},
 
-{id:26,name:"Lễ hội Chùa Bút Tháp",province:"Bắc Ninh",lat:21.1,lng:106.02,desc:"Di tích Phật giáo",img:"-festival-map-vietnam/image/chùa  bút tháp.jpg"},
-{id:27,name:"Lễ hội Đền Đô",province:"Bắc Ninh",lat:21.17,lng:106.08,desc:"Thờ vua Lý",img:"https://thumbs.dreamstime.com/b/group-people-traditional-costume-palanquin-procession-h-hai-duong-vietnam-february-holy-con-son-kiep-bac-festival-32630728.jpg"},
+{id:26,name:"Lễ hội Chùa Bút Tháp",province:"Bắc Ninh",lat:21.060888296452607,lng:106.02230861097911,desc:"Di tích Phật giáo",img:"-festival-map-vietnam/image/chùa  bút tháp.jpg"},
+{id:27,name:"Lễ hội Đền Đô",province:"Bắc Ninh",lat:21.107232179115325,lng:105.96036986680126,desc:"Thờ vua Lý",img:"https://thumbs.dreamstime.com/b/group-people-traditional-costume-palanquin-procession-h-hai-duong-vietnam-february-holy-con-son-kiep-bac-festival-32630728.jpg"},
 {id:28,name:"Lễ hội Cửa Ông",province:"Quảng Ninh",lat:21.01,lng:107.3,desc:"Thờ Trần Quốc Tảng",img:"https://media.mia.vn/uploads/blog-du-lich/le-hoi-den-cua-ong-le-hoi-tung-bung-bac-nhat-tinh-quang-ninh-6-1641955753.jpg"},
 {id:29,name:"Lễ hội Bạch Đằng",province:"Quảng Ninh",lat:20.9,lng:106.8,desc:"Kỷ niệm chiến thắng Bạch Đằng",img:"-festival-map-vietnam/image/lễ hội bạch đằng.jpg"},
 {id:30,name:"Lễ hội Đền Tranh",province:"Hải Dương",lat:21.02,lng:106.37,desc:"Thờ Quan Lớn Tuần Tranh",img:"-festival-map-vietnam/image/lễ hội đền trăng.jpg"},
 
 {id:31,name:"Lễ hội Lam Kinh",province:"Thanh Hóa",lat:19.88,lng:105.43,desc:"Tưởng nhớ Lê Lợi",img:"https://images.vietnamtourism.gov.vn/vn/images/2023/thang_10/0610.le_hoi_lam_kinh_7.jpg"},
-{id:32,name:"Lễ hội Điện Hòn Chén",province:"Huế",lat:16.43,lng:107.55,desc:"Thờ Thiên Y A Na",img:"-festival-map-vietnam/image/Le-Hoi-Dien-Hon-Chen.jpg"},
-{id:33,name:"Lễ hội Tháp Bà Ponagar",province:"Khánh Hòa",lat:12.27,lng:109.2,desc:"Thờ nữ thần Ponagar",img:"-festival-map-vietnam/image/lễ hội tháp bà.jpg"},
-{id:34,name:"Lễ hội Dinh Thầy Thím",province:"Bình Thuận",lat:10.56,lng:107.73,desc:"Tín ngưỡng dân gian",img:"-festival-map-vietnam/image/lễ hội dim thầy thính.jpg"},
+{id:32,name:"Lễ hội Điện Hòn Chén",province:"Huế",lat:16.42213500744133,lng:107.56299025318715,desc:"Thờ Thiên Y A Na",img:"-festival-map-vietnam/image/Le-Hoi-Dien-Hon-Chen.jpg"},
+{id:33,name:"Lễ hội Tháp Bà Ponagar",province:"Khánh Hòa",lat:12.265597146606048,lng:109.1953838932545,desc:"Thờ nữ thần Ponagar",img:"-festival-map-vietnam/image/lễ hội tháp bà.jpg"},
+{id:34,name:"Lễ hội Dinh Thầy Thím",province:"Bình Thuận",lat:10.723548577980846,lng:107.84459673604229,desc:"Tín ngưỡng dân gian",img:"-festival-map-vietnam/image/lễ hội dim thầy thính.jpg"},
 {id:35,name:"Lễ hội Đua Bò",province:"An Giang",lat:10.36,lng:104.85,desc:"Lễ hội Khmer",img:"-festival-map-vietnam/image/lễ hội dim thầy thính.jpg"},
 
-{id:36,name:"Lễ hội Đua Ghe Ngo",province:"Sóc Trăng",lat:9.6,lng:105.97,desc:"Lễ hội sông nước",img:"-festival-map-vietnam/image/lễ hội đua ghe go.jpg"},
-{id:37,name:"Lễ hội Chol Chnam Thmay",province:"Nam Bộ",lat:10.2,lng:105.9,desc:"Tết Khmer",img:"https://www.goindonesiatours.com/wp-content/uploads/Islamic-New-Year-is-a-significant-Indonesia-public-holiday-for-Muslims-420x280.jpg"},
-{id:38,name:"Lễ hội Cồng Chiêng",province:"Tây Nguyên",lat:14.7,lng:108.0,desc:"Di sản văn hóa",img:"-festival-map-vietnam/image/le_hoi_cong_chieng_tay_nguyen_-_gia_tri_van_hoa_ngan_doi_-_baodantocvn.jpg"},
-{id:39,name:"Lễ hội Đua Voi",province:"Đắk Lắk",lat:12.67,lng:108.04,desc:"Truyền thống Tây Nguyên",img:"-festival-map-vietnam/image/lễ hội đua voi.jpg"},
-{id:40,name:"Lễ hội Đâm Trâu",province:"Kon Tum",lat:14.35,lng:108.0,desc:"Nghi lễ dân tộc",img:"-festival-map-vietnam/image/lễ hội đâm trâu.jpg"},
+{id:36,name:"Lễ hội Đua Ghe Ngo",province:"Sóc Trăng",lat:9.607842405904238,lng:105.9954620800482,desc:"Lễ hội sông nước",img:"-festival-map-vietnam/image/lễ hội đua ghe go.jpg"},
+{id:37,name:"Lễ hội Chol Chnam Thmay",province:"Nam Bộ",lat:9.91605223000052,lng:106.30347509354482,desc:"Tết Khmer",img:"https://www.goindonesiatours.com/wp-content/uploads/Islamic-New-Year-is-a-significant-Indonesia-public-holiday-for-Muslims-420x280.jpg"},
+{id:38,name:"Lễ hội Cồng Chiêng",province:"Tây Nguyên",lat:13.981880249760142,lng:108.00639662243309,desc:"Di sản văn hóa",img:"-festival-map-vietnam/image/le_hoi_cong_chieng_tay_nguyen_-_gia_tri_van_hoa_ngan_doi_-_baodantocvn.jpg"},
+{id:39,name:"Lễ hội Đua Voi",province:"Đắk Lắk",lat:12.875886561964096,lng:107.80719711396102,desc:"Truyền thống Tây Nguyên",img:"-festival-map-vietnam/image/lễ hội đua voi.jpg"},
+{id:40,name:"Lễ hội Đâm Trâu",province:"Kon Tum",lat:13.843524345760217,lng:108.61999037968006,desc:"Nghi lễ dân tộc",img:"-festival-map-vietnam/image/lễ hội đâm trâu.jpg"},
 
-{id:41,name:"Lễ hội Hoa Đà Lạt",province:"Lâm Đồng",lat:11.94,lng:108.45,desc:"Festival hoa",img:"https://source.unsplash.com/400x300/?flower"},
+{id:41,name:"Lễ hội Hoa Đà Lạt",province:"Lâm Đồng",lat:11.949971935153235,lng:108.44962258698264,desc:"Festival hoa",img:"https://source.unsplash.com/400x300/?flower"},
 {id:42,name:"Lễ hội Cà Phê",province:"Đắk Lắk",lat:12.67,lng:108.04,desc:"Festival cà phê",img:"https://source.unsplash.com/400x300/?coffee"},
 {id:43,name:"Lễ hội Pháo Hoa",province:"Đà Nẵng",lat:16.05,lng:108.2,desc:"Lễ h  ội pháo hoa quốc tế",img:"https://source.unsplash.com/400x300/?fireworks"},
 {id:44,name:"Lễ hội Trăng Rằm",province:"Hội An",lat:15.88,lng:108.33,desc:"Lễ hội đèn lồng",img:"https://source.unsplash.com/400x300/?lantern"},
@@ -3972,16 +4315,16 @@ var festivals=[
 
 {id:46,name:"Lễ hội Hang Động",province:"Quảng Bình",lat:17.54,lng:106.15,desc:"Du lịch hang động",img:"https://source.unsplash.com/400x300/?cave"},
 {id:47,name:"Lễ hội Đua Thuyền",province:"Quảng Bình",lat:17.47,lng:106.62,desc:"Lễ hội sông nước",img:"https://source.unsplash.com/400x300/?boat"},
-{id:48,name:"Lễ hội Gầu Tào",province:"Hà Giang",lat:22.82,lng:104.98,desc:"Lễ hội người Mông",img:"https://source.unsplash.com/400x300/?mountain"},
+{id:48,name:"Lễ hội Gầu Tào",province:"Hà Giang",lat:22.331350006953407,lng:103.83394364063192,desc:"Lễ hội người Mông",img:"https://source.unsplash.com/400x300/?mountain"},
 {id:49,name:"Lễ hội Nhảy Lửa",province:"Hà Giang",lat:22.75,lng:105.0,desc:"Nghi lễ dân tộc",img:"https://source.unsplash.com/400x300/?fire"},
-{id:50,name:"Lễ hội Hoa Tam Giác Mạch",province:"Hà Giang",lat:23.28,lng:105.22,desc:"Festival hoa",img:"https://source.unsplash.com/400x300/?flower"},
-{id:51,name:"Lễ hội Chợ Tình Khâu Vai",province:"Hà Giang",lat:23.17,lng:104.85,desc:"Lễ hội chợ tình dân tộc",img:"https://source.unsplash.com/400x300/?market"},
-{id:52,name:"Lễ hội Đền Thượng",province:"Lào Cai",lat:22.49,lng:103.97,desc:"Thờ Trần Hưng Đạo",img:"https://source.unsplash.com/400x300/?temple"},
+{id:50,name:"Lễ hội Hoa Tam Giác Mạch",province:"Hà Giang",lat:23.27900278374778,lng:105.36414746547288,desc:"Festival hoa",img:"https://source.unsplash.com/400x300/?flower"},
+{id:51,name:"Lễ hội Chợ Tình Khâu Vai",province:"Hà Giang",lat:23.09360959183727,lng:105.49148402453325,desc:"Lễ hội chợ tình dân tộc",img:"https://source.unsplash.com/400x300/?market"},
+{id:52,name:"Lễ hội Đền Thượng",province:"Lào Cai",lat:22.50999775427292,lng:103.96807246682552,desc:"Thờ Trần Hưng Đạo",img:"https://source.unsplash.com/400x300/?temple"},
 {id:53,name:"Lễ hội Đền Bảo Hà",province:"Lào Cai",lat:22.19,lng:104.28,desc:"Thờ thần Hoàng Bảy",img:"https://source.unsplash.com/400x300/?temple"},
 {id:54,name:"Lễ hội Roóng Poọc",province:"Lào Cai",lat:22.38,lng:103.87,desc:"Lễ hội xuống đồng",img:"https://source.unsplash.com/400x300/?festival"},
 {id:55,name:"Lễ hội Tết Nhảy",province:"Lào Cai",lat:22.38,lng:103.92,desc:"Lễ hội người Dao",img:"https://source.unsplash.com/400x300/?culture"},
 
-{id:56,name:"Lễ hội Hoa Ban",province:"Sơn La",lat:21.33,lng:103.9,desc:"Festival hoa ban Tây Bắc",img:"https://source.unsplash.com/400x300/?flower"},
+{id:56,name:"Lễ hội Hoa Ban",province:"Sơn La",lat:21.387424980426843,lng:103.0136737956452,desc:"Festival hoa ban Tây Bắc",img:"https://source.unsplash.com/400x300/?flower"},
 {id:57,name:"Lễ hội Hạn Khuống",province:"Sơn La",lat:21.27,lng:104.1,desc:"Lễ hội dân tộc Thái",img:"https://source.unsplash.com/400x300/?culture"},
 {id:58,name:"Lễ hội Xên Bản",province:"Lai Châu",lat:22.39,lng:103.47,desc:"Cầu mùa màng",img:"https://source.unsplash.com/400x300/?festival"},
 {id:59,name:"Lễ hội Then Kin Pang",province:"Lai Châu",lat:22.38,lng:103.48,desc:"Lễ hội dân tộc Thái",img:"https://source.unsplash.com/400x300/?culture"},
@@ -3990,48 +4333,48 @@ var festivals=[
 {id:61,name:"Lễ hội Ná Nhèm",province:"Lạng Sơn",lat:21.85,lng:106.76,desc:"Lễ hội dân gian độc đáo",img:"https://source.unsplash.com/400x300/?festival"},
 {id:62,name:"Lễ hội Kỳ Cùng",province:"Lạng Sơn",lat:21.85,lng:106.76,desc:"Lễ hội truyền thống",img:"https://source.unsplash.com/400x300/?temple"},
 {id:63,name:"Lễ hội Đền Bắc Lệ",province:"Lạng Sơn",lat:21.62,lng:106.58,desc:"Lễ hội tín ngưỡng",img:"https://source.unsplash.com/400x300/?temple"},
-{id:64,name:"Lễ hội Thành Tuyên",province:"Tuyên Quang",lat:21.82,lng:105.22,desc:"Lễ hội trung thu lớn",img:"https://source.unsplash.com/400x300/?lantern"},
+{id:64,name:"Lễ hội Thành Tuyên",province:"Tuyên Quang",lat:21.78943214626726,lng:105.21769150668595,desc:"Lễ hội trung thu lớn",img:"https://source.unsplash.com/400x300/?lantern"},
 {id:65,name:"Lễ hội Làng Sen",province:"Nghệ An",lat:18.67,lng:105.68,desc:"Tưởng nhớ Chủ tịch Hồ Chí Minh",img:"https://source.unsplash.com/400x300/?heritage"},
 
 {id:66,name:"Lễ hội Cửa Lò",province:"Nghệ An",lat:18.81,lng:105.72,desc:"Festival du lịch biển",img:"https://source.unsplash.com/400x300/?beach"},
 {id:67,name:"Lễ hội Biển Sầm Sơn",province:"Thanh Hóa",lat:19.73,lng:105.9,desc:"Festival du lịch biển",img:"https://source.unsplash.com/400x300/?sea"},
-{id:68,name:"Lễ hội Chùa Hương Tích",province:"Hà Tĩnh",lat:18.37,lng:105.9,desc:"Lễ hội hành hương",img:"https://source.unsplash.com/400x300/?pagoda"},
-{id:69,name:"Lễ hội Đền Quả Sơn",province:"Nghệ An",lat:19.2,lng:105.45,desc:"Thờ Uy Minh Vương",img:"https://source.unsplash.com/400x300/?temple"},
-{id:70,name:"Lễ hội Đền Cờn",province:"Nghệ An",lat:19.05,lng:105.71,desc:"Lễ hội tín ngưỡng biển",img:"https://source.unsplash.com/400x300/?sea"},
+{id:68,name:"Lễ hội Chùa Hương Tích",province:"Hà Tĩnh",lat:18.535001207963045,lng:105.78900372255168,desc:"Lễ hội hành hương",img:"https://source.unsplash.com/400x300/?pagoda"},
+{id:69,name:"Lễ hội Đền Quả Sơn",province:"Nghệ An",lat:18.935687216316786,lng:105.28035863790534,desc:"Thờ Uy Minh Vương",img:"https://source.unsplash.com/400x300/?temple"},
+{id:70,name:"Lễ hội Đền Cờn",province:"Nghệ An",lat:19.2312359958514,lng:105.73725486674905,desc:"Lễ hội tín ngưỡng biển",img:"https://source.unsplash.com/400x300/?sea"},
 
 {id:71,name:"Lễ hội Hang Động Phong Nha",province:"Quảng Bình",lat:17.54,lng:106.15,desc:"Festival du lịch hang động",img:"https://source.unsplash.com/400x300/?cave"},
 {id:72,name:"Lễ hội Đua Thuyền Nhật Lệ",province:"Quảng Bình",lat:17.47,lng:106.62,desc:"Lễ hội sông nước",img:"https://source.unsplash.com/400x300/?boat"},
-{id:73,name:"Lễ hội Điện Hòn Chén",province:"Huế",lat:16.43,lng:107.55,desc:"Thờ Thiên Y A Na",img:"https://source.unsplash.com/400x300/?temple"},
+{id:73,name:"Lễ hội Điện Hòn Chén",province:"Huế",lat:16.42213500744133,lng:107.56299025318715,desc:"Thờ Thiên Y A Na",img:"https://source.unsplash.com/400x300/?temple"},
 {id:74,name:"Lễ hội Cầu Ngư Lăng Cô",province:"Huế",lat:16.26,lng:107.9,desc:"Lễ hội ngư dân",img:"https://source.unsplash.com/400x300/?sea"},
 {id:75,name:"Lễ hội Bà Chiêm Sơn",province:"Quảng Nam",lat:15.88,lng:108.33,desc:"Lễ hội tín ngưỡng",img:"https://source.unsplash.com/400x300/?festival"},
 
 {id:76,name:"Lễ hội Quán Thế Âm",province:"Đà Nẵng",lat:16.01,lng:108.27,desc:"Lễ hội Phật giáo",img:"https://source.unsplash.com/400x300/?pagoda"},
 {id:77,name:"Lễ hội Đình Làng An Hải",province:"Đà Nẵng",lat:16.06,lng:108.24,desc:"Lễ hội truyền thống",img:"https://source.unsplash.com/400x300/?festival"},
 {id:78,name:"Lễ hội Biển Nha Trang",province:"Khánh Hòa",lat:12.23,lng:109.2,desc:"Festival biển",img:"https://source.unsplash.com/400x300/?beach"},
-{id:79,name:"Lễ hội Dinh Thầy Thím",province:"Bình Thuận",lat:10.56,lng:107.73,desc:"Lễ hội tín ngưỡng",img:"https://source.unsplash.com/400x300/?temple"},
+{id:79,name:"Lễ hội Dinh Thầy Thím",province:"Bình Thuận",lat:10.723548577980846,lng:107.84459673604229,desc:"Lễ hội tín ngưỡng",img:"https://source.unsplash.com/400x300/?temple"},
 {id:80,name:"Lễ hội Katê",province:"Ninh Thuận",lat:11.67,lng:108.86,desc:"Lễ hội người Chăm",img:"https://source.unsplash.com/400x300/?culture"},
 
 {id:81,name:"Lễ hội Ramưwan",province:"Ninh Thuận",lat:11.7,lng:108.9,desc:"Tết người Chăm",img:"https://source.unsplash.com/400x300/?festival"},
-{id:82,name:"Lễ hội Đua Voi",province:"Đắk Lắk",lat:12.67,lng:108.04,desc:"Lễ hội truyền thống Tây Nguyên",img:"https://source.unsplash.com/400x300/?elephant"},
-{id:83,name:"Lễ hội Cồng Chiêng",province:"Gia Lai",lat:13.98,lng:108.0,desc:"Di sản văn hóa Tây Nguyên",img:"https://source.unsplash.com/400x300/?culture"},
-{id:84,name:"Lễ hội Mừng Lúa Mới",province:"Kon Tum",lat:14.35,lng:108.0,desc:"Lễ hội mùa màng",img:"https://source.unsplash.com/400x300/?festival"},
+{id:82,name:"Lễ hội Đua Voi",province:"Đắk Lắk",lat:12.875886561964096,lng:107.80719711396102,desc:"Lễ hội truyền thống Tây Nguyên",img:"https://source.unsplash.com/400x300/?elephant"},
+{id:83,name:"Lễ hội Cồng Chiêng",province:"Gia Lai",lat:13.981880249760142,lng:108.00639662243309,desc:"Di sản văn hóa Tây Nguyên",img:"https://source.unsplash.com/400x300/?culture"},
+{id:84,name:"Lễ hội Mừng Lúa Mới",province:"Kon Tum",lat:14.122606456869873,lng:108.05227779471207,desc:"Lễ hội mùa màng",img:"https://source.unsplash.com/400x300/?festival"},
 {id:85,name:"Lễ hội Bỏ Mả",province:"Gia Lai",lat:13.9,lng:108.1,desc:"Nghi lễ dân tộc",img:"https://source.unsplash.com/400x300/?tribe"},
 
-{id:86,name:"Lễ hội Hoa Đà Lạt",province:"Lâm Đồng",lat:11.94,lng:108.45,desc:"Festival hoa Đà Lạt",img:"https://source.unsplash.com/400x300/?flower"},
-{id:87,name:"Lễ hội Cà Phê Buôn Ma Thuột",province:"Đắk Lắk",lat:12.67,lng:108.04,desc:"Festival cà phê",img:"https://source.unsplash.com/400x300/?coffee"},
+{id:86,name:"Lễ hội Hoa Đà Lạt",province:"Lâm Đồng",lat:11.949971935153235,lng:108.44962258698264,desc:"Festival hoa Đà Lạt",img:"https://source.unsplash.com/400x300/?flower"},
+{id:87,name:"Lễ hội Cà Phê Buôn Ma Thuột",province:"Đắk Lắk",lat:12.684893529006542,lng:108.05144875962658,desc:"Festival cà phê",img:"https://source.unsplash.com/400x300/?coffee"},
 {id:88,name:"Lễ hội Trái Cây",province:"Tiền Giang",lat:10.36,lng:106.36,desc:"Festival trái cây",img:"https://source.unsplash.com/400x300/?fruit"},
-{id:89,name:"Lễ hội Nghinh Ông",province:"Bến Tre",lat:10.24,lng:106.38,desc:"Lễ hội cầu ngư",img:"https://source.unsplash.com/400x300/?sea"},
+{id:89,name:"Lễ hội Nghinh Ông",province:"Bến Tre",lat:10.927407947581214,lng:108.09624292685334,desc:"Lễ hội cầu ngư",img:"https://source.unsplash.com/400x300/?sea"},
 {id:90,name:"Lễ hội Dinh Ông",province:"Bình Dương",lat:11.0,lng:106.65,desc:"Lễ hội tín ngưỡng",img:"https://source.unsplash.com/400x300/?temple"},
 
 {id:91,name:"Lễ hội Chùa Bà Thiên Hậu",province:"Bình Dương",lat:10.98,lng:106.66,desc:"Lễ hội văn hóa Hoa",img:"https://source.unsplash.com/400x300/?temple"},
 {id:92,name:"Lễ hội Núi Bà Đen",province:"Tây Ninh",lat:11.37,lng:106.16,desc:"Hành hương núi Bà",img:"https://source.unsplash.com/400x300/?mountain"},
-{id:93,name:"Lễ hội Nghinh Ông",province:"Cần Giờ",lat:10.41,lng:106.96,desc:"Lễ hội biển",img:"https://source.unsplash.com/400x300/?sea"},
-{id:94,name:"Lễ hội Đua Ghe Ngo",province:"Trà Vinh",lat:9.94,lng:106.34,desc:"Lễ hội Khmer",img:"https://source.unsplash.com/400x300/?boat"},
-{id:95,name:"Lễ hội Ok Om Bok",province:"Trà Vinh",lat:9.94,lng:106.34,desc:"Cúng trăng Khmer",img:"https://source.unsplash.com/400x300/?lantern"},
+{id:93,name:"Lễ hội Nghinh Ông",province:"Cần Giờ",lat:10.927407947581214,lng:108.09624292685334,desc:"Lễ hội biển",img:"https://source.unsplash.com/400x300/?sea"},
+{id:94,name:"Lễ hội Đua Ghe Ngo",province:"Trà Vinh",lat:9.607842405904238,lng:105.9954620800482,desc:"Lễ hội Khmer",img:"https://source.unsplash.com/400x300/?boat"},
+{id:95,name:"Lễ hội Ok Om Bok",province:"Trà Vinh",lat:9.61035544277581,lng:105.9769833223765,desc:"Cúng trăng Khmer",img:"https://source.unsplash.com/400x300/?lantern"},
 
-{id:96,name:"Lễ hội Chol Chnam Thmay",province:"Sóc Trăng",lat:9.6,lng:105.98,desc:"Tết Khmer",img:"https://source.unsplash.com/400x300/?festival"},
+{id:96,name:"Lễ hội Chol Chnam Thmay",province:"Sóc Trăng",lat:9.91605223000052,lng:106.30347509354482,desc:"Tết Khmer",img:"https://source.unsplash.com/400x300/?festival"},
 {id:97,name:"Lễ hội Đua Bò",province:"An Giang",lat:10.36,lng:104.85,desc:"Lễ hội Khmer",img:"https://source.unsplash.com/400x300/?race"},
-{id:98,name:"Lễ hội Nghinh Ông",province:"Kiên Giang",lat:10.22,lng:103.96,desc:"Lễ hội biển",img:"https://source.unsplash.com/400x300/?sea"},
+{id:98,name:"Lễ hội Nghinh Ông",province:"Kiên Giang",lat:10.927407947581214,lng:108.09624292685334,desc:"Lễ hội biển",img:"https://source.unsplash.com/400x300/?sea"},
 {id:99,name:"Lễ hội Dinh Cậu",province:"Phú Quốc",lat:10.22,lng:103.96,desc:"Lễ hội ngư dân",img:"https://source.unsplash.com/400x300/?island"},
 {id:100,name:"Lễ hội Biển Phú Quốc",province:"Kiên Giang",lat:10.28,lng:103.96,desc:"Festival du lịch biển",img:"https://source.unsplash.com/400x300/?beach"},
 {id:101,name:"Lễ hội Ooc Om Bóc - Đua ghe Ngo",province:"Sóc Trăng",lat:9.603,lng:105.973,desc:"Lễ cúng trăng và đua ghe ngo đặc sắc",img:"https://source.unsplash.com/400x300/?khmer-festival"},
@@ -4048,7 +4391,59 @@ var festivals=[
 {id:112,name:"Lễ hội Đền Đức Thánh Trần Bảo Lộc",province:"Lâm Đồng",lat:11.546,lng:107.807,desc:"Không gian tâm linh kết hợp văn hóa cao nguyên",img:"https://source.unsplash.com/400x300/?highland-temple"},
 {id:113,name:"Lễ hội Gầu Tào của người Mông",province:"Lào Cai",lat:22.339,lng:103.844,desc:"Lễ hội cầu phúc đầu năm vùng cao",img:"https://source.unsplash.com/400x300/?mountain-festival"},
 {id:114,name:"Lễ hội Kin Chiêng Boóc Mạy",province:"Điện Biên",lat:21.386,lng:103.023,desc:"Nghi lễ cầu mùa của người Thái",img:"https://source.unsplash.com/400x300/?northwest-vietnam"},
-{id:115,name:"Lễ hội Chợ Phong Lưu Khâu Vai",province:"Hà Giang",lat:23.167,lng:105.068,desc:"Chợ tình độc đáo gắn với văn hóa vùng cao",img:"https://source.unsplash.com/400x300/?ethnic-market"}
+{id:115,name:"Lễ hội Chợ Phong Lưu Khâu Vai",province:"Hà Giang",lat:23.167,lng:105.068,desc:"Chợ tình độc đáo gắn với văn hóa vùng cao",img:"https://source.unsplash.com/400x300/?ethnic-market"},
+
+{id:116,name:"Lễ hội Phủ Dầy",province:"Nam Định",lat:20.36041418773125,lng:106.07485244907284,desc:"Lễ hội truyền thống",img:"image/default.jpg"},
+{id:117,name:"Lễ hội Đền Cửa Ông",province:"Quảng Ninh",lat:21.0276070301245,lng:107.37077113558183,desc:"Lễ hội truyền thống",img:"image/default.jpg"},
+{id:118,name:"Lễ hội Đền Hàn Sơn",province:"Thanh Hóa",lat:19.959327036705627,lng:105.77677756553464,desc:"Lễ hội truyền thống",img:"image/default.jpg"},
+{id:119,name:"Lễ hội Đền Và",province:"Sơn Tây Hà Nội",lat:21.138696958751357,lng:105.48532572023647,desc:"Lễ hội truyền thống",img:"image/default.jpg"},
+{id:120,name:"Lễ hội Tịch Điền",province:"Hà Nam",lat:20.588184885038803,lng:105.97856147976351,desc:"Lễ hội truyền thống",img:"image/default.jpg"},
+{id:121,name:"Lễ hội Bà Đen",province:"Tây Ninh",lat:11.382981383797189,lng:106.17620910495025,desc:"Lễ hội truyền thống",img:"image/default.jpg"},
+{id:122,name:"Lễ hội Núi Sam",province:"An Giang",lat:10.6831700570585,lng:105.0800536036415,desc:"Lễ hội truyền thống",img:"image/default.jpg"},
+{id:123,name:"Lễ hội Ooc Om Boc",province:"Bạc Liêu",lat:9.932893414504155,lng:106.36298963957525,desc:"Lễ hội truyền thống",img:"image/default.jpg"},
+{id:124,name:"Lễ hội Đền Hát Môn",province:"Hà Nội",lat:21.129795913227664,lng:105.61185623796605,desc:"Lễ hội truyền thống",img:"image/default.jpg"},
+{id:125,name:"Lễ hội Chùa Tây Phương",province:"Hà Nội",lat:21.025574398408246,lng:105.58723031097809,desc:"Lễ hội truyền thống",img:"image/default.jpg"},
+{id:126,name:"Lễ hội Chùa Thầy",province:"Hà Nội",lat:21.025624470969667,lng:105.5871444802913,desc:"Lễ hội truyền thống",img:"image/default.jpg"},
+{id:127,name:"Lễ hội Đền Bà Chúa Kho",province:"Bắc Ninh",lat:21.20519432133987,lng:106.08531885146068,desc:"Lễ hội truyền thống",img:"image/default.jpg"},
+{id:128,name:"Lễ hội Chùa Tam Chúc",province:"Hà Nam",lat:20.57069793149396,lng:105.81431073794997,desc:"Lễ hội truyền thống",img:"image/default.jpg"},
+{id:129,name:"Lễ hội Đền Trần Thái Bình",province:"Thái Bình",lat:20.599257381789197,lng:106.1467301649357,desc:"Lễ hội truyền thống",img:"image/default.jpg"},
+{id:130,name:"Lễ hội Đền Quán Thánh",province:"Hà Nội",lat:21.04318770732,lng:105.8365676533069,desc:"Lễ hội truyền thống",img:"image/default.jpg"},
+{id:131,name:"Lễ hội Đền Ngọc Sơn",province:"Hà Nội",lat:21.030928620513833,lng:105.85237536679898,desc:"Lễ hội truyền thống",img:"image/default.jpg"},
+{id:132,name:"Lễ hội Chùa Trấn Quốc",province:"Hà Nội",lat:21.04809126677855,lng:105.83688452447116,desc:"Lễ hội truyền thống",img:"image/default.jpg"},
+{id:133,name:"Lễ hội Đền Bạch Mã",province:"Hà Nội",lat:21.03601289848083,lng:105.85105131097833,desc:"Lễ hội truyền thống",img:"image/default.jpg"},
+{id:134,name:"Lễ hội Chùa Hòe Nhai",province:"Hà Nội",lat:21.04258119463158,lng:105.84730388029182,desc:"Lễ hội truyền thống",img:"image/default.jpg"},
+{id:135,name:"Lễ hội Chùa Phật Tích",province:"Bắc Ninh",lat:21.094108058105192,lng:106.02614288214421,desc:"Lễ hội truyền thống",img:"image/default.jpg"},
+{id:136,name:"Lễ hội Chùa Ba Vàng",province:"Quảng Ninh",lat:21.06845593661899,lng:106.7643671649492,desc:"Lễ hội truyền thống",img:"image/default.jpg"},
+{id:137,name:"Lễ hội Chùa Yên Tử",province:"Quảng Ninh",lat:21.131141788136787,lng:106.72928378214532,desc:"Lễ hội truyền thống",img:"image/default.jpg"},
+{id:138,name:"Lễ hội Đền Cửa Suốt",province:"Quảng Ninh",lat:21.03931175256244,lng:107.37524096865023,desc:"Lễ hội truyền thống",img:"image/default.jpg"},
+{id:139,name:"Lễ hội Đền Quan Lớn Tuần Tranh",province:"Hải Dương",lat:20.734971659151643,lng:106.39503005329802,desc:"Lễ hội truyền thống",img:"image/default.jpg"},
+{id:140,name:"Lễ hội Chùa Keo Hành Thiện",province:"Nam Định",lat:20.335884313824927,lng:106.32434505677702,desc:"Lễ hội truyền thống",img:"image/default.jpg"},
+{id:141,name:"Lễ hội Phủ Tây Hồ",province:"Hà Nội",lat:21.055201305856343,lng:105.81967515145634,desc:"Lễ hội truyền thống",img:"image/default.jpg"},
+{id:142,name:"Lễ hội Cầu Ngư Huế",province:"Huế",lat:16.55788670752083,lng:107.64662331086194,desc:"Lễ hội truyền thống",img:"image/default.jpg"},
+{id:143,name:"Lễ hội Cầu Ngư Đà Nẵng",province:"Đà Nẵng",lat:16.073069572642183,lng:108.19183188175167,desc:"Lễ hội truyền thống",img:"image/default.jpg"},
+{id:144,name:"Lễ hội Quan Thế Âm Ngũ Hành Sơn",province:"Đà Nẵng",lat:15.998957365561626,lng:108.25510514907282,desc:"Lễ hội truyền thống",img:"image/default.jpg"},
+{id:145,name:"Lễ hội Cầu Ngư Nha Trang",province:"Khánh Hòa",lat:12.253904944309145,lng:109.19350415473724,desc:"Lễ hội truyền thống",img:"image/default.jpg"},
+{id:146,name:"Lễ hội Nghinh Ông Phan Thiết",province:"Bình Thuận",lat:10.927407986118036,lng:108.09624832209084,desc:"Lễ hội truyền thống",img:"image/default.jpg"},
+{id:147,name:"Lễ hội Nghinh Ông Vũng Tàu",province:"Bà Rịa Vũng Tàu",lat:10.340350809666836,lng:107.08307162208915,desc:"Lễ hội truyền thống",img:"image/default.jpg"},
+{id:148,name:"Lễ hội Bà Chúa Xứ Núi Sam",province:"An Giang",lat:10.682907247520133,lng:105.07997461544727,desc:"Lễ hội truyền thống",img:"image/default.jpg"},
+{id:149,name:"Lễ hội Đua Bò Bảy Núi",province:"An Giang",lat:10.416732074102985,lng:104.99406990177155,desc:"Lễ hội truyền thống",img:"image/default.jpg"},
+{id:150,name:"Lễ hội Ok Om Bok Trà Vinh",province:"Trà Vinh",lat:9.916930111177107,lng:106.30560948482021,desc:"Lễ hội truyền thống",img:"image/default.jpg"},
+{id:151,name:"Lễ hội Cúng Trăng",province:"Sóc Trăng",lat:9.610302551480878,lng:105.9769940511972,desc:"Lễ hội truyền thống",img:"image/default.jpg"},
+{id:152,name:"Lễ hội Dừa",province:"Bến Tre",lat:10.236686474812005,lng:106.37592570313001,desc:"Lễ hội truyền thống",img:"image/default.jpg"},
+{id:153,name:"Lễ hội Gầu Tào Sa Pa",province:"Lào Cai",lat:22.330054333119588,lng:103.83418481284802,desc:"Lễ hội truyền thống",img:"image/default.jpg"},
+{id:154,name:"Lễ hội Lồng Tồng Tuyên Quang",province:"Tuyên Quang",lat:22.14426129937406,lng:105.27144262586643,desc:"Lễ hội truyền thống",img:"image/default.jpg"},
+{id:155,name:"Lễ hội Chùa Tam Thanh",province:"Lạng Sơn",lat:21.85572268785312,lng:106.74712978029878,desc:"Lễ hội truyền thống",img:"image/default.jpg"},
+{id:156,name:"Lễ hội Đền Kỳ Cùng",province:"Lạng Sơn",lat:21.85149199198462,lng:106.7580550821483,desc:"Lễ hội truyền thống",img:"image/default.jpg"},
+{id:157,name:"Lễ hội Lồng Tồng Cao Bằng",province:"Cao Bằng",lat:22.940313563426475,lng:105.66805747904995,desc:"Lễ hội truyền thống",img:"image/default.jpg"},
+{id:158,name:"Lễ hội Pác Bó",province:"Cao Bằng",lat:22.97833752979732,lng:106.05024212055064,desc:"Lễ hội truyền thống",img:"image/default.jpg"},
+{id:159,name:"Lễ hội Ruộng Bậc Thang",province:"Mù Cang Chải Yên Bái",lat:21.849752109921408,lng:104.08837538214823,desc:"Lễ hội truyền thống",img:"image/default.jpg"},
+{id:160,name:"Lễ hội Đền Đông Cuông",province:"Yên Bái",lat:21.932060462997146,lng:104.60664155940955,desc:"Lễ hội truyền thống",img:"image/default.jpg"},
+{id:161,name:"Lễ hội Đền Thác Bà",province:"Yên Bái",lat:21.745690937739678,lng:105.0258073509248,desc:"Lễ hội truyền thống",img:"image/default.jpg"},
+{id:162,name:"Lễ hội Tràng An",province:"Ninh Bình",lat:20.253108442776377,lng:105.91825936280111,desc:"Lễ hội truyền thống",img:"image/default.jpg"},
+{id:163,name:"Lễ hội Chùa Bái Đính",province:"Ninh Bình",lat:20.268823128511688,lng:105.85551978610681,desc:"Lễ hội truyền thống",img:"image/default.jpg"},
+{id:164,name:"Lễ hội Hoa Lư",province:"Ninh Bình",lat:20.286800967510448,lng:105.90808945693027,desc:"Lễ hội truyền thống",img:"image/default.jpg"},
+{id:165,name:"Lễ hội Phát Diệm",province:"Ninh Bình",lat:20.093909923749496,lng:106.0794038732288,desc:"Lễ hội truyền thống",img:"image/default.jpg"},
+{id:166,name:"Lễ hội Nhà Thờ Lớn",province:"Hà Nội",lat:21.028856052559103,lng:105.84884986678153,desc:"Lễ hội truyền thống",img:"image/default.jpg"},
 ];
 
 // DỮ LIỆU KHU VUI CHƠI
@@ -4549,8 +4944,8 @@ function resolveImageUrl(url, type, item) {
         normalized = normalized.replace('/-festival-map-vietnam/', '');
     }
 
-    // These hosts are commonly blocked or rate-limited in this project context.
-    if (normalized.includes('source.unsplash.com') || normalized.includes('picsum.photos')) {
+    // source.unsplash.com is a dead service – block it.
+    if (normalized.includes('source.unsplash.com')) {
         return localFallback;
     }
 
@@ -4574,7 +4969,10 @@ function renderEntertainment(data){
     data.forEach(e=>{
         entList.innerHTML+=`
         <div class="card" onclick="window.location.href='detail.html?type=entertainment&id=${e.id}'">
-            <img src="${resolveImageUrl(e.img,'entertainment',e)}" onerror="${getImageOnError('entertainment',e)}">
+            <div class="card-img-wrap">
+                <img src="${resolveImageUrl(e.img,'entertainment',e)}" onerror="${getImageOnError('entertainment',e)}">
+                <div class="card-img-overlay"><span class="card-province-tag">🎡 ${e.province}</span></div>
+            </div>
             <div class="card-content">
                 <h3>${e.name}</h3>
                 <p>${e.desc}</p>
@@ -4589,7 +4987,10 @@ function renderFood(data){
     data.forEach(f=>{
         foodList.innerHTML+=`
         <div class="card" onclick="window.location.href='detail.html?type=food&id=${f.id}'">
-            <img src="${resolveImageUrl(f.img,'food',f)}" onerror="${getImageOnError('food',f)}">
+            <div class="card-img-wrap">
+                <img src="${resolveImageUrl(f.img,'food',f)}" onerror="${getImageOnError('food',f)}">
+                <div class="card-img-overlay"><span class="card-province-tag">🍜 ${f.province}</span></div>
+            </div>
             <div class="card-content">
                 <h3>${f.name}</h3>
                 <p>${f.desc}</p>
@@ -4682,6 +5083,16 @@ var markerIconUrls = {
     red: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png'
 };
 
+/* === 6. MARKER THEO VÙNG MIỀN === */
+function getRegionMarkerColor(province){
+    var bac=['Hà Nội','Hải Phòng','Quảng Ninh','Bắc Ninh','Hải Dương','Hưng Yên','Thái Bình','Nam Định','Ninh Bình','Hà Nam','Vĩnh Phúc','Bắc Giang','Bắc Kạn','Cao Bằng','Lạng Sơn','Lào Cai','Yên Bái','Tuyên Quang','Hà Giang','Phú Thọ','Thái Nguyên','Sơn La','Lai Châu','Điện Biên','Hòa Bình'];
+    var trung=['Thanh Hóa','Nghệ An','Hà Tĩnh','Quảng Bình','Quảng Trị','Thừa Thiên Huế','Huế','Đà Nẵng','Quảng Nam','Quảng Ngãi','Bình Định','Phú Yên','Khánh Hòa','Ninh Thuận','Bình Thuận','Kon Tum','Gia Lai','Đắk Lắk','Đắk Nông','Lâm Đồng','Tây Nguyên'];
+    var p = province || '';
+    if(bac.some(function(b){return p.includes(b);})) return 'red';
+    if(trung.some(function(t){return p.includes(t);})) return 'orange';
+    return 'gold';
+}
+
 function createColorIcon(colorKey){
     return L.icon({
         iconUrl: markerIconUrls[colorKey] || markerIconUrls.blue,
@@ -4708,27 +5119,21 @@ var entertainmentProvinceSet = new Set(
 
 festivals.forEach(function(f){
 var hasEntertainmentInProvince = entertainmentProvinceSet.has(normalizeLocationText(f.province));
-var marker=L.marker([f.lat,f.lng], { icon: blueFestivalIcon }).addTo(map);
+var marker=L.marker([f.lat,f.lng], { icon: createColorIcon(getRegionMarkerColor(f.province)) }).addTo(map);
 
+var dateStr = '';
+if(f.start && f.end){ dateStr = '<p><b>Thời gian:</b> ' + f.start.slice(8,10)+'/'+f.start.slice(5,7) + ' – ' + f.end.slice(8,10)+'/'+f.end.slice(5,7)+'/'+f.end.slice(0,4) + '</p>'; }
 marker.bindPopup(
-
-`
-<h3>${f.name}</h3>
-
+`<h3>${f.name}</h3>
 <p><b>Địa điểm:</b> ${f.province}</p>
-
+${dateStr}
 <p>${f.desc}</p>
-
-<p><b>Khu vui chơi:</b> ${hasEntertainmentInProvince ? 'Có trong cùng tỉnh/thành' : 'Chưa có dữ liệu trong cùng tỉnh/thành'}</p>
-
-<a href="https://www.google.com/maps/dir/?api=1&destination=${f.lat},${f.lng}" target="_blank">
-
-<button>Chỉ đường</button>
-
-</a>
-`
-
-);
+<p><b>Khu vui chơi:</b> ${hasEntertainmentInProvince ? 'Có trong cùng tỉnh/thành' : 'Chưa có dữ liệu'}</p>
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;">
+<a href="https://www.google.com/maps/dir/?api=1&destination=${f.lat},${f.lng}" target="_blank" rel="noopener"><button>🗺️ Chỉ đường</button></a>
+<a href="detail.html?type=festival&id=${f.id}"><button>Chi tiết</button></a>
+<button onclick="(function(){if(navigator.share){navigator.share({title:'${f.name.replace(/'/g,"\\'")}',text:'${f.desc.replace(/'/g,"\\'")} – ${f.province}',url:window.location.href+'?festival=${f.id}'});}else{navigator.clipboard&&navigator.clipboard.writeText(window.location.href+'?festival=${f.id}');alert('Đã sao chép link!');}})()">📤 Chia sẻ</button>
+</div>`);
 
 markers.push(marker);
 
@@ -5145,14 +5550,17 @@ data.forEach((f,index)=>{
     var doneActive = isFestivalSaved(f.id, 'done') ? ' active' : '';
     list.innerHTML+=`
 <div class="card" onclick="window.location.href='detail.html?type=festival&id=${f.id}'">
-    <img src="${resolveImageUrl(f.img,'festival')}" onerror="${getImageOnError('festival')}">
+    <div class="card-img-wrap">
+        <img src="${resolveImageUrl(f.img,'festival')}" onerror="${getImageOnError('festival')}">
+        <div class="card-img-overlay"><span class="card-province-tag">📍 ${f.province}</span></div>
+    </div>
     <div class="card-content">
         <h3>${f.name}</h3>
         <p><b>${f.province}</b></p>
         <div class="plan-btn-row">
             <button>Xem chi tiết</button>
-            <button class="plan-btn${wishActive}" onclick="toggleTripStatus('${f.id}','wish',event)">Muốn đi</button>
-            <button class="plan-btn${doneActive}" onclick="toggleTripStatus('${f.id}','done',event)">Đã đi</button>
+            <button class="plan-btn${wishActive}" onclick="toggleTripStatus('${f.id}','wish',event)">⚡ Muốn đi</button>
+            <button class="plan-btn${doneActive}" onclick="toggleTripStatus('${f.id}','done',event)">✅ Đã đi</button>
         </div>
     </div>
 </div>
@@ -6202,7 +6610,183 @@ window.addEventListener('appinstalled', () => {
   if (banner) banner.style.display = 'none';
   _pwaInstallPrompt = null;
 });
-</script>
+
+// === HEADER SLIDESHOW ===
+(function(){
+  var slides = document.querySelectorAll('.header-slide');
+  if(!slides.length) return;
+  var current = 0;
+  setInterval(function(){
+    slides[current].classList.remove('active');
+    current = (current + 1) % slides.length;
+    slides[current].classList.add('active');
+  }, 4500);
+})();
+// === SPLASH SCREEN ===
+(function(){
+  var splash = document.getElementById('splashScreen');
+  if(!splash) return;
+  function hideSplash(){ splash.classList.add('hidden'); }
+  var fallback = setTimeout(hideSplash, 5000);
+  window.addEventListener('load', function(){
+    setTimeout(function(){
+      clearTimeout(fallback);
+      hideSplash();
+    }, 1800);
+  });
+})();
+
+// === PATCH: NGÀY LỄ HỘI (festivals thiếu start/end) ===
+(function(){
+  var datePatch = {
+    6:  ['2026-04-28','2026-04-30'], 7:  ['2026-01-29','2026-03-20'],
+    8:  ['2026-09-26','2026-10-01'], 9:  ['2026-02-02','2026-02-04'],
+    11: ['2026-02-19','2026-03-05'], 12: ['2026-02-20','2026-02-22'],
+    13: ['2026-04-19','2026-04-21'], 14: ['2026-03-25','2026-03-27'],
+    15: ['2026-10-01','2026-10-03'], 16: ['2026-11-04','2026-11-06'],
+    17: ['2026-05-15','2026-05-17'], 18: ['2026-08-04','2026-08-06'],
+    19: ['2026-03-29','2026-04-01'], 20: ['2026-03-05','2026-03-11'],
+    21: ['2026-02-02','2026-02-04'], 22: ['2026-09-20','2026-09-22'],
+    23: ['2026-01-26','2026-01-28'], 24: ['2026-04-07','2026-04-10'],
+    25: ['2026-05-26','2026-05-28'], 26: ['2026-09-06','2026-09-07'],
+    27: ['2026-04-04','2026-04-06'], 28: ['2026-03-15','2026-03-17'],
+    29: ['2026-03-26','2026-03-28'], 30: ['2026-05-08','2026-05-12'],
+    31: ['2026-10-06','2026-10-08'], 32: ['2026-03-22','2026-03-24'],
+    33: ['2026-05-08','2026-05-11'], 34: ['2026-10-06','2026-10-08'],
+    35: ['2026-10-03','2026-10-05'], 36: ['2026-11-04','2026-11-06'],
+    37: ['2026-04-13','2026-04-16'], 38: ['2026-11-15','2026-11-18'],
+    39: ['2026-03-12','2026-03-14'], 40: ['2026-03-01','2026-03-03'],
+    41: ['2026-12-20','2026-12-28'], 42: ['2026-03-07','2026-03-11'],
+    43: ['2026-06-06','2026-06-14'], 44: ['2026-09-22','2026-09-23'],
+    45: ['2026-06-01','2026-06-05'], 46: ['2026-02-22','2026-04-30'],
+    47: ['2026-07-04','2026-07-05'], 48: ['2026-02-15','2026-02-18'],
+    49: ['2026-10-10','2026-10-11'], 50: ['2026-10-20','2026-11-15'],
+    51: ['2026-04-15','2026-04-16'], 52: ['2026-02-03','2026-02-05'],
+    53: ['2026-09-02','2026-09-04'], 54: ['2026-02-20','2026-02-21'],
+    55: ['2026-01-25','2026-01-28'], 56: ['2026-02-25','2026-03-08'],
+    57: ['2026-02-05','2026-02-07'], 58: ['2026-02-10','2026-02-12'],
+    59: ['2026-04-20','2026-04-22'], 60: ['2026-02-15','2026-02-17'],
+    61: ['2026-02-28','2026-03-01'], 62: ['2026-03-12','2026-03-17'],
+    63: ['2026-09-22','2026-09-24'], 64: ['2026-10-04','2026-10-05'],
+    65: ['2026-05-18','2026-05-19'], 66: ['2026-04-25','2026-04-29'],
+    67: ['2026-05-24','2026-05-26'], 68: ['2026-02-20','2026-04-15'],
+    69: ['2026-02-08','2026-02-10'], 70: ['2026-02-05','2026-02-17'],
+    71: ['2026-03-01','2026-04-30'], 72: ['2026-07-04','2026-07-05'],
+    73: ['2026-09-22','2026-09-24'], 74: ['2026-03-20','2026-03-22'],
+    75: ['2026-03-05','2026-03-07'], 76: ['2026-03-09','2026-03-10'],
+    77: ['2026-02-26','2026-02-28'], 78: ['2026-06-01','2026-06-05'],
+    79: ['2026-10-06','2026-10-08'], 80: ['2026-10-01','2026-10-03'],
+    81: ['2026-04-01','2026-04-30'], 82: ['2026-03-12','2026-03-14'],
+    83: ['2026-12-01','2026-12-03'], 84: ['2026-10-20','2026-10-22'],
+    85: ['2026-04-10','2026-04-12'], 86: ['2026-12-20','2026-12-28'],
+    87: ['2026-03-07','2026-03-11'], 88: ['2026-06-11','2026-06-15'],
+    89: ['2026-05-15','2026-05-17'], 90: ['2026-04-15','2026-04-17'],
+    91: ['2026-02-03','2026-02-05'], 92: ['2026-01-30','2026-03-20'],
+    93: ['2026-10-15','2026-10-17'], 94: ['2026-11-03','2026-11-05'],
+    95: ['2026-11-04','2026-11-06'], 96: ['2026-04-13','2026-04-16'],
+    97: ['2026-10-03','2026-10-05'], 98: ['2026-09-20','2026-09-22'],
+    99: ['2026-10-10','2026-10-12'],100: ['2026-06-01','2026-06-03'],
+   101: ['2026-11-04','2026-11-06'],102: ['2026-10-16','2026-10-18'],
+   103: ['2026-04-11','2026-04-13'],104: ['2026-12-05','2026-12-07'],
+   105: ['2026-08-01','2026-08-05'],106: ['2026-04-23','2026-04-27'],
+   107: ['2026-03-15','2026-03-17'],108: ['2026-02-22','2026-02-24'],
+   109: ['2026-01-30','2026-02-02'],110: ['2026-10-15','2026-10-17'],
+   111: ['2026-03-20','2026-03-22'],112: ['2026-09-15','2026-09-17'],
+   113: ['2026-02-15','2026-02-18'],114: ['2026-02-20','2026-02-22'],
+   115: ['2026-04-15','2026-04-16'],116: ['2026-04-07','2026-04-10'],
+   117: ['2026-03-15','2026-03-18'],118: ['2026-02-15','2026-02-17'],
+   119: ['2026-02-03','2026-02-05'],120: ['2026-01-26','2026-01-27'],
+   121: ['2026-01-30','2026-03-20'],122: ['2026-04-23','2026-04-27'],
+   123: ['2026-11-04','2026-11-06'],124: ['2026-03-22','2026-03-24'],
+   125: ['2026-02-20','2026-03-15'],126: ['2026-03-28','2026-03-30'],
+   127: ['2026-02-02','2026-02-04'],128: ['2026-02-20','2026-03-30'],
+   129: ['2026-02-01','2026-02-03'],130: ['2026-02-20','2026-03-15'],
+   131: ['2026-02-20','2026-04-15'],132: ['2026-02-20','2026-04-15'],
+   133: ['2026-02-20','2026-04-15'],134: ['2026-02-20','2026-04-15'],
+   135: ['2026-02-20','2026-04-15'],136: ['2026-02-20','2026-04-15'],
+   137: ['2026-01-29','2026-03-20'],138: ['2026-02-20','2026-03-15'],
+   139: ['2026-06-05','2026-06-07'],140: ['2026-10-09','2026-10-11'],
+   141: ['2026-02-20','2026-04-15'],142: ['2026-03-10','2026-03-12'],
+   143: ['2026-03-15','2026-03-17'],144: ['2026-03-09','2026-03-10'],
+   145: ['2026-04-15','2026-04-17'],146: ['2026-08-15','2026-08-17'],
+   147: ['2026-07-28','2026-07-30'],148: ['2026-04-23','2026-04-27'],
+   149: ['2026-10-03','2026-10-05'],150: ['2026-11-04','2026-11-06'],
+   151: ['2026-10-01','2026-11-30'],152: ['2026-08-01','2026-08-05'],
+   153: ['2026-02-15','2026-02-18'],154: ['2026-02-20','2026-02-22'],
+   155: ['2026-02-22','2026-03-05'],156: ['2026-02-22','2026-02-27'],
+   157: ['2026-02-10','2026-02-12'],158: ['2026-05-07','2026-05-09'],
+   159: ['2026-09-20','2026-10-15'],160: ['2026-02-25','2026-02-27'],
+   161: ['2026-06-15','2026-06-17'],162: ['2026-02-20','2026-04-30'],
+   163: ['2026-01-29','2026-03-20'],164: ['2026-03-28','2026-03-30'],
+   165: ['2026-11-08','2026-11-10'],166: ['2026-12-24','2026-12-25']
+  };
+  festivals.forEach(function(f){
+    if(!f.start && datePatch[f.id]) { f.start = datePatch[f.id][0]; f.end = datePatch[f.id][1]; }
+  });
+})();
+
+// === PATCH: SỬA ẢNH BỊ VỠ (source.unsplash.com + đường dẫn sai + default.jpg → picsum) ===
+(function(){
+  var allLists = [festivals, entertainments, foods, hotels, medicals, stores];
+  allLists.forEach(function(list){
+    if(!list) return;
+    list.forEach(function(item){
+      if(!item.img) return;
+      var broken = item.img.indexOf('source.unsplash.com') !== -1
+        || item.img.indexOf('-festival-map-vietnam/') !== -1
+        || item.img === 'image/default.jpg'
+        || item.img === 'image/default.png';
+      if(broken){
+        item.img = 'https://picsum.photos/seed/' + encodeURIComponent(item.name || item.id) + '/400/300';
+      }
+    });
+  });
+})();
+
+// === ĐẾM NGƯỢC LỄ HỘI GẦN NHẤT ===
+(function(){
+  var el = document.getElementById('festivalCountdown');
+  if(!el) return;
+  var today = new Date(); today.setHours(0,0,0,0);
+  var upcoming = festivals.filter(function(f){ return f.start; }).map(function(f){
+    return { f:f, d: new Date(f.start) };
+  }).filter(function(x){ return x.d >= today; })
+    .sort(function(a,b){ return a.d - b.d; });
+  if(!upcoming.length) return;
+  var next = upcoming[0];
+  var diff = Math.round((next.d - today)/(1000*60*60*24));
+  el.className = 'festival-countdown visible';
+  el.innerHTML = '<div class="countdown-label">🏮 Lễ hội sắp diễn ra</div>'
+    + '<div class="countdown-name">' + next.f.name + ' — ' + next.f.province + '</div>'
+    + '<div class="countdown-days">' + diff + '<span>ngày nữa</span></div>'
+    + (diff === 0 ? '<div style="color:var(--brand);font-weight:700;margin-top:4px;">Hôm nay!</div>' : '');
+})();
+
+// === LỌC BẢN ĐỒ THEO THÁNG ===
+function applyMapMonthFilter(){
+  var val = document.getElementById('mapMonthFilter')?.value;
+  var m = val ? parseInt(val) : null;
+  var count = 0;
+  markers.forEach(function(marker, i){
+    var f = festivals[i];
+    if(!f){ marker.addTo(map); return; }
+    var show = true;
+    if(m !== null && f.start && f.end){
+      var s = new Date(f.start), e = new Date(f.end);
+      var sm = s.getMonth()+1, em = e.getMonth()+1, sy = s.getFullYear(), ey = e.getFullYear();
+      // show if month m falls within start..end range
+      show = (sy < ey)
+        ? (m >= sm || m <= em)
+        : (m >= sm && m <= em);
+    } else if(m !== null && !f.start){
+      show = false;
+    }
+    if(show){ marker.addTo(map); count++; }
+    else { map.removeLayer(marker); }
+  });
+  var countEl = document.getElementById('mapMonthCount');
+  if(countEl) countEl.textContent = m ? ('Hiện ' + count + ' lễ hội') : '';
+}</script>
 
 </body>
 </html>
