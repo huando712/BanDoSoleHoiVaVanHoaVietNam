@@ -123,4 +123,76 @@ async function updateUser(id, updatedUser) {
   return updatedUser;
 }
 
-module.exports = { findUserByEmail, findUserById, createUser, updateUser, mongoConnect };
+// ─── Festival functions ────────────────────────────────────────────────────
+
+const FESTIVALS_FILE = path.join(DATA_DIR, "festivals.json");
+
+function fileReadFestivals() {
+  try {
+    ensureFileStore();
+    if (!fs.existsSync(FESTIVALS_FILE)) return [];
+    const text = fs.readFileSync(FESTIVALS_FILE, "utf8");
+    const parsed = JSON.parse(text);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch (_) {
+    return [];
+  }
+}
+
+function fileWriteFestivals(festivals) {
+  ensureFileStore();
+  fs.writeFileSync(FESTIVALS_FILE, JSON.stringify(festivals, null, 2), "utf8");
+}
+
+/** Lấy all festivals */
+async function getAllFestivals() {
+  const db = await mongoConnect();
+  if (db) {
+    const festivals = await db.collection("festivals").find({}).toArray();
+    return festivals || [];
+  }
+  return fileReadFestivals();
+}
+
+/** Lấy festivals theo province */
+async function getFestivalsByProvince(province) {
+  const all = await getAllFestivals();
+  if (!province) return all;
+  return all.filter(f => 
+    String(f.province || "").toLowerCase() === String(province).toLowerCase()
+  );
+}
+
+/** Tạo hoặc cập nhật festivals (bulk) */
+async function upsertFestivals(festivalsData) {
+  const db = await mongoConnect();
+  if (db) {
+    const col = db.collection("festivals");
+    // Xóa cũ rồi insert mới
+    await col.deleteMany({});
+    if (festivalsData.length > 0) {
+      await col.insertMany(festivalsData);
+    }
+    // Tạo indexes
+    try {
+      await col.createIndex({ province: 1 });
+      await col.createIndex({ name: "text" });
+    } catch (_) {}
+    console.log(`[DB] Đã import ${festivalsData.length} lễ hội`);
+    return festivalsData;
+  }
+  fileWriteFestivals(festivalsData);
+  console.log(`[DB] Đã lưu ${festivalsData.length} lễ hội vào file`);
+  return festivalsData;
+}
+
+module.exports = { 
+  findUserByEmail, 
+  findUserById, 
+  createUser, 
+  updateUser, 
+  mongoConnect,
+  getAllFestivals,
+  getFestivalsByProvince,
+  upsertFestivals
+};

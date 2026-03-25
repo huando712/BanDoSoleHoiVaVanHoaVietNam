@@ -744,6 +744,99 @@ function sanitizeReplyObject(obj) {
   return { reply, actions };
 }
 
+// ─── Festival import & endpoints ───────────────────────────────────────────
+
+/** Import CSV festival data vào database (chạy khi server khởi động) */
+async function importFestivalsFromCSV() {
+  try {
+    const csvPath = path.join(__dirname, "festival-locations.csv");
+    if (!fs.existsSync(csvPath)) {
+      console.warn(`[Import] File CSV không tìm thấy: ${csvPath}`);
+      return;
+    }
+
+    const fileContent = fs.readFileSync(csvPath, "utf8");
+    const lines = fileContent.split("\n").filter(line => line.trim());
+    
+    if (lines.length < 2) {
+      console.warn("[Import] File CSV rỗng hoặc không hợp lệ");
+      return;
+    }
+
+    // Parse CSV (header: name,province,lat,lng)
+    const header = lines[0].split(",").map(h => h.trim());
+    const festivals = [];
+
+    for (let i = 1; i < lines.length; i++) {
+      const values = lines[i].split(",").map(v => v.trim());
+      if (values.length < 4 || !values[2] || !values[3]) continue;
+
+      const festival = {
+        id: i,
+        name: values[0],
+        province: values[1],
+        lat: parseFloat(values[2]),
+        lng: parseFloat(values[3]),
+        createdAt: new Date().toISOString()
+      };
+
+      if (!isNaN(festival.lat) && !isNaN(festival.lng)) {
+        festivals.push(festival);
+      }
+    }
+
+    if (festivals.length > 0) {
+      await db.upsertFestivals(festivals);
+      console.log(`[Import] ✓ Đã nhập ${festivals.length} lễ hội từ CSV`);
+    }
+  } catch (error) {
+    console.error("[Import] Lỗi khi nhập CSV:", error.message);
+  }
+}
+
+// ─── Festival API endpoints ────────────────────────────────────────────────
+
+/** GET /api/festivals - Lấy all festivals hoặc filter by province */
+app.get("/api/festivals", async (req, res) => {
+  try {
+    const province = req.query.province ? String(req.query.province).trim() : null;
+    const festivals = province 
+      ? await db.getFestivalsByProvince(province)
+      : await db.getAllFestivals();
+    
+    res.json({
+      total: festivals.length,
+      province: province || "all",
+      items: festivals
+    });
+  } catch (error) {
+    res.status(500).json({ error: "Không thể lấy dữ liệu lễ hội", message: error.message });
+  }
+});
+
+/** GET /api/festivals/search - Tìm kiếm lễ hội theo tên */
+app.get("/api/festivals/search", async (req, res) => {
+  try {
+    const q = String(req.query.q || "").trim().toLowerCase();
+    if (!q) {
+      return res.status(400).json({ error: "Thiếu từ khóa tìm kiếm" });
+    }
+
+    const allFestivals = await db.getAllFestivals();
+    const results = allFestivals.filter(f =>
+      f.name.toLowerCase().includes(q) || f.province.toLowerCase().includes(q)
+    );
+
+    res.json({
+      total: results.length,
+      query: q,
+      items: results
+    });
+  } catch (error) {
+    res.status(500).json({ error: "Lỗi tìm kiếm", message: error.message });
+  }
+});
+
 app.post("/api/chatbot", async (req, res) => {
   const message = String(req.body?.message || "").trim();
   const locale = String(req.body?.locale || "vi-VN");
@@ -787,9 +880,14 @@ app.get("/api/health", (req, res) => {
 
 // Chạy standalone (local) hoặc export cho Vercel
 if (require.main === module) {
-  app.listen(PORT, () => {
-    console.log(`Festival chatbot server listening at http://localhost:${PORT}`);
-  });
+  (async () => {
+    // Import festival data từ CSV
+    await importFestivalsFromCSV();
+    
+    app.listen(PORT, () => {
+      console.log(`Festival chatbot server listening at http://localhost:${PORT}`);
+    });
+  })();
 }
 
 module.exports = app;
