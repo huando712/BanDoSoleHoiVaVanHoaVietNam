@@ -6711,6 +6711,28 @@ if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('./sw.js').then((reg) => {
       console.log('[PWA] Service Worker đã đăng ký:', reg.scope);
+
+            // Luôn kiểm tra bản SW mới sau khi tải trang
+            reg.update();
+
+            // Nếu có SW đang chờ, kích hoạt ngay để lấy bản mới
+            if (reg.waiting) {
+                reg.waiting.postMessage('SKIP_WAITING');
+            }
+
+            reg.addEventListener('updatefound', () => {
+                const newWorker = reg.installing;
+                if (!newWorker) return;
+                newWorker.addEventListener('statechange', () => {
+                    if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                        newWorker.postMessage('SKIP_WAITING');
+                    }
+                });
+            });
+
+            navigator.serviceWorker.addEventListener('controllerchange', () => {
+                window.location.reload();
+            });
     }).catch((err) => {
       console.warn('[PWA] Đăng ký Service Worker thất bại:', err);
     });

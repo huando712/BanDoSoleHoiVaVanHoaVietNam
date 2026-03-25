@@ -3,7 +3,7 @@
    Chiến lược: Cache-first cho local, Network-first cho external
    ========================================================= */
 
-const CACHE_VERSION = 'lehoi-vn-v1';
+const CACHE_VERSION = 'lehoi-vn-v2';
 const STATIC_ASSETS = [
   './',
   './index.html',
@@ -40,6 +40,13 @@ self.addEventListener('activate', (event) => {
   );
 });
 
+/* ---------- MESSAGE: cho phép kích hoạt SW mới ngay ---------- */
+self.addEventListener('message', (event) => {
+  if (event.data === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
+});
+
 /* ---------- FETCH: phục vụ từ cache hoặc mạng ---------- */
 self.addEventListener('fetch', (event) => {
   const url = new URL(event.request.url);
@@ -49,6 +56,22 @@ self.addEventListener('fetch', (event) => {
 
   // Các API (chatbot server) luôn dùng network
   if (url.pathname.startsWith('/api/') || url.port === '3000') return;
+
+  // Với điều hướng HTML: Network-first để tránh giữ bản cũ sau deploy
+  if (event.request.mode === 'navigate') {
+    event.respondWith(
+      fetch(event.request)
+        .then((response) => {
+          if (response && response.status === 200) {
+            const clone = response.clone();
+            caches.open(CACHE_VERSION).then((cache) => cache.put('./index.html', clone));
+          }
+          return response;
+        })
+        .catch(() => caches.match('./index.html'))
+    );
+    return;
+  }
 
   // Tài nguyên local (same origin hoặc file local): Cache-first
   if (url.origin === self.location.origin || url.protocol === 'file:') {
