@@ -104,7 +104,7 @@ opacity:0;
 
 header{
 background:#3b1510;
-padding:120px 20px;
+padding:116px 20px 104px;
 text-align:center;
 color:white;
 position:relative;
@@ -117,9 +117,9 @@ content:"";
 position:absolute;
 inset:0;
 background:
-linear-gradient(180deg, rgba(0,0,0,0.18), rgba(0,0,0,0.42)),
-radial-gradient(circle at 20% 20%, rgba(255,255,255,0.1), transparent 30%),
-radial-gradient(circle at 80% 18%, rgba(255,255,255,0.08), transparent 28%);
+linear-gradient(180deg, rgba(0,0,0,0.16), rgba(0,0,0,0.5)),
+radial-gradient(circle at 16% 20%, rgba(255,224,170,0.22), transparent 34%),
+radial-gradient(circle at 84% 18%, rgba(255,255,255,0.1), transparent 30%);
 z-index:1;
 }
 
@@ -140,20 +140,80 @@ position:relative;
 z-index:2;
 }
 
-header h1{
-font-family:"Cormorant Garamond",serif;
-font-size:clamp(38px,5vw,58px);
-margin:0;
-font-weight:700;
-letter-spacing:0.8px;
-text-shadow:0 8px 18px rgba(0,0,0,0.4);
+.hero-shell{
+max-width:min(980px,95vw);
+margin:0 auto;
+padding:26px 22px 20px;
+border-radius:26px;
+border:1px solid rgba(255,255,255,0.24);
+background:
+linear-gradient(165deg, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0.07) 100%);
+box-shadow:0 28px 70px rgba(13,7,6,0.36), inset 0 1px 0 rgba(255,255,255,0.24);
+backdrop-filter:blur(7px);
+animation:heroFadeUp .8s ease both;
 }
 
-header p{
-font-size:18px;
-letter-spacing:0.35px;
-margin:14px 0 0;
+.hero-badge{
+display:inline-flex;
+align-items:center;
+gap:8px;
+padding:7px 14px;
+border-radius:999px;
+border:1px solid rgba(255,255,255,0.42);
+background:rgba(255,255,255,0.14);
+font-size:12px;
+font-weight:700;
+letter-spacing:0.6px;
+text-transform:uppercase;
+box-shadow:inset 0 1px 0 rgba(255,255,255,0.2);
+}
+
+.hero-badge::before{
+content:"";
+width:8px;
+height:8px;
+border-radius:50%;
+background:#ffc457;
+box-shadow:0 0 0 5px rgba(255,196,87,0.24);
+}
+
+header h1{
+font-family:"Cormorant Garamond",serif;
+font-size:clamp(40px,6vw,68px);
+margin:14px 0 8px;
+font-weight:700;
+letter-spacing:1px;
+text-shadow:0 8px 18px rgba(0,0,0,0.4);
+line-height:0.96;
+}
+
+.hero-subtitle{
+max-width:min(720px,90vw);
+margin:0 auto;
+font-size:clamp(15px,2vw,18px);
+line-height:1.62;
+letter-spacing:0.28px;
+color:rgba(255,247,236,0.95);
 text-shadow:0 4px 12px rgba(0,0,0,0.35);
+}
+
+.hero-insights{
+margin:18px auto 0;
+display:grid;
+grid-template-columns:repeat(3,minmax(0,1fr));
+gap:10px;
+max-width:720px;
+}
+
+.hero-insight-chip{
+padding:10px 12px;
+border-radius:14px;
+border:1px solid rgba(255,255,255,0.22);
+background:rgba(255,255,255,0.12);
+font-size:12px;
+font-weight:600;
+letter-spacing:0.3px;
+box-shadow:inset 0 1px 0 rgba(255,255,255,0.15);
 }
 
 .search{
@@ -162,14 +222,18 @@ display:flex;
 justify-content:center;
 gap:10px;
 flex-wrap:wrap;
+max-width:720px;
+margin-left:auto;
+margin-right:auto;
 }
 
 .search input{
 padding:12px 14px;
-width:min(420px,78vw);
+width:min(440px,78vw);
+flex:1 1 320px;
 border:1px solid rgba(255,255,255,0.42);
 border-radius:14px;
-background:rgba(255,248,238,0.18);
+background:rgba(255,248,238,0.2);
 color:#fff;
 outline:none;
 backdrop-filter:blur(5px);
@@ -213,6 +277,12 @@ letter-spacing:0.2px;
 margin:4px 0 0;
 font-size:13px;
 opacity:0.94;
+text-shadow:none;
+}
+
+@keyframes heroFadeUp{
+from{opacity:0;transform:translateY(14px);}
+to{opacity:1;transform:translateY(0);}
 }
 
 .location-permission-actions{
@@ -1778,6 +1848,31 @@ header{
 padding:92px 16px;
 }
 
+.hero-shell{
+padding:18px 14px 14px;
+border-radius:18px;
+}
+
+.hero-insights{
+grid-template-columns:1fr;
+gap:8px;
+}
+
+.hero-insight-chip{
+font-size:11px;
+padding:9px 11px;
+}
+
+.search{
+display:grid;
+grid-template-columns:1fr;
+gap:8px;
+}
+
+.search button{
+width:100%;
+}
+
 .highlight-stats{
 grid-template-columns:1fr;
 }
@@ -2981,6 +3076,50 @@ from{width:0;}
 to{width:100%;}
 }
 
+.scroll-top-btn{
+position:fixed;
+right:18px;
+bottom:22px;
+z-index:9998;
+width:48px;
+height:48px;
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:20px;
+padding:0;
+opacity:0;
+pointer-events:none;
+transform:translateY(12px) scale(0.92);
+transition:opacity .25s ease, transform .25s ease, box-shadow .25s ease;
+}
+
+.scroll-top-btn.show{
+opacity:1;
+pointer-events:auto;
+transform:translateY(0) scale(1);
+}
+
+@media (max-width:768px){
+.scroll-top-btn{
+right:12px;
+bottom:16px;
+width:44px;
+height:44px;
+font-size:18px;
+}
+}
+
+@media (prefers-reduced-motion: reduce){
+*{
+animation-duration:0.01ms !important;
+animation-iteration-count:1 !important;
+transition-duration:0.01ms !important;
+scroll-behavior:auto !important;
+}
+}
+
 </style>
 
 </head>
@@ -3004,22 +3143,32 @@ to{width:100%;}
 <div class="header-slide" style="background-image:url('https://images.unsplash.com/photo-1555400038-63f5ba517a47?w=1600&auto=format')"></div>
 <div class="header-slide" style="background-image:url('https://images.unsplash.com/photo-1549294413-26f195200c16?w=1600&auto=format')"></div>
 
-<h1>Vietnam Festival Explorer</h1>
+<div class="hero-shell">
+    <span class="hero-badge">Bản đồ số văn hóa Việt Nam</span>
+    <h1>Vietnam Festival Explorer</h1>
+    <p class="hero-subtitle">Khám phá lịch lễ hội toàn quốc, tìm điểm vui chơi, ẩm thực và tiện ích gần bạn trong một trải nghiệm bản đồ duy nhất.</p>
 
-<div class="search">
-    <input id="searchBox" placeholder="Tìm lễ hội hoặc tỉnh...">
-    <button id="nearMeBtn" onclick="findNearFestival()">📍 Lễ hội gần tôi</button>
-</div>
-
-<div id="locationPermissionBanner" class="location-permission-banner" style="display:none;">
-    <div class="location-permission-content">
-        <strong id="locationBannerTitle">Bật vị trí ngay trong web</strong>
-        <p id="locationBannerText">Bấm nút bên phải để trình duyệt hiện hộp xin quyền vị trí.</p>
+    <div class="hero-insights" aria-label="Điểm nổi bật nền tảng">
+        <div class="hero-insight-chip">🏮 Hơn 275 lễ hội truyền thống</div>
+        <div class="hero-insight-chip">🗺️ Gợi ý theo vị trí thực tế</div>
+        <div class="hero-insight-chip">⚡ Tra cứu nhanh theo tỉnh/tháng</div>
     </div>
-    <div class="location-permission-actions">
-        <button id="locationAllowBtn" type="button" onclick="handleLocationBannerPrimary()">Cho phép vị trí ngay</button>
-        <button id="locationCachedBtn" type="button" class="location-secondary-btn" style="display:none;" onclick="useCachedNearLocation()">Dùng vị trí đã lưu</button>
-        <button type="button" class="location-secondary-btn" onclick="dismissLocationBanner()">Ẩn</button>
+
+    <div class="search">
+        <input id="searchBox" placeholder="Tìm lễ hội hoặc tỉnh...">
+        <button id="nearMeBtn" onclick="findNearFestival()">📍 Lễ hội gần tôi</button>
+    </div>
+
+    <div id="locationPermissionBanner" class="location-permission-banner" style="display:none;">
+        <div class="location-permission-content">
+            <strong id="locationBannerTitle">Bật vị trí ngay trong web</strong>
+            <p id="locationBannerText">Bấm nút bên phải để trình duyệt hiện hộp xin quyền vị trí.</p>
+        </div>
+        <div class="location-permission-actions">
+            <button id="locationAllowBtn" type="button" onclick="handleLocationBannerPrimary()">Cho phép vị trí ngay</button>
+            <button id="locationCachedBtn" type="button" class="location-secondary-btn" style="display:none;" onclick="useCachedNearLocation()">Dùng vị trí đã lưu</button>
+            <button type="button" class="location-secondary-btn" onclick="dismissLocationBanner()">Ẩn</button>
+        </div>
     </div>
 </div>
 
@@ -3279,19 +3428,19 @@ to{width:100%;}
     </div>
     <div class="gallery-grid">
         <article class="gallery-card">
-            <img src="image/denhung.jpg" alt="Lễ hội Đền Hùng">
+            <img src="image/denhung.jpg" loading="lazy" decoding="async" alt="Lễ hội Đền Hùng">
             <div class="gallery-caption">Hành trình về cội nguồn tại Lễ hội Đền Hùng.</div>
         </article>
         <article class="gallery-card">
-            <img src="image/feshue.jpg" alt="Festival Huế">
+            <img src="image/feshue.jpg" loading="lazy" decoding="async" alt="Festival Huế">
             <div class="gallery-caption">Sắc màu di sản và nghệ thuật trình diễn tại Huế.</div>
         </article>
         <article class="gallery-card">
-            <img src="image/hoilim.jpg" alt="Hội Lim">
+            <img src="image/hoilim.jpg" loading="lazy" decoding="async" alt="Hội Lim">
             <div class="gallery-caption">Không gian dân ca quan họ trong mùa hội xuân.</div>
         </article>
         <article class="gallery-card">
-            <img src="image/trekking-yen-tu-2.png" alt="Yên Tử">
+            <img src="image/trekking-yen-tu-2.png" loading="lazy" decoding="async" alt="Yên Tử">
             <div class="gallery-caption">Trải nghiệm hành hương và cảnh quan núi non Yên Tử.</div>
         </article>
     </div>
@@ -3916,7 +4065,7 @@ function renderHomeMonthSpotlight() {
         var card = document.createElement('article');
         card.className = 'spotlight-card';
         card.innerHTML = `
-            <img src="${resolveImageUrl(f.img,'festival',f)}" onerror="${getImageOnError('festival',f)}" alt="${f.name}">
+            <img src="${resolveImageUrl(f.img,'festival',f)}" loading="lazy" decoding="async" onerror="${getImageOnError('festival',f)}" alt="${f.name}">
             <h3>${f.name}</h3>
             <p>${f.desc || 'Lễ hội truyền thống nổi bật.'}</p>
             <p class="spotlight-meta">${f.province} • ${f.start || 'Đang cập nhật lịch'}</p>
@@ -4966,7 +5115,7 @@ function renderEntertainment(data){
         entList.innerHTML+=`
         <div class="card" onclick="window.location.href='detail.html?type=entertainment&id=${e.id}'">
             <div class="card-img-wrap">
-                <img src="${resolveImageUrl(e.img,'entertainment',e)}" onerror="${getImageOnError('entertainment',e)}">
+                <img src="${resolveImageUrl(e.img,'entertainment',e)}" loading="lazy" decoding="async" onerror="${getImageOnError('entertainment',e)}" alt="${e.name}">
                 <div class="card-img-overlay"><span class="card-province-tag">🎡 ${e.province}</span></div>
             </div>
             <div class="card-content">
@@ -4984,7 +5133,7 @@ function renderFood(data){
         foodList.innerHTML+=`
         <div class="card" onclick="window.location.href='detail.html?type=food&id=${f.id}'">
             <div class="card-img-wrap">
-                <img src="${resolveImageUrl(f.img,'food',f)}" onerror="${getImageOnError('food',f)}">
+                <img src="${resolveImageUrl(f.img,'food',f)}" loading="lazy" decoding="async" onerror="${getImageOnError('food',f)}" alt="${f.name}">
                 <div class="card-img-overlay"><span class="card-province-tag">🍜 ${f.province}</span></div>
             </div>
             <div class="card-content">
@@ -5001,7 +5150,7 @@ function renderHotels(data){
     data.forEach(h=>{
         hotelList.innerHTML+=`
         <div class="card" onclick="window.location.href='detail.html?type=hotel&id=${h.id}'">
-            <img src="${resolveImageUrl(h.img,'hotel',h)}" onerror="${getImageOnError('hotel',h)}">
+            <img src="${resolveImageUrl(h.img,'hotel',h)}" loading="lazy" decoding="async" onerror="${getImageOnError('hotel',h)}" alt="${h.name}">
             <div class="card-content">
                 <h3>${h.name}</h3>
                 <p>${h.desc}</p>
@@ -5019,7 +5168,7 @@ function renderMedical(data){
     data.forEach(m=>{
         medList.innerHTML+=`
         <div class="card" onclick="window.location.href='detail.html?type=medical&id=${m.id}'">
-            <img src="${resolveImageUrl(m.img,'medical',m)}" onerror="${getImageOnError('medical',m)}">
+            <img src="${resolveImageUrl(m.img,'medical',m)}" loading="lazy" decoding="async" onerror="${getImageOnError('medical',m)}" alt="${m.name}">
             <div class="card-content">
                 <h3>${m.name}</h3>
                 <p>${m.desc}</p>
@@ -5037,7 +5186,7 @@ function renderStores(data){
     data.forEach(s=>{
         storeList.innerHTML+=`
         <div class="card" onclick="window.location.href='detail.html?type=store&id=${s.id}'">
-            <img src="${resolveImageUrl(s.img,'store',s)}" onerror="${getImageOnError('store',s)}">
+            <img src="${resolveImageUrl(s.img,'store',s)}" loading="lazy" decoding="async" onerror="${getImageOnError('store',s)}" alt="${s.name}">
             <div class="card-content">
                 <h3>${s.name}</h3>
                 <p>${s.desc}</p>
@@ -5547,7 +5696,7 @@ data.forEach((f,index)=>{
     list.innerHTML+=`
 <div class="card" onclick="window.location.href='detail.html?type=festival&id=${f.id}'">
     <div class="card-img-wrap">
-        <img src="${resolveImageUrl(f.img,'festival')}" onerror="${getImageOnError('festival')}">
+        <img src="${resolveImageUrl(f.img,'festival')}" loading="lazy" decoding="async" onerror="${getImageOnError('festival')}" alt="${f.name}">
         <div class="card-img-overlay"><span class="card-province-tag">📍 ${f.province}</span></div>
     </div>
     <div class="card-content">
@@ -5762,7 +5911,7 @@ var imageType=group.type === 'festival' ? 'festival' : group.type;
 var imageOnError=getImageOnError(imageType,item);
 var cardTitle=(group.type === 'festival' ? (idx + 1) + '. ' : '') + escHtml(item.name || 'Địa điểm gần bạn');
 html += '<article class="card nearby-card" style="--delay:' + delay + 's">';
-html += '<img src="' + resolveImageUrl(item.img,imageType,item) + '" onerror="' + imageOnError + '">';
+html += '<img src="' + resolveImageUrl(item.img,imageType,item) + '" loading="lazy" decoding="async" onerror="' + imageOnError + '" alt="' + escHtml(item.name || 'Dia diem') + '">';
 html += '<div class="card-content">';
 html += '<h3>' + cardTitle + '</h3>';
 if(item.province) html += '<p><b>' + escHtml(item.province) + '</b></p>';
@@ -6607,6 +6756,58 @@ window.addEventListener('appinstalled', () => {
   _pwaInstallPrompt = null;
 });
 
+// === UPGRADE: TỐI ƯU ẢNH ===
+(function(){
+    function optimizeImage(img){
+        if(!img || !img.tagName || img.dataset.optimized === '1') return;
+        var inHeader = img.closest && img.closest('header');
+        if(!inHeader){
+            if(!img.getAttribute('loading')) img.setAttribute('loading','lazy');
+            if(!img.getAttribute('decoding')) img.setAttribute('decoding','async');
+        }
+        img.dataset.optimized = '1';
+    }
+
+    function scanImages(root){
+        if(!root || !root.querySelectorAll) return;
+        root.querySelectorAll('img').forEach(optimizeImage);
+    }
+
+    function init(){
+        scanImages(document);
+        if(!window.MutationObserver || !document.body) return;
+        var observer = new MutationObserver(function(mutations){
+            mutations.forEach(function(mutation){
+                mutation.addedNodes.forEach(function(node){
+                    if(node && node.tagName === 'IMG') optimizeImage(node);
+                    else scanImages(node);
+                });
+            });
+        });
+        observer.observe(document.body, { childList:true, subtree:true });
+    }
+
+    if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+    else init();
+})();
+
+// === UPGRADE: NÚT LÊN ĐẦU TRANG ===
+(function(){
+    var btn = document.getElementById('scrollTopBtn');
+    if(!btn) return;
+
+    function syncScrollTopBtn(){
+        btn.classList.toggle('show', window.scrollY > 520);
+    }
+
+    window.addEventListener('scroll', syncScrollTopBtn, { passive:true });
+    syncScrollTopBtn();
+
+    btn.addEventListener('click', function(){
+        window.scrollTo({ top:0, behavior:'smooth' });
+    });
+})();
+
 // === HEADER SLIDESHOW ===
 (function(){
   var slides = document.querySelectorAll('.header-slide');
@@ -6783,6 +6984,8 @@ function applyMapMonthFilter(){
   var countEl = document.getElementById('mapMonthCount');
   if(countEl) countEl.textContent = m ? ('Hiện ' + count + ' lễ hội') : '';
 }</script>
+
+<button id="scrollTopBtn" class="scroll-top-btn" aria-label="Lên đầu trang" title="Lên đầu trang">↑</button>
 
 </body>
 </html>
