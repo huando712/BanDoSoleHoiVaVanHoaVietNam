@@ -1,0 +1,467 @@
+<!-- 
+AR Feature - Minimal Setup Example
+Copy & paste vào index.html để bắt đầu nhanh
+-->
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AR Truyền Thống - Demo</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: Arial, sans-serif; background: #f5f5f5; }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    header {
+      background: #c63c2f;
+      color: white;
+      padding: 30px 20px;
+      text-align: center;
+      border-radius: 8px;
+      margin-bottom: 30px;
+    }
+
+    header h1 { font-size: 32px; margin-bottom: 10px; }
+    header p { font-size: 14px; opacity: 0.9; }
+
+    .demo-section {
+      background: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .video-canvas { 
+      width: 100%;
+      max-width: 800px;
+      margin: 20px auto;
+      display: block;
+      background: #000;
+      border-radius: 8px;
+    }
+
+    .controls {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin: 20px 0;
+    }
+
+    button {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.2s;
+    }
+
+    .btn-primary {
+      background: #c63c2f;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #a02f25;
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      background: #ddd;
+      color: #333;
+    }
+
+    .btn-secondary:hover {
+      background: #bbb;
+    }
+
+    select {
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+
+    .info {
+      background: #f0f0f0;
+      padding: 15px;
+      border-radius: 6px;
+      margin: 20px 0;
+      border-left: 4px solid #c63c2f;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 20px;
+      display: none;
+    }
+
+    .spinner {
+      border: 4px solid #ddd;
+      border-top: 4px solid #c63c2f;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 10px;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .costume-info {
+      background: #fff5e6;
+      padding: 15px;
+      border-radius: 6px;
+      margin: 15px 0;
+      display: none;
+    }
+
+    .costume-info h3 {
+      color: #c63c2f;
+      margin-bottom: 8px;
+    }
+
+    .color-preview {
+      display: inline-block;
+      width: 50px;
+      height: 50px;
+      border-radius: 6px;
+      border: 2px solid #ddd;
+      margin-top: 10px;
+      vertical-align: middle;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>📷 Demo AR - Thử Áo Dài Truyền Thống</h1>
+    <p>Chọn trang phục và chụp ảnh với bộ lọc AR</p>
+  </header>
+
+  <div class="demo-section">
+    <!-- Controls -->
+    <div class="controls">
+      <select id="region-select">
+        <option value="">Chọn vùng...</option>
+        <option value="Hà Nội">Miền Bắc</option>
+        <option value="Thừa Thiên Huế">Miền Trung</option>
+        <option value="TP.HCM">Miền Nam</option>
+        <option value="Gia Lai">Tây Nguyên</option>
+      </select>
+
+      <select id="costume-select">
+        <option value="">Chọn trang phục...</option>
+      </select>
+
+      <button class="btn-secondary" onclick="randomCostume()">🎲 Ngẫu Nhiên</button>
+    </div>
+
+    <!-- Loading Indicator -->
+    <div class="loading" id="loading">
+      <div class="spinner"></div>
+      <p>Đang tải mô hình...</p>
+    </div>
+
+    <!-- Costume Info -->
+    <div class="costume-info" id="costume-info">
+      <h3 id="costume-name"></h3>
+      <p id="costume-desc"></p>
+      <p>📍 <strong id="costume-regions"></strong></p>
+      <div>Màu sắc: <div class="color-preview" id="color-preview"></div></div>
+    </div>
+
+    <!-- Camera Canvas -->
+    <canvas id="ar-canvas" class="video-canvas"></canvas>
+
+    <!-- Action Buttons -->
+    <div class="controls">
+      <button class="btn-primary" id="start-btn" onclick="startCamera()">📷 Bắt Đầu</button>
+      <button class="btn-primary" id="capture-btn" onclick="captureImage()" style="display:none;">📸 Chụp</button>
+      <button class="btn-secondary" id="stop-btn" onclick="stopCamera()" style="display:none;">⏹ Dừng</button>
+    </div>
+
+    <div class="info">
+      <strong>💡 Mẹo:</strong> Đứng thẳng, để tay tự nhiên. Cần ánh sáng tốt để camera phát hiện chính xác.
+    </div>
+  </div>
+</div>
+
+<!-- ===== SCRIPTS ===== -->
+
+<!-- TensorFlow & Pose Detection -->
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/pose-detection"></script>
+
+<!-- Costume Data -->
+<script>
+const traditionalCostumes = [
+  {
+    id: 1,
+    name: "Áo Dài Trắng Truyền Thống",
+    regions: ["Hà Nội", "Hải Phòng", "Phú Thọ"],
+    color: "#ffffff",
+    accentColor: "#d94a2b",
+    pattern: "smooth",
+    description: "Áo dài trắng trang nhã, biểu tượng của phụ nữ Việt phương Bắc"
+  },
+  {
+    id: 3,
+    name: "Áo Dài Huế",
+    regions: ["Thừa Thiên Huế", "Quảng Nam"],
+    color: "#8B4513",
+    accentColor: "#d4af37",
+    pattern: "embroidered",
+    description: "Áo dài nước Huế với cẳng tay rộng, chiêu xéo đặc trưng"
+  },
+  {
+    id: 5,
+    name: "Áo Dài Sài Gòn",
+    regions: ["TP.HCM", "Bình Dương"],
+    color: "#FF1493",
+    accentColor: "#ffd700",
+    pattern: "vibrant",
+    description: "Áo dài sắc sỡ của Sài Gòn với kỹ thuật thêu bắt mắt"
+  },
+  {
+    id: 7,
+    name: "Áo Gấm Tây Nguyên",
+    regions: ["Gia Lai", "Đắk Lắk"],
+    color: "#FF8C00",
+    accentColor: "#8B0000",
+    pattern: "geometric",
+    description: "Áo gấm dân tộc Tây Nguyên với hoạ tiết hình học"
+  }
+];
+</script>
+
+<!-- AR Core System -->
+<script>
+class ARCostumeSystem {
+  constructor(canvasId, costumesData) {
+    this.canvas = document.getElementById(canvasId);
+    this.ctx = this.canvas.getContext('2d', { willReadFrequently: true });
+    this.costumes = costumesData;
+    this.selectedCostume = null;
+    this.isRunning = false;
+    this.poseDetector = null;
+  }
+
+  async init() {
+    const detectorConfig = {
+      runtime: 'tfjs',
+      enableSmoothing: true
+    };
+    this.poseDetector = await poseDetection.createDetector(
+      poseDetection.SupportedModels.BlazePose,
+      detectorConfig
+    );
+  }
+
+  async startCamera() {
+    const stream = await navigator.mediaDevices.getUserMedia({
+      video: { width: { ideal: 1280 }, height: { ideal: 720 }, facingMode: 'user' }
+    });
+    
+    const video = document.createElement('video');
+    video.srcObject = stream;
+    video.play();
+    this.video = video;
+    this.isRunning = true;
+    this.detectPose();
+  }
+
+  async detectPose() {
+    if (!this.isRunning || !this.video) return;
+
+    this.ctx.drawImage(this.video, 0, 0, this.canvas.width, this.canvas.height);
+
+    if (this.poseDetector) {
+      const poses = await this.poseDetector.estimatePoses(this.video);
+      if (poses && poses.length > 0 && this.selectedCostume) {
+        this.drawCostume(poses[0]);
+      }
+    }
+
+    requestAnimationFrame(() => this.detectPose());
+  }
+
+  drawCostume(pose) {
+    const kp = pose.keypoints;
+    const rShoulder = kp[12];
+    const lShoulder = kp[11];
+
+    if (!rShoulder || !lShoulder || rShoulder.score < 0.3 || lShoulder.score < 0.3) return;
+
+    const shoulderDistance = Math.hypot(
+      rShoulder.x - lShoulder.x,
+      rShoulder.y - lShoulder.y
+    );
+
+    const centerX = (rShoulder.x + lShoulder.x) / 2;
+    const centerY = Math.min(rShoulder.y, lShoulder.y);
+    const width = shoulderDistance * 1.4;
+    const height = width * 2;
+
+    // Draw costume
+    const gradient = this.ctx.createLinearGradient(centerX, centerY, centerX, centerY + height);
+    gradient.addColorStop(0, this.selectedCostume.color);
+    gradient.addColorStop(1, this.darkenColor(this.selectedCostume.color, 0.2));
+
+    this.ctx.fillStyle = gradient;
+    this.ctx.beginPath();
+    this.ctx.moveTo(centerX - width / 2, centerY);
+    this.ctx.lineTo(centerX + width / 2, centerY);
+    this.ctx.lineTo(centerX + width / 3.5, centerY + height);
+    this.ctx.lineTo(centerX - width / 3.5, centerY + height);
+    this.ctx.closePath();
+    this.ctx.fill();
+
+    this.ctx.strokeStyle = 'rgba(0,0,0,0.2)';
+    this.ctx.lineWidth = 2;
+    this.ctx.stroke();
+  }
+
+  stopCamera() {
+    this.isRunning = false;
+    if (this.video) {
+      this.video.srcObject.getTracks().forEach(t => t.stop());
+    }
+  }
+
+  captureImage() {
+    return this.canvas.toDataURL('image/png');
+  }
+
+  selectByRegion(region) {
+    const costume = this.costumes.find(c => c.regions.includes(region));
+    if (costume) {
+      this.selectedCostume = costume;
+      showCostumeInfo(costume);
+    }
+  }
+
+  selectById(id) {
+    const costume = this.costumes.find(c => c.id === id);
+    if (costume) {
+      this.selectedCostume = costume;
+      showCostumeInfo(costume);
+    }
+  }
+
+  darkenColor(color, pct) {
+    const num = parseInt(color.replace("#", ""), 16);
+    const amt = Math.round(2.55 * pct);
+    const R = Math.max(0, Math.min(255, (num >> 16) - amt));
+    const G = Math.max(0, Math.min(255, (num >> 8 & 0xFF) - amt));
+    const B = Math.max(0, Math.min(255, (num & 0xFF) - amt));
+    return "#" + [R, G, B].map(x => x.toString(16).padStart(2, '0')).join('');
+  }
+}
+
+// ===== HELPER FUNCTIONS =====
+let arSystem = null;
+
+async function initAR() {
+  document.getElementById('loading').style.display = 'block';
+  try {
+    arSystem = new ARCostumeSystem('ar-canvas', traditionalCostumes);
+    await arSystem.init();
+    populateCostumeSelect();
+    setupEventListeners();
+    document.getElementById('loading').style.display = 'none';
+  } catch (err) {
+    alert('Error: ' + err.message);
+    document.getElementById('loading').style.display = 'none';
+  }
+}
+
+function populateCostumeSelect() {
+  const select = document.getElementById('costume-select');
+  traditionalCostumes.forEach(c => {
+    const opt = document.createElement('option');
+    opt.value = c.id;
+    opt.text = c.name;
+    select.appendChild(opt);
+  });
+}
+
+function setupEventListeners() {
+  document.getElementById('region-select').addEventListener('change', (e) => {
+    if (arSystem && e.target.value) {
+      arSystem.selectByRegion(e.target.value);
+    }
+  });
+
+  document.getElementById('costume-select').addEventListener('change', (e) => {
+    if (arSystem && e.target.value) {
+      arSystem.selectById(parseInt(e.target.value));
+    }
+  });
+}
+
+async function startCamera() {
+  document.getElementById('loading').style.display = 'block';
+  try {
+    await arSystem.startCamera();
+    document.getElementById('start-btn').style.display = 'none';
+    document.getElementById('capture-btn').style.display = 'inline-block';
+    document.getElementById('stop-btn').style.display = 'inline-block';
+    document.getElementById('loading').style.display = 'none';
+  } catch (err) {
+    alert('Camera Error: ' + err.message);
+    document.getElementById('loading').style.display = 'none';
+  }
+}
+
+function stopCamera() {
+  arSystem.stopCamera();
+  document.getElementById('start-btn').style.display = 'inline-block';
+  document.getElementById('capture-btn').style.display = 'none';
+  document.getElementById('stop-btn').style.display = 'none';
+}
+
+function captureImage() {
+  const image = arSystem.captureImage();
+  const a = document.createElement('a');
+  a.href = image;
+  a.download = `ao-dai-${Date.now()}.png`;
+  a.click();
+  alert('Ảnh đã được tải!');
+}
+
+function randomCostume() {
+  const idx = Math.floor(Math.random() * traditionalCostumes.length);
+  const c = traditionalCostumes[idx];
+  arSystem.selectById(c.id);
+  document.getElementById('costume-select').value = c.id;
+  document.getElementById('region-select').value = c.regions[0] || '';
+}
+
+function showCostumeInfo(costume) {
+  document.getElementById('costume-info').style.display = 'block';
+  document.getElementById('costume-name').textContent = costume.name;
+  document.getElementById('costume-desc').textContent = costume.description;
+  document.getElementById('costume-regions').textContent = costume.regions.join(', ');
+  document.getElementById('color-preview').style.backgroundColor = costume.color;
+}
+
+// Initialize on load
+document.addEventListener('DOMContentLoaded', initAR);
+</script>
+
+</body>
+</html>
