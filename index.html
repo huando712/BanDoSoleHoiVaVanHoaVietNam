@@ -867,24 +867,53 @@ border:1px dashed rgba(217,74,43,0.25);
 .plan-btn-row{
 display:flex;
 gap:8px;
-margin-top:10px;
+margin-top:12px;
+align-items:center;
+flex-wrap:wrap;
+}
+
+.plan-btn-row > button:first-child{
+padding:8px 16px;
+font-size:12.5px;
+font-weight:700;
+border-radius:12px;
+border:none;
+background:linear-gradient(135deg, var(--brand) 0%, var(--brand-dark) 100%);
+color:#fff;
+cursor:pointer;
+box-shadow:0 4px 12px rgba(217,74,43,0.28);
+transition:transform .2s, box-shadow .2s;
+}
+
+.plan-btn-row > button:first-child:hover{
+transform:translateY(-2px);
+box-shadow:0 6px 18px rgba(217,74,43,0.38);
 }
 
 .plan-btn{
-padding:7px 11px;
+padding:7px 13px;
 font-size:12px;
 font-weight:700;
 border-radius:999px;
-border:1px solid rgba(217,74,43,0.2);
-background:linear-gradient(145deg, #fffaf2 0%, #ffe7c7 100%);
+border:1px solid rgba(217,74,43,0.18);
+background:rgba(255,248,238,0.7);
 color:#7a3526;
 cursor:pointer;
+transition:all .25s ease;
+backdrop-filter:blur(4px);
+}
+
+.plan-btn:hover{
+background:rgba(217,74,43,0.08);
+border-color:rgba(217,74,43,0.35);
+transform:translateY(-1px);
 }
 
 .plan-btn.active{
 background:linear-gradient(135deg, #d94a2b 0%, #8f1f14 100%);
 color:#fff;
 border-color:transparent;
+box-shadow:0 3px 10px rgba(217,74,43,0.3);
 }
 
 .spotlight-action-row{
@@ -1156,24 +1185,24 @@ border:1px solid rgba(217,74,43,0.14);
 
 .grid{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-gap:20px;
+grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+gap:24px;
 }
 
 .card{
-background:linear-gradient(180deg, rgba(255,255,255,0.98) 0%, rgba(255,247,236,0.98) 100%);
-border-radius:16px;
-box-shadow:0 10px 22px rgba(70,28,19,0.12);
+background:linear-gradient(180deg, rgba(255,255,255,0.98) 0%, rgba(255,250,242,0.98) 100%);
+border-radius:20px;
+box-shadow:0 8px 24px rgba(70,28,19,0.10), 0 2px 8px rgba(70,28,19,0.06);
 overflow:hidden;
 cursor:pointer;
-border:1px solid rgba(217,74,43,0.12);
-transition:transform .25s ease, box-shadow .25s ease;
+border:1px solid rgba(217,74,43,0.10);
+transition:transform .35s cubic-bezier(.22,.68,0,1.2), box-shadow .35s ease;
 position:relative;
 }
 
 .card:hover{
-transform:translateY(-6px);
-box-shadow:0 18px 30px rgba(42,26,18,0.18);
+transform:translateY(-8px) scale(1.015);
+box-shadow:0 24px 48px rgba(70,28,19,0.18), 0 8px 16px rgba(217,74,43,0.10);
 }
 
 .card::before{
@@ -1183,15 +1212,30 @@ top:0;
 left:0;
 right:0;
 height:4px;
-background:linear-gradient(90deg, var(--brand), #ffbf63, var(--brand-dark));
+background:linear-gradient(90deg, var(--brand), #ffbf63, var(--brand-dark), #ffbf63, var(--brand));
+background-size:200% 100%;
 opacity:0.9;
+animation:cardTopShine 3s linear infinite;
+z-index:3;
+}
+
+@keyframes cardTopShine{
+0%{background-position:0% 0}
+100%{background-position:200% 0}
 }
 
 .card img{
 width:100%;
-height:180px;
+height:200px;
 object-fit:cover;
 display:block;
+transition:transform .5s cubic-bezier(.22,.68,0,1.2), filter .4s ease;
+filter:brightness(0.97) saturate(1.05);
+}
+
+.card:hover img{
+transform:scale(1.08);
+filter:brightness(1.02) saturate(1.15);
 }
 
 .card-img-wrap{
@@ -1202,26 +1246,31 @@ overflow:hidden;
 .card-img-overlay{
 position:absolute;
 inset:0;
-background:linear-gradient(to top, rgba(70,18,10,0.82) 0%, rgba(80,20,10,0.38) 50%, transparent 100%);
+background:linear-gradient(to top, rgba(50,12,6,0.88) 0%, rgba(80,20,10,0.32) 45%, transparent 100%);
 opacity:0;
-transition:opacity .3s ease;
+transition:opacity .35s ease;
 display:flex;
 align-items:flex-end;
-padding:10px 12px;
+padding:14px 14px;
 }
 
 .card-img-overlay .card-province-tag{
 display:inline-flex;
 align-items:center;
-gap:4px;
-padding:4px 10px;
+gap:5px;
+padding:6px 12px;
 border-radius:999px;
 font-size:11px;
 font-weight:700;
 color:#fff;
-background:rgba(255,255,255,0.18);
-border:1px solid rgba(255,255,255,0.35);
-backdrop-filter:blur(4px);
+background:rgba(255,255,255,0.16);
+border:1px solid rgba(255,255,255,0.32);
+backdrop-filter:blur(8px);
+transition:background .25s;
+}
+
+.card:hover .card-img-overlay .card-province-tag{
+background:rgba(217,74,43,0.6);
 }
 
 .card:hover .card-img-overlay{
@@ -1229,21 +1278,68 @@ opacity:1;
 }
 
 .card-content{
-padding:15px;
+padding:16px 18px 14px;
 position:relative;
 }
 
 .card-content h3{
-margin:0 0 8px;
+margin:0 0 6px;
 font-family:"Cormorant Garamond",serif;
-font-size:28px;
-line-height:1.05;
-color:#472618;
+font-size:24px;
+line-height:1.12;
+color:#3a1a10;
+font-weight:700;
+transition:color .25s;
+}
+
+.card:hover .card-content h3{
+color:var(--brand);
 }
 
 .card-content p{
 margin:0 0 10px;
 line-height:1.55;
+font-size:13.5px;
+color:var(--muted);
+}
+
+.card-status-badge{
+position:absolute;
+top:12px;
+right:12px;
+padding:5px 12px;
+border-radius:999px;
+font-size:11px;
+font-weight:700;
+letter-spacing:0.3px;
+z-index:2;
+backdrop-filter:blur(8px);
+box-shadow:0 4px 12px rgba(0,0,0,0.15);
+}
+
+.card-status-badge.live{
+background:rgba(220,38,38,0.85);
+color:#fff;
+animation:badgePulse 2s ease-in-out infinite;
+}
+
+.card-status-badge.soon{
+background:rgba(255,193,7,0.9);
+color:#5a3e00;
+}
+
+@keyframes badgePulse{
+0%,100%{box-shadow:0 4px 12px rgba(220,38,38,0.2)}
+50%{box-shadow:0 4px 20px rgba(220,38,38,0.5)}
+}
+
+@keyframes cardFadeUp{
+from{opacity:0;transform:translateY(24px)}
+to{opacity:1;transform:translateY(0)}
+}
+
+.grid .card{
+animation:cardFadeUp .5s cubic-bezier(.22,.68,0,1.2) both;
 }
 
 .search button.loading{
@@ -3137,11 +3233,11 @@ scroll-behavior:auto !important;
 <header>
 
 <!-- Slideshow slides -->
-<div class="header-slide active" style="background-image:url('https://images.unsplash.com/photo-1528127269322-539801943592?w=1600&auto=format')"></div>
-<div class="header-slide" style="background-image:url('https://images.unsplash.com/photo-1596422846543-75c6fc197f07?w=1600&auto=format')"></div>
-<div class="header-slide" style="background-image:url('https://images.unsplash.com/photo-1569260917083-50cd6b8e2eb9?w=1600&auto=format')"></div>
-<div class="header-slide" style="background-image:url('https://images.unsplash.com/photo-1555400038-63f5ba517a47?w=1600&auto=format')"></div>
-<div class="header-slide" style="background-image:url('https://images.unsplash.com/photo-1549294413-26f195200c16?w=1600&auto=format')"></div>
+<div class="header-slide active" style="background-image:url('image/trekking-yen-tu-2.png')"></div>
+<div class="header-slide" style="background-image:url('image/le_hoi_cong_chieng_tay_nguyen_-_gia_tri_van_hoa_ngan_doi_-_baodantocvn.jpg')"></div>
+<div class="header-slide" style="background-image:url('image/lễ hội đền ông.jpg')"></div>
+<div class="header-slide" style="background-image:url('image/49DB30A4-E57B-41F7-BBF3-5CCB6BA75670.jpeg')"></div>
+<div class="header-slide" style="background-image:url('image/chuahuongg.jpg')"></div>
 
 <div class="hero-shell">
     <span class="hero-badge">Bản đồ số văn hóa Việt Nam</span>
@@ -4406,7 +4502,7 @@ var festivals=[
 
 
 {id:1,name:"Lễ hội Đền Hùng",province:"Phú Thọ",lat:21.367200559014385,lng:105.32058400099461,start:"2026-04-21",end:"2026-04-23",desc:"Tưởng nhớ các Vua Hùng",img:"image/denhung.jpg"},
-{id:2,name:"Lễ hội Chùa Hương",province:"Hà Nội",lat:21.367200559014385,lng:105.32058400099461,start:"2026-02-12",end:"2026-03-06",desc:"Lễ hội hành hương Phật giáo",img:"image/chuahuongg.jpg"},
+{id:2,name:"Lễ hội Chùa Hương",province:"Hà Nội",lat:20.6190,lng:105.7450,start:"2026-02-12",end:"2026-03-06",desc:"Lễ hội hành hương Phật giáo",img:"image/chuahuongg.jpg"},
 {id:3,name:"Hội Lim",province:"Bắc Ninh",lat:21.140333083413573,lng:106.01977929325449,start:"2026-02-12",end:"2026-02-14",desc:"Lễ hội Quan họ",img:"image/hoilim.jpg"},
 {id:4,name:"Festival Huế",province:"Thừa Thiên Huế",lat:16.4568009397725,lng:107.56184863558185,start:"2026-04-26",end:"2026-05-02",desc:"Festival văn hóa Huế",img:"image/feshue.jpg"},
 {id:5,name:"Lễ hội Bà Chúa Xứ",province:"An Giang",lat:10.682837715796891,lng:105.08012770721396,start:"2026-04-23",end:"2026-04-27",desc:"Lễ hội tín ngưỡng Núi Sam",img:"image/le-hoi-ba-chua-xu-chau-doc-an-giang-2.webp"},
@@ -4425,36 +4521,36 @@ var festivals=[
 {id:16,name:"Lễ hội Ok Om Bok",province:"Sóc Trăng",lat:9.61035544277581,lng:105.9769833223765,desc:"Cúng trăng Khmer",img:"https://cdn.tcdulichtphcm.vn/upload/4-2024/images/2024-11-14/-1731565736-134-width960height640.jpg"},
 {id:17,name:"Lễ hội Nghinh Ông",province:"Vũng Tàu",lat:10.927407947581214,lng:108.09624292685334,desc:"Cầu ngư ven biển",img:"https://media.vov.vn/sites/default/files/styles/large_watermark/public/2023-09/tu_sang_som_ngu_dan_vung_bien_vung_tau_da_dong_thuyen_ra_khoi_tien_hanh_nghi_thuc_don_ong_anh_luu_son.jpg"},
 {id:18,name:"Lễ hội Dinh Cô",province:"Vũng Tàu",lat:10.38674868514717,lng:107.2342065665666,desc:"Tín ngưỡng dân gian",img:"https://www.onsetbluesfestival.com/wp-content/uploads/2023/04/le-hoi-dinh-co-2-2048x1357.jpg"},
-{id:19,name:"Lễ hội Bà Thu Bồn",province:"Quảng Nam",lat:15.817474068889982,lng:108.07901026666603,desc:"Lễ hội tín ngưỡng",img:"-festival-map-vietnam/image/istockphoto-515999868-170667a.jpg"},
-{id:20,name:"Lễ hội Đền Cuông",province:"Nghệ An",lat:18.904742301788247,lng:105.6049307797635,desc:"Thờ An Dương Vương",img:"-festival-map-vietnam/image/unnamed.png"},
+{id:19,name:"Lễ hội Bà Thu Bồn",province:"Quảng Nam",lat:15.817474068889982,lng:108.07901026666603,desc:"Lễ hội tín ngưỡng",img:"image/istockphoto-515999868-170667a.jpg"},
+{id:20,name:"Lễ hội Đền Cuông",province:"Nghệ An",lat:18.904742301788247,lng:105.6049307797635,desc:"Thờ An Dương Vương",img:"image/unnamed.png"},
 
 {id:21,name:"Lễ hội Bà Chúa Kho",province:"Bắc Ninh",lat:21.18,lng:106.05,desc:"Cầu tài lộc",img:"https://poliva.vn/wp-content/uploads/2019/07/den-ba-chua-kho-4.jpg"},
-{id:22,name:"Lễ hội Chùa Keo",province:"Thái Bình",lat:20.361167252691573,lng:106.2970965760548,desc:"Lễ hội cổ truyền",img:"-festival-map-vietnam/image/16-places-to-pray-for-fortune-and-luck-are-considered-the-most-sacred-in-vietnam-20.jpg"},
-{id:23,name:"Lễ hội Đền Sóc",province:"Hà Nội",lat:21.292353337793674,lng:105.83232458015765,desc:"Thờ Thánh Gióng",img:"-festival-map-vietnam/image/49DB30A4-E57B-41F7-BBF3-5CCB6BA75670.jpeg"},
-{id:24,name:"Lễ hội Phủ Giầy",province:"Nam Định",lat:20.42,lng:106.2,desc:"Thờ Mẫu Liễu Hạnh",img:"-festival-map-vietnam/image/le-hoi-phu-giay.jpg"},
+{id:22,name:"Lễ hội Chùa Keo",province:"Thái Bình",lat:20.361167252691573,lng:106.2970965760548,desc:"Lễ hội cổ truyền",img:"image/16-places-to-pray-for-fortune-and-luck-are-considered-the-most-sacred-in-vietnam-20.jpg"},
+{id:23,name:"Lễ hội Đền Sóc",province:"Hà Nội",lat:21.292353337793674,lng:105.83232458015765,desc:"Thờ Thánh Gióng",img:"image/49DB30A4-E57B-41F7-BBF3-5CCB6BA75670.jpeg"},
+{id:24,name:"Lễ hội Phủ Giầy",province:"Nam Định",lat:20.42,lng:106.2,desc:"Thờ Mẫu Liễu Hạnh",img:"image/le-hoi-phu-giay.jpg"},
 {id:25,name:"Lễ hội Chùa Dâu",province:"Bắc Ninh",lat:21.13253264154131,lng:105.94810939563774,desc:"Lễ hội Phật giáo cổ",img:"https://cdn.xanhsm.com/2024/11/a9dbf841-chua-dau-16.jpg"},
 
-{id:26,name:"Lễ hội Chùa Bút Tháp",province:"Bắc Ninh",lat:21.060888296452607,lng:106.02230861097911,desc:"Di tích Phật giáo",img:"-festival-map-vietnam/image/chùa  bút tháp.jpg"},
+{id:26,name:"Lễ hội Chùa Bút Tháp",province:"Bắc Ninh",lat:21.060888296452607,lng:106.02230861097911,desc:"Di tích Phật giáo",img:"image/chùa  bút tháp.jpg"},
 {id:27,name:"Lễ hội Đền Đô",province:"Bắc Ninh",lat:21.107232179115325,lng:105.96036986680126,desc:"Thờ vua Lý",img:"https://thumbs.dreamstime.com/b/group-people-traditional-costume-palanquin-procession-h-hai-duong-vietnam-february-holy-con-son-kiep-bac-festival-32630728.jpg"},
 {id:28,name:"Lễ hội Cửa Ông",province:"Quảng Ninh",lat:21.01,lng:107.3,desc:"Thờ Trần Quốc Tảng",img:"https://media.mia.vn/uploads/blog-du-lich/le-hoi-den-cua-ong-le-hoi-tung-bung-bac-nhat-tinh-quang-ninh-6-1641955753.jpg"},
-{id:29,name:"Lễ hội Bạch Đằng",province:"Quảng Ninh",lat:20.9,lng:106.8,desc:"Kỷ niệm chiến thắng Bạch Đằng",img:"-festival-map-vietnam/image/lễ hội bạch đằng.jpg"},
-{id:30,name:"Lễ hội Đền Tranh",province:"Hải Dương",lat:21.02,lng:106.37,desc:"Thờ Quan Lớn Tuần Tranh",img:"-festival-map-vietnam/image/lễ hội đền trăng.jpg"},
+{id:29,name:"Lễ hội Bạch Đằng",province:"Quảng Ninh",lat:20.9,lng:106.8,desc:"Kỷ niệm chiến thắng Bạch Đằng",img:"image/lễ hội bạch đằng.jpg"},
+{id:30,name:"Lễ hội Đền Tranh",province:"Hải Dương",lat:21.02,lng:106.37,desc:"Thờ Quan Lớn Tuần Tranh",img:"image/lễ hội đền trăng.jpg"},
 
 {id:31,name:"Lễ hội Lam Kinh",province:"Thanh Hóa",lat:19.88,lng:105.43,desc:"Tưởng nhớ Lê Lợi",img:"https://images.vietnamtourism.gov.vn/vn/images/2023/thang_10/0610.le_hoi_lam_kinh_7.jpg"},
-{id:32,name:"Lễ hội Điện Hòn Chén",province:"Huế",lat:16.42213500744133,lng:107.56299025318715,desc:"Thờ Thiên Y A Na",img:"-festival-map-vietnam/image/Le-Hoi-Dien-Hon-Chen.jpg"},
-{id:33,name:"Lễ hội Tháp Bà Ponagar",province:"Khánh Hòa",lat:12.265597146606048,lng:109.1953838932545,desc:"Thờ nữ thần Ponagar",img:"-festival-map-vietnam/image/lễ hội tháp bà.jpg"},
-{id:34,name:"Lễ hội Dinh Thầy Thím",province:"Bình Thuận",lat:10.723548577980846,lng:107.84459673604229,desc:"Tín ngưỡng dân gian",img:"-festival-map-vietnam/image/lễ hội dim thầy thính.jpg"},
-{id:35,name:"Lễ hội Đua Bò",province:"An Giang",lat:10.36,lng:104.85,desc:"Lễ hội Khmer",img:"-festival-map-vietnam/image/lễ hội dim thầy thính.jpg"},
+{id:32,name:"Lễ hội Điện Hòn Chén",province:"Huế",lat:16.42213500744133,lng:107.56299025318715,desc:"Thờ Thiên Y A Na",img:"image/Le-Hoi-Dien-Hon-Chen.jpg"},
+{id:33,name:"Lễ hội Tháp Bà Ponagar",province:"Khánh Hòa",lat:12.265597146606048,lng:109.1953838932545,desc:"Thờ nữ thần Ponagar",img:"image/lễ hội tháp bà.jpg"},
+{id:34,name:"Lễ hội Dinh Thầy Thím",province:"Bình Thuận",lat:10.723548577980846,lng:107.84459673604229,desc:"Tín ngưỡng dân gian",img:"image/lễ hội dim thầy thính.jpg"},
+{id:35,name:"Lễ hội Đua Bò",province:"An Giang",lat:10.36,lng:104.85,desc:"Lễ hội Khmer",img:"image/lễ hội đua bò.jpg"},
 
-{id:36,name:"Lễ hội Đua Ghe Ngo",province:"Sóc Trăng",lat:9.607842405904238,lng:105.9954620800482,desc:"Lễ hội sông nước",img:"-festival-map-vietnam/image/lễ hội đua ghe go.jpg"},
+{id:36,name:"Lễ hội Đua Ghe Ngo",province:"Sóc Trăng",lat:9.607842405904238,lng:105.9954620800482,desc:"Lễ hội sông nước",img:"image/lễ hội đua ghe go.jpg"},
 {id:37,name:"Lễ hội Chol Chnam Thmay",province:"Nam Bộ",lat:9.91605223000052,lng:106.30347509354482,desc:"Tết Khmer",img:"https://www.goindonesiatours.com/wp-content/uploads/Islamic-New-Year-is-a-significant-Indonesia-public-holiday-for-Muslims-420x280.jpg"},
-{id:38,name:"Lễ hội Cồng Chiêng",province:"Tây Nguyên",lat:13.981880249760142,lng:108.00639662243309,desc:"Di sản văn hóa",img:"-festival-map-vietnam/image/le_hoi_cong_chieng_tay_nguyen_-_gia_tri_van_hoa_ngan_doi_-_baodantocvn.jpg"},
-{id:39,name:"Lễ hội Đua Voi",province:"Đắk Lắk",lat:12.875886561964096,lng:107.80719711396102,desc:"Truyền thống Tây Nguyên",img:"-festival-map-vietnam/image/lễ hội đua voi.jpg"},
-{id:40,name:"Lễ hội Đâm Trâu",province:"Kon Tum",lat:13.843524345760217,lng:108.61999037968006,desc:"Nghi lễ dân tộc",img:"-festival-map-vietnam/image/lễ hội đâm trâu.jpg"},
+{id:38,name:"Lễ hội Cồng Chiêng",province:"Tây Nguyên",lat:13.981880249760142,lng:108.00639662243309,desc:"Di sản văn hóa",img:"image/le_hoi_cong_chieng_tay_nguyen_-_gia_tri_van_hoa_ngan_doi_-_baodantocvn.jpg"},
+{id:39,name:"Lễ hội Đua Voi",province:"Đắk Lắk",lat:12.875886561964096,lng:107.80719711396102,desc:"Truyền thống Tây Nguyên",img:"image/lễ hội đua voi.jpg"},
+{id:40,name:"Lễ hội Đâm Trâu",province:"Kon Tum",lat:13.843524345760217,lng:108.61999037968006,desc:"Nghi lễ dân tộc",img:"image/lễ hội đâm trâu.jpg"},
 
 {id:41,name:"Lễ hội Hoa Đà Lạt",province:"Lâm Đồng",lat:11.949971935153235,lng:108.44962258698264,desc:"Festival hoa",img:"https://source.unsplash.com/400x300/?flower"},
 {id:42,name:"Lễ hội Cà Phê",province:"Đắk Lắk",lat:12.67,lng:108.04,desc:"Festival cà phê",img:"https://source.unsplash.com/400x300/?coffee"},
-{id:43,name:"Lễ hội Pháo Hoa",province:"Đà Nẵng",lat:16.05,lng:108.2,desc:"Lễ h  ội pháo hoa quốc tế",img:"https://source.unsplash.com/400x300/?fireworks"},
+{id:43,name:"Lễ hội Pháo Hoa",province:"Đà Nẵng",lat:16.05,lng:108.2,desc:"Lễ hội pháo hoa quốc tế",img:"https://source.unsplash.com/400x300/?fireworks"},
 {id:44,name:"Lễ hội Trăng Rằm",province:"Hội An",lat:15.88,lng:108.33,desc:"Lễ hội đèn lồng",img:"https://source.unsplash.com/400x300/?lantern"},
 {id:45,name:"Lễ hội Biển",province:"Nha Trang",lat:12.23,lng:109.2,desc:"Festival biển",img:"https://source.unsplash.com/400x300/?beach"},
 
@@ -5001,6 +5097,7 @@ function getEntityPalettes(type) {
 
 function getEntityTypeLabel(type) {
     var labels = {
+        festival: 'Le hoi',
         food: 'Am thuc',
         hotel: 'Khach san',
         medical: 'Y te',
@@ -5066,10 +5163,7 @@ function getPrimaryImageFallback(type) {
 }
 
 function getEntityImageFallback(type, item) {
-    if (type === 'entertainment' || type === 'food' || type === 'hotel' || type === 'medical' || type === 'store') {
-        return buildEntityCardDataUri(type, item || {});
-    }
-    return getPrimaryImageFallback(type);
+    return buildEntityCardDataUri(type, item || {});
 }
 
 function resolveImageUrl(url, type, item) {
@@ -5693,15 +5787,24 @@ if (!data.length) {
 data.forEach((f,index)=>{
     var wishActive = isFestivalSaved(f.id, 'wish') ? ' active' : '';
     var doneActive = isFestivalSaved(f.id, 'done') ? ' active' : '';
+    var statusBadge = '';
+    if (f.start && f.end) {
+        var now = new Date();
+        var s = new Date(f.start);
+        var e = new Date(f.end);
+        if (now >= s && now <= e) statusBadge = '<span class="card-status-badge live">🔴 Đang diễn ra</span>';
+        else if (s > now && (s - now) < 30*86400000) statusBadge = '<span class="card-status-badge soon">🟡 Sắp diễn ra</span>';
+    }
     list.innerHTML+=`
-<div class="card" onclick="window.location.href='detail.html?type=festival&id=${f.id}'">
+<div class="card" onclick="window.location.href='detail.html?type=festival&id=${f.id}'" style="animation-delay:${index * 60}ms">
     <div class="card-img-wrap">
-        <img src="${resolveImageUrl(f.img,'festival')}" loading="lazy" decoding="async" onerror="${getImageOnError('festival')}" alt="${f.name}">
+        <img src="${resolveImageUrl(f.img,'festival',f)}" loading="lazy" decoding="async" onerror="${getImageOnError('festival',f)}" alt="${f.name}">
         <div class="card-img-overlay"><span class="card-province-tag">📍 ${f.province}</span></div>
+        ${statusBadge}
     </div>
     <div class="card-content">
         <h3>${f.name}</h3>
-        <p><b>${f.province}</b></p>
+        <p><b>${f.province}</b>${f.start ? ' • ' + f.start : ''}</p>
         <div class="plan-btn-row">
             <button>Xem chi tiết</button>
             <button class="plan-btn${wishActive}" onclick="toggleTripStatus('${f.id}','wish',event)">⚡ Muốn đi</button>
