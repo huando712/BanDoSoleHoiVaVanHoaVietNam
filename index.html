@@ -430,6 +430,10 @@ margin:0 0 12px;
 display:none;
 }
 
+body.sos-focus-mode section:not(#moduleHub):not(#sosPanel){
+display:none !important;
+}
+
 section{
 padding:30px 10%;
 background:
@@ -2145,265 +2149,6 @@ margin:0;
 color:#6b4a3d;
 }
 
-.sos-section{
-max-width:1120px;
-margin:24px auto;
-padding:28px 22px;
-border-radius:28px;
-background:
-linear-gradient(145deg, rgba(125,16,16,0.95), rgba(199,49,39,0.92)),
-radial-gradient(circle at top right, rgba(255,255,255,0.12), transparent 36%);
-box-shadow:0 28px 60px rgba(85,18,18,0.28);
-color:#fff7f2;
-position:relative;
-overflow:hidden;
-}
-
-.sos-section::before{
-content:"";
-position:absolute;
-inset:0;
-background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='72' height='72'%3E%3Ccircle cx='36' cy='36' r='24' fill='none' stroke='rgba(255,255,255,0.08)' stroke-width='1.4'/%3E%3Cpath d='M36 18v36M18 36h36' stroke='rgba(255,255,255,0.08)' stroke-width='1.4'/%3E%3C/svg%3E");
-opacity:0.22;
-pointer-events:none;
-}
-
-.sos-section > *{
-position:relative;
-z-index:1;
-}
-
-.sos-head{
-display:flex;
-align-items:flex-start;
-justify-content:space-between;
-gap:18px;
-margin-bottom:18px;
-}
-
-.sos-kicker{
-display:inline-flex;
-align-items:center;
-gap:8px;
-padding:8px 14px;
-border-radius:999px;
-background:rgba(255,255,255,0.14);
-border:1px solid rgba(255,255,255,0.18);
-font-size:12px;
-font-weight:800;
-letter-spacing:.08em;
-text-transform:uppercase;
-}
-
-.sos-head h2{
-margin:10px 0 8px;
-font-size:clamp(28px, 4vw, 38px);
-font-family:"Playfair Display",serif;
-line-height:1.05;
-}
-
-.sos-head p{
-margin:0;
-max-width:760px;
-color:rgba(255,245,240,0.92);
-line-height:1.7;
-}
-
-.sos-badge{
-padding:10px 14px;
-border-radius:18px;
-background:rgba(255,255,255,0.12);
-border:1px solid rgba(255,255,255,0.18);
-font-size:13px;
-font-weight:700;
-white-space:nowrap;
-}
-
-.sos-grid{
-display:grid;
-grid-template-columns:minmax(0,1.15fr) minmax(320px,0.85fr);
-gap:16px;
-}
-
-.sos-card,
-.sos-side-card{
-padding:18px;
-border-radius:22px;
-background:rgba(255,255,255,0.1);
-border:1px solid rgba(255,255,255,0.14);
-backdrop-filter:blur(6px);
-}
-
-.sos-card h3,
-.sos-side-card h3{
-margin:0 0 12px;
-font-size:20px;
-}
-
-.sos-call-grid{
-display:grid;
-grid-template-columns:repeat(3,minmax(0,1fr));
-gap:12px;
-margin-bottom:14px;
-}
-
-.sos-call-card{
-display:grid;
-gap:8px;
-padding:14px;
-border-radius:18px;
-text-decoration:none;
-color:#fff7f2;
-background:rgba(255,255,255,0.12);
-border:1px solid rgba(255,255,255,0.16);
-box-shadow:inset 0 1px 0 rgba(255,255,255,0.08);
-transition:transform .18s ease, background .18s ease;
-}
-
-.sos-call-card:hover{
-transform:translateY(-1px);
-background:rgba(255,255,255,0.18);
-}
-
-.sos-call-card strong{
-font-size:28px;
-line-height:1;
-}
-
-.sos-call-card span{
-font-size:12px;
-font-weight:700;
-text-transform:uppercase;
-letter-spacing:.07em;
-opacity:0.84;
-}
-
-.sos-call-card small{
-font-size:13px;
-line-height:1.5;
-color:rgba(255,245,240,0.92);
-}
-
-.sos-action-row{
-display:flex;
-flex-wrap:wrap;
-gap:10px;
-margin-top:14px;
-}
-
-.sos-action-btn{
-display:inline-flex;
-align-items:center;
-justify-content:center;
-gap:8px;
-padding:11px 16px;
-border:none;
-border-radius:14px;
-font-weight:700;
-cursor:pointer;
-text-decoration:none;
-background:#fff2dc;
-color:#7a170f;
-box-shadow:0 12px 22px rgba(53,10,9,0.18);
-}
-
-.sos-action-btn.secondary{
-background:rgba(255,255,255,0.12);
-color:#fffaf4;
-border:1px solid rgba(255,255,255,0.16);
-box-shadow:none;
-}
-
-.sos-steps,
-.sos-checklist{
-margin:0;
-padding-left:18px;
-line-height:1.65;
-}
-
-.sos-steps li,
-.sos-checklist li{
-margin-bottom:6px;
-}
-
-.sos-status{
-margin-top:14px;
-padding:14px;
-border-radius:16px;
-background:rgba(48,10,10,0.24);
-border:1px solid rgba(255,255,255,0.14);
-}
-
-.sos-status strong{
-display:block;
-margin-bottom:6px;
-font-size:14px;
-}
-
-.sos-status p{
-margin:0;
-line-height:1.6;
-color:rgba(255,245,240,0.92);
-}
-
-.sos-nearest-list{
-display:grid;
-gap:10px;
-margin-top:12px;
-}
-
-.sos-nearest-item{
-padding:14px;
-border-radius:16px;
-background:rgba(255,255,255,0.08);
-border:1px solid rgba(255,255,255,0.14);
-}
-
-.sos-nearest-item strong{
-display:block;
-font-size:15px;
-margin-bottom:4px;
-}
-
-.sos-nearest-item p{
-margin:0;
-font-size:13px;
-line-height:1.55;
-color:rgba(255,245,240,0.92);
-}
-
-.sos-nearest-actions{
-display:flex;
-gap:8px;
-flex-wrap:wrap;
-margin-top:10px;
-}
-
-.sos-nearest-actions a{
-color:#fff1d2;
-font-size:13px;
-font-weight:700;
-text-decoration:none;
-}
-
-.sos-note{
-margin-top:14px;
-font-size:12px;
-line-height:1.6;
-color:rgba(255,242,236,0.84);
-}
-
-@media (max-width:900px){
-    .sos-grid,
-    .sos-call-grid{
-        grid-template-columns:1fr;
-    }
-
-    .sos-head{
-        flex-direction:column;
-    }
-}
-
 .chatbot-head h3,
 .cal-title,
 .cal-fl-title{
@@ -3914,12 +3659,12 @@ scroll-behavior:auto !important;
         <h2>Khám phá nhanh</h2>
         <p id="moduleHint" class="module-hint">Nhấn vào để hiển thị thông tin tương ứng.</p>
         <div class="module-grid">
-            <button class="module-btn" onclick="document.getElementById('map').scrollIntoView({behavior:'smooth'})"><span class="btn-icon">🗺️</span>Bản đồ</button>
-            <button class="module-btn" onclick="document.getElementById('calendarHome').scrollIntoView({behavior:'smooth'})"><span class="btn-icon">📅</span>Lịch lễ hội</button>
+            <button class="module-btn" onclick="setSosFocusMode(false);document.getElementById('map').scrollIntoView({behavior:'smooth'})"><span class="btn-icon">🗺️</span>Bản đồ</button>
+            <button class="module-btn" onclick="setSosFocusMode(false);document.getElementById('calendarHome').scrollIntoView({behavior:'smooth'})"><span class="btn-icon">📅</span>Lịch lễ hội</button>
             <button class="module-btn" data-target="list" onclick="openModule('list')"><span class="btn-icon">🏮</span>Danh sách lễ hội</button>
             <button class="module-btn" data-target="utilities" onclick="openModule('utilities')"><span class="btn-icon">🔧</span>Tiện ích</button>
+            <button class="module-btn" data-target="sosPanel" onclick="openModule('sosPanel')"><span class="btn-icon">🚑</span>SOS cấp cứu</button>
             <button class="module-btn" id="ar-btn"><span class="btn-icon">📷</span>AR Áo Dài</button>
-            <button class="module-btn" type="button" onclick="openEmergencySupport()"><span class="btn-icon">🚑</span>SOS cấp cứu</button>
         </div>
     </section>
 
@@ -3979,68 +3724,10 @@ scroll-behavior:auto !important;
     <div id="supportMap"></div>
 </section>
 
-<section id="festivalSOS" class="sos-section reveal-up">
-    <div class="sos-head">
-        <div>
-            <span class="sos-kicker">SOS le hoi</span>
-            <h2>Hỗ trợ khẩn cấp khi đi lễ hội</h2>
-            <p>Nếu gặp ngã, chen lấn, mất phương hướng, khó thở hoặc tai nạn trên đường đi hội, hãy ưu tiên gọi cấp cứu, giữ vị trí an toàn và dùng các nút nhanh bên dưới để mở bệnh viện hoặc bản đồ hỗ trợ.</p>
-        </div>
-        <div class="sos-badge">Ưu tiên cứu người trước, đồ đạc sau</div>
-    </div>
-    <div class="sos-grid">
-        <article class="sos-card">
-            <h3>Gọi ngay khi có tình huống nguy hiểm</h3>
-            <div class="sos-call-grid">
-                <a class="sos-call-card" href="tel:115">
-                    <span>Cap cuu y te</span>
-                    <strong>115</strong>
-                    <small>Dùng khi bất tỉnh, chấn thương, khó thở, co giật hoặc tai nạn cần cứu thương.</small>
-                </a>
-                <a class="sos-call-card" href="tel:114">
-                    <span>Cuu hoa</span>
-                    <strong>114</strong>
-                    <small>Dùng khi có cháy nổ, kẹt người, khói dày hoặc nguy cơ bỏng, ngạt tại khu lễ hội.</small>
-                </a>
-                <a class="sos-call-card" href="tel:113">
-                    <span>Cong an</span>
-                    <strong>113</strong>
-                    <small>Dùng khi có cướp giật, gây rối, xô xát, trẻ lạc hoặc tình huống mất an ninh.</small>
-                </a>
-            </div>
-            <h3>3 bước xử lý ban đầu</h3>
-            <ol class="sos-steps">
-                <li>Đưa người gặp nạn ra khỏi vùng chen lấn, mép đường hoặc khu vực nguy hiểm nếu làm được an toàn.</li>
-                <li>Gọi đúng số khẩn cấp và nói ngắn gọn: đang ở đâu, có bao nhiêu người bị nạn, biểu hiện hiện tại là gì.</li>
-                <li>Nhờ người xung quanh hỗ trợ điều phối lối đi và mở bản đồ/bệnh viện gần nhất để chờ lực lượng đến.</li>
-            </ol>
-            <div class="sos-action-row">
-                <button type="button" class="sos-action-btn" onclick="findNearestMedicalForSOS()">📍 Tìm bệnh viện gần bạn</button>
-                <button type="button" class="sos-action-btn secondary" onclick="openMedicalSOS()">🏥 Mở danh sách bệnh viện</button>
-                <button type="button" class="sos-action-btn secondary" onclick="openSupportMapSOS()">🗺️ Mở bản đồ tiện ích</button>
-            </div>
-            <div class="sos-status" id="sosStatusBox">
-                <strong>Trạng thái hỗ trợ</strong>
-                <p id="sosStatusText">Bạn có thể bấm “Tìm bệnh viện gần bạn” để lấy gợi ý y tế gần nhất theo vị trí hiện tại.</p>
-            </div>
-        </article>
-        <aside class="sos-side-card">
-            <h3>Mang theo gì để giảm rủi ro</h3>
-            <ul class="sos-checklist">
-                <li>Pin điện thoại đủ dùng, bật chia sẻ vị trí với người đi cùng nếu đi đông người.</li>
-                <li>Nước uống, thuốc cá nhân, giấy tờ cơ bản và số liên hệ người thân.</li>
-                <li>Nếu đi cùng trẻ em hoặc người lớn tuổi, nên có điểm hẹn cố định khi lạc nhau.</li>
-                <li>Khi trời nắng gắt hoặc hội quá đông, ưu tiên nghỉ ngắn và bổ sung nước sớm.</li>
-            </ul>
-            <div class="sos-nearest-list" id="sosNearestMedical">
-                <div class="sos-nearest-item">
-                    <strong>Chưa lấy vị trí</strong>
-                    <p>Bấm nút tìm bệnh viện gần bạn để hiện các cơ sở y tế gần nhất và nút chỉ đường.</p>
-                </div>
-            </div>
-            <p class="sos-note">Lưu ý: đây là lớp hỗ trợ nhanh trong web. Với tình huống bất tỉnh, chảy máu nhiều, co giật, đau ngực hoặc khó thở, hãy gọi 115 trước rồi mới thao tác tiếp trên màn hình.</p>
-        </aside>
-    </div>
+<section id="sosPanel" class="module-panel" style="padding:20px 10%;">
+    <h2>SOS cấp cứu</h2>
+    <p style="margin-top:-6px;color:var(--muted);">Mục SOS mở thành trang riêng để tránh hiển thị web lồng trong web.</p>
+    <a href="sos.html" class="btn" style="background:#b32a24;color:#fff;text-decoration:none;display:inline-flex;">Mở trang SOS</a>
 </section>
 
 <section class="home-showcase reveal-up" id="homeStory">
@@ -5280,7 +4967,18 @@ function initHomeReveal() {
     blocks.forEach(function(el) { observer.observe(el); });
 }
 
+function setSosFocusMode(enabled) {
+    document.body.classList.toggle('sos-focus-mode', !!enabled);
+}
+
 function openModule(moduleId) {
+    if (moduleId === 'sosPanel') {
+        window.location.href = 'sos.html';
+        return;
+    }
+
+    setSosFocusMode(false);
+
     const panels = document.querySelectorAll('.module-panel');
     panels.forEach(panel => {
         panel.style.display = 'none';
@@ -5309,95 +5007,6 @@ function openModule(moduleId) {
 function openUtilitiesTab(tabId) {
     openModule('utilities');
     showUtil(tabId);
-}
-
-function openEmergencySupport() {
-    var section = document.getElementById('festivalSOS');
-    if (!section) return;
-    section.scrollIntoView({ behavior: 'smooth', block: 'start' });
-}
-
-function updateSOSStatus(message) {
-    var status = document.getElementById('sosStatusText');
-    if (status) status.textContent = message;
-}
-
-function renderSOSNearestMedical(items, sourceLabel) {
-    var host = document.getElementById('sosNearestMedical');
-    if (!host) return;
-
-    if (!items || !items.length) {
-        host.innerHTML = '<div class="sos-nearest-item"><strong>Chưa có dữ liệu gần bạn</strong><p>Web chưa tìm được cơ sở y tế gần vị trí hiện tại. Hãy mở tab bệnh viện để xem toàn bộ danh sách.</p></div>';
-        return;
-    }
-
-    host.innerHTML = items.map(function(item) {
-        var distanceText = typeof item.distance === 'number' ? 'Cách bạn khoảng ' + item.distance.toFixed(1) + ' km' : 'Cơ sở y tế hỗ trợ gần khu vực';
-        return '<div class="sos-nearest-item">'
-            + '<strong>' + escHtml(item.name) + '</strong>'
-            + '<p>' + escHtml(item.province || '') + ' • ' + escHtml(item.desc || distanceText) + '</p>'
-            + '<p>' + escHtml(distanceText) + (sourceLabel ? ' • ' + escHtml(sourceLabel) : '') + '</p>'
-            + '<div class="sos-nearest-actions">'
-            + '<a href="https://www.google.com/maps/dir/?api=1&destination=' + item.lat + ',' + item.lng + '" target="_blank" rel="noopener noreferrer">Chi duong</a>'
-            + '<a href="detail.html?type=medical&id=' + item.id + '">Xem chi tiet</a>'
-            + '</div>'
-            + '</div>';
-    }).join('');
-}
-
-function openMedicalSOS() {
-    openUtilitiesTab('medicalList');
-    updateSOSStatus('Đã mở danh sách bệnh viện trong mục Tiện ích để bạn xem và chọn nhanh.');
-}
-
-function openSupportMapSOS() {
-    openModule('supportMapPanel');
-    updateSOSStatus('Đã mở bản đồ tiện ích để bạn xem vị trí bệnh viện, khách sạn và điểm hỗ trợ xung quanh.');
-}
-
-async function findNearestMedicalForSOS() {
-    openEmergencySupport();
-
-    if (!navigator.geolocation) {
-        updateSOSStatus('Thiết bị hoặc trình duyệt này không hỗ trợ vị trí. Hãy mở ngay danh sách bệnh viện hoặc gọi 115 nếu tình huống nặng.');
-        renderSOSNearestMedical([], '');
-        return;
-    }
-
-    updateSOSStatus('Đang lấy vị trí để tìm cơ sở y tế gần nhất...');
-
-    try {
-        var position = await getCurrentPositionSafe({
-            enableHighAccuracy: true,
-            timeout: 12000,
-            maximumAge: 300000
-        });
-        var userLat = position.coords.latitude;
-        var userLng = position.coords.longitude;
-        var nearest = medicals.map(function(med) {
-            return Object.assign({}, med, { distance: getDistance(userLat, userLng, med.lat, med.lng) });
-        }).sort(function(a, b) {
-            return a.distance - b.distance;
-        }).slice(0, 3);
-
-        renderSOSNearestMedical(nearest, 'theo vị trí hiện tại');
-        updateSOSStatus('Đã tìm thấy ' + nearest.length + ' cơ sở y tế gần bạn nhất. Nếu có dấu hiệu nặng, gọi 115 ngay trước khi di chuyển.');
-    } catch (error) {
-        var cached = typeof readCachedNearLocation === 'function' ? readCachedNearLocation() : null;
-        if (cached) {
-            var nearestCached = medicals.map(function(med) {
-                return Object.assign({}, med, { distance: getDistance(cached.lat, cached.lng, med.lat, med.lng) });
-            }).sort(function(a, b) {
-                return a.distance - b.distance;
-            }).slice(0, 3);
-            renderSOSNearestMedical(nearestCached, 'theo vị trí đã lưu');
-            updateSOSStatus('Không lấy được vị trí mới, web đang dùng vị trí đã lưu trước đó để gợi ý bệnh viện gần nhất.');
-            return;
-        }
-
-        updateSOSStatus('Không lấy được vị trí hiện tại. Hãy bật quyền vị trí, mở danh sách bệnh viện hoặc gọi 115 nếu tình huống khẩn.');
-        renderSOSNearestMedical([], '');
-    }
 }
 
 // AR Section toggle
@@ -5453,6 +5062,7 @@ window.addEventListener('DOMContentLoaded', function() {
     if (arBtn) {
         arBtn.addEventListener('click', function(e) {
             e.preventDefault();
+            setSosFocusMode(false);
             window.toggleARSection(true);
         });
     }

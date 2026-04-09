@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>SOS cấp cứu lễ hội - Bản đồ Lễ hội & Văn hóa Việt Nam</title>
+<link rel="icon" type="image/svg+xml" href="icon.svg">
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#fff4e5;
+  --brand:#b32a24;
+  --brand-deep:#7f1512;
+  --ink:#2c1d18;
+  --muted:#6d544a;
+  --light:#fff8f3;
+  --line:rgba(255,255,255,0.2);
+}
+
+*{box-sizing:border-box;}
+
+body{
+  margin:0;
+  font-family:"Be Vietnam Pro",sans-serif;
+  color:var(--ink);
+  background:
+    radial-gradient(circle at 12% 10%, rgba(255,214,176,0.5), transparent 28%),
+    radial-gradient(circle at 86% 12%, rgba(255,165,143,0.34), transparent 30%),
+    linear-gradient(145deg,#fff5e9 0%, #ffe5ce 100%);
+  min-height:100vh;
+}
+
+.page-wrap{
+  max-width:1100px;
+  margin:18px auto 24px;
+  padding:0 14px;
+}
+
+.topbar{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom:14px;
+}
+
+.back-link,
+.quick-link{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  text-decoration:none;
+  color:#7d1d17;
+  background:rgba(255,255,255,0.8);
+  border:1px solid rgba(179,42,36,0.16);
+  border-radius:12px;
+  padding:10px 12px;
+  font-size:14px;
+  font-weight:700;
+}
+
+.hero{
+  border-radius:28px;
+  padding:24px 20px;
+  background:
+    linear-gradient(145deg, rgba(129,16,16,0.95), rgba(195,46,39,0.92)),
+    radial-gradient(circle at top right, rgba(255,255,255,0.12), transparent 35%);
+  color:#fff8f3;
+  box-shadow:0 24px 60px rgba(92,20,18,0.3);
+  position:relative;
+  overflow:hidden;
+}
+
+.hero::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='78' height='78'%3E%3Ccircle cx='39' cy='39' r='24' fill='none' stroke='rgba(255,255,255,0.09)' stroke-width='1.5'/%3E%3Cpath d='M39 17v44M17 39h44' stroke='rgba(255,255,255,0.09)' stroke-width='1.5'/%3E%3C/svg%3E");
+  opacity:.25;
+  pointer-events:none;
+}
+
+.hero > *{position:relative;z-index:1;}
+
+.kicker{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:8px 12px;
+  border-radius:999px;
+  border:1px solid var(--line);
+  background:rgba(255,255,255,0.1);
+  font-size:12px;
+  font-weight:800;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+.hero h1{
+  margin:12px 0 8px;
+  font-family:"Playfair Display",serif;
+  font-size:clamp(30px,4vw,44px);
+  line-height:1.05;
+}
+
+.hero p{
+  margin:0;
+  max-width:780px;
+  line-height:1.7;
+  color:rgba(255,245,240,0.94);
+}
+
+.grid{
+  margin-top:16px;
+  display:grid;
+  grid-template-columns:minmax(0,1.15fr) minmax(300px,0.85fr);
+  gap:14px;
+}
+
+.card{
+  border-radius:22px;
+  padding:18px;
+  background:rgba(255,255,255,0.1);
+  border:1px solid var(--line);
+  backdrop-filter:blur(5px);
+}
+
+.card h2{
+  margin:0 0 12px;
+  font-size:28px;
+  font-family:"Playfair Display",serif;
+}
+
+.card h3{
+  margin:0 0 12px;
+  font-size:22px;
+}
+
+.call-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:10px;
+  margin-bottom:12px;
+}
+
+.call-card{
+  text-decoration:none;
+  color:#fff8f3;
+  border-radius:16px;
+  padding:12px;
+  background:rgba(255,255,255,0.11);
+  border:1px solid rgba(255,255,255,0.18);
+  display:grid;
+  gap:7px;
+}
+
+.call-card:hover{background:rgba(255,255,255,0.17);}
+
+.call-card span{
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  opacity:.84;
+}
+
+.call-card strong{
+  font-size:30px;
+  line-height:1;
+}
+
+.call-card small{
+  font-size:13px;
+  line-height:1.52;
+  color:rgba(255,245,240,0.92);
+}
+
+.list,
+.steps{
+  margin:0;
+  padding-left:18px;
+  line-height:1.65;
+}
+
+.list li,
+.steps li{margin-bottom:6px;}
+
+.actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-top:14px;
+}
+
+.btn{
+  border:none;
+  border-radius:14px;
+  padding:11px 16px;
+  font-size:14px;
+  font-weight:700;
+  cursor:pointer;
+  text-decoration:none;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+}
+
+.btn.primary{
+  background:#fff0da;
+  color:#7d1b13;
+}
+
+.btn.secondary{
+  background:rgba(255,255,255,0.12);
+  color:#fff8f2;
+  border:1px solid rgba(255,255,255,0.2);
+}
+
+.status{
+  margin-top:14px;
+  padding:14px;
+  border-radius:15px;
+  border:1px solid rgba(255,255,255,0.18);
+  background:rgba(59,10,10,0.25);
+}
+
+.status strong{
+  display:block;
+  margin-bottom:5px;
+  font-size:14px;
+}
+
+.status p{
+  margin:0;
+  font-size:14px;
+  line-height:1.6;
+  color:rgba(255,245,240,0.95);
+}
+
+.nearest-list{
+  display:grid;
+  gap:10px;
+  margin-top:12px;
+}
+
+.nearest-item{
+  padding:12px;
+  border-radius:14px;
+  background:rgba(255,255,255,0.08);
+  border:1px solid rgba(255,255,255,0.15);
+}
+
+.nearest-item strong{display:block;font-size:15px;margin-bottom:4px;}
+.nearest-item p{margin:0;font-size:13px;line-height:1.55;color:rgba(255,245,240,0.92);}
+
+.nearest-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:8px;
+}
+
+.nearest-actions a{
+  color:#ffe8bf;
+  font-weight:700;
+  font-size:13px;
+  text-decoration:none;
+}
+
+.note{
+  margin-top:14px;
+  font-size:12px;
+  line-height:1.58;
+  color:rgba(255,245,240,0.82);
+}
+
+@media (max-width:920px){
+  .grid,
+  .call-grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+  <div class="page-wrap">
+    <div class="topbar">
+      <a class="back-link" href="index.html">← Quay lại trang chính</a>
+      <a class="quick-link" href="index.html#utilities">Mở tiện ích trên trang chính</a>
+    </div>
+
+    <section class="hero">
+      <span class="kicker">SOS lễ hội</span>
+      <h1>Hỗ trợ khẩn cấp khi đi lễ hội</h1>
+      <p>Nếu gặp chen lấn, té ngã, tai nạn hoặc khó thở, hãy gọi số khẩn cấp ngay. Trang này giúp bạn thao tác nhanh: gọi 115/114/113, xem bước xử lý ban đầu và tìm bệnh viện gần nhất theo vị trí hiện tại.</p>
+
+      <div class="grid">
+        <article class="card">
+          <h3>Gọi ngay khi có tình huống nguy hiểm</h3>
+          <div class="call-grid">
+            <a class="call-card" href="tel:115">
+              <span>Cấp cứu y tế</span>
+              <strong>115</strong>
+              <small>Dùng khi bất tỉnh, chấn thương nặng, khó thở, co giật hoặc tai nạn giao thông.</small>
+            </a>
+            <a class="call-card" href="tel:114">
+              <span>Cứu hỏa</span>
+              <strong>114</strong>
+              <small>Dùng khi cháy nổ, có khói dày, người mắc kẹt hoặc nguy cơ bỏng, ngạt.</small>
+            </a>
+            <a class="call-card" href="tel:113">
+              <span>Công an</span>
+              <strong>113</strong>
+              <small>Dùng khi gây rối, cướp giật, xô xát, lạc người hoặc mất an ninh.</small>
+            </a>
+          </div>
+
+          <h3>3 bước xử lý ban đầu</h3>
+          <ol class="steps">
+            <li>Đưa người gặp nạn ra khỏi vùng nguy hiểm nếu có thể làm an toàn.</li>
+            <li>Gọi số khẩn cấp và nói rõ: vị trí hiện tại, số người bị nạn, dấu hiệu đang gặp.</li>
+            <li>Nhờ người xung quanh điều phối lối đi và chuẩn bị tuyến di chuyển đến cơ sở y tế.</li>
+          </ol>
+
+          <div class="actions">
+            <button class="btn primary" type="button" onclick="findNearestMedical()">📍 Tìm bệnh viện gần bạn</button>
+            <a class="btn secondary" href="index.html#utilities">🏥 Xem danh sách bệnh viện</a>
+            <a class="btn secondary" href="https://www.google.com/maps/search/bệnh+viện+gần+đây" target="_blank" rel="noopener noreferrer">🗺️ Mở bản đồ y tế</a>
+          </div>
+
+          <div class="status">
+            <strong>Trạng thái hỗ trợ</strong>
+            <p id="sosStatus">Bấm “Tìm bệnh viện gần bạn” để lấy gợi ý cơ sở y tế gần nhất theo vị trí hiện tại.</p>
+          </div>
+        </article>
+
+        <aside class="card">
+          <h3>Mang theo gì để giảm rủi ro</h3>
+          <ul class="list">
+            <li>Pin điện thoại đủ dùng và có người thân biết lịch trình di chuyển.</li>
+            <li>Nước uống, thuốc cá nhân, giấy tờ tùy thân và số liên hệ khẩn cấp.</li>
+            <li>Nếu đi cùng trẻ em/người lớn tuổi, nên hẹn điểm tập trung khi lạc nhau.</li>
+            <li>Khi trời nắng hoặc đám đông quá dày, ưu tiên nghỉ ngắn và bổ sung nước sớm.</li>
+          </ul>
+
+          <div class="nearest-list" id="nearestMedicalList">
+            <div class="nearest-item">
+              <strong>Chưa lấy vị trí</strong>
+              <p>Hệ thống sẽ hiển thị 3 cơ sở y tế gần nhất ngay sau khi bạn cho phép vị trí.</p>
+            </div>
+          </div>
+
+          <p class="note">Lưu ý: nếu người gặp nạn có biểu hiện nặng như bất tỉnh, co giật, chảy máu nhiều, đau ngực hoặc khó thở, hãy gọi 115 ngay trước khi thao tác thêm trên web.</p>
+        </aside>
+      </div>
+    </section>
+  </div>
+
+<script>
+var medicals = [
+  { id: 1, name: "Bệnh viện Bạch Mai", province: "Hà Nội", lat: 21.0005, lng: 105.8412, desc: "Bệnh viện đa khoa tuyến trung ương" },
+  { id: 2, name: "Bệnh viện Việt Đức", province: "Hà Nội", lat: 21.0283, lng: 105.8502, desc: "Bệnh viện ngoại khoa lớn" },
+  { id: 3, name: "Bệnh viện Hữu nghị Việt Tiệp", province: "Hải Phòng", lat: 20.8561, lng: 106.6900, desc: "Cơ sở y tế lớn tại Hải Phòng" },
+  { id: 4, name: "Bệnh viện Đa khoa Quảng Ninh", province: "Quảng Ninh", lat: 20.9600, lng: 107.0482, desc: "Bệnh viện tỉnh tại Hạ Long" },
+  { id: 5, name: "Bệnh viện Trung ương Huế", province: "Huế", lat: 16.4546, lng: 107.5790, desc: "Bệnh viện tuyến trung ương" },
+  { id: 6, name: "Bệnh viện Đà Nẵng", province: "Đà Nẵng", lat: 16.0701, lng: 108.2207, desc: "Bệnh viện đa khoa lớn miền Trung" },
+  { id: 7, name: "Bệnh viện Đa khoa Khánh Hòa", province: "Khánh Hòa", lat: 12.2462, lng: 109.1909, desc: "Cơ sở y tế trung tâm Nha Trang" },
+  { id: 8, name: "Bệnh viện Chợ Rẫy", province: "TP.HCM", lat: 10.7567, lng: 106.6596, desc: "Bệnh viện tuyến cuối phía Nam" },
+  { id: 9, name: "Bệnh viện Nhân dân 115", province: "TP.HCM", lat: 10.7721, lng: 106.6635, desc: "Bệnh viện đa khoa lớn tại TP.HCM" },
+  { id: 10, name: "Bệnh viện Đa khoa Cần Thơ", province: "Cần Thơ", lat: 10.0340, lng: 105.7709, desc: "Bệnh viện phục vụ khu vực miền Tây" },
+  { id: 11, name: "Bệnh viện Lê Lợi", province: "Bà Rịa - Vũng Tàu", lat: 10.3523, lng: 107.0869, desc: "Bệnh viện tại trung tâm Vũng Tàu" },
+  { id: 12, name: "Bệnh viện Đa khoa Lào Cai", province: "Lào Cai", lat: 22.4856, lng: 103.9750, desc: "Bệnh viện đa khoa tỉnh" },
+  { id: 13, name: "Bệnh viện Đa khoa Hà Giang", province: "Hà Giang", lat: 22.8245, lng: 104.9834, desc: "Cơ sở y tế chính của tỉnh" },
+  { id: 14, name: "Bệnh viện Đa khoa Sơn La", province: "Sơn La", lat: 21.3251, lng: 103.9188, desc: "Bệnh viện phục vụ khu vực Tây Bắc" },
+  { id: 15, name: "Bệnh viện Đa khoa Lâm Đồng", province: "Lâm Đồng", lat: 11.9461, lng: 108.4412, desc: "Bệnh viện lớn tại Đà Lạt" },
+  { id: 16, name: "Bệnh viện Đa khoa Đắk Lắk", province: "Đắk Lắk", lat: 12.6761, lng: 108.0438, desc: "Bệnh viện đa khoa khu vực Tây Nguyên" },
+  { id: 17, name: "Bệnh viện Đa khoa Bình Thuận", province: "Bình Thuận", lat: 10.9308, lng: 108.1026, desc: "Cơ sở y tế tuyến tỉnh" },
+  { id: 18, name: "Bệnh viện Đa khoa Kiên Giang", province: "Kiên Giang", lat: 10.0125, lng: 105.0801, desc: "Bệnh viện trung tâm tỉnh" },
+  { id: 19, name: "Bệnh viện Đa khoa An Giang", province: "An Giang", lat: 10.5372, lng: 105.1261, desc: "Bệnh viện đa khoa khu vực Châu Đốc" },
+  { id: 20, name: "Bệnh viện Quy Nhơn", province: "Bình Định", lat: 13.7716, lng: 109.2248, desc: "Bệnh viện đa khoa tỉnh Bình Định" }
+];
+
+function escHtml(text) {
+  return String(text || "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/\"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+function getDistance(lat1, lon1, lat2, lon2) {
+  var R = 6371;
+  var dLat = (lat2 - lat1) * Math.PI / 180;
+  var dLon = (lon2 - lon1) * Math.PI / 180;
+  var a = Math.sin(dLat / 2) * Math.sin(dLat / 2)
+    + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180)
+    * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  return R * c;
+}
+
+function setStatus(text) {
+  var el = document.getElementById("sosStatus");
+  if (el) el.textContent = text;
+}
+
+function renderNearest(items, label) {
+  var host = document.getElementById("nearestMedicalList");
+  if (!host) return;
+
+  if (!items || !items.length) {
+    host.innerHTML = '<div class="nearest-item"><strong>Không lấy được vị trí</strong><p>Hãy bật quyền vị trí hoặc gọi 115 nếu tình huống khẩn.</p></div>';
+    return;
+  }
+
+  host.innerHTML = items.map(function(item) {
+    var distanceText = typeof item.distance === "number" ? ("Cách bạn khoảng " + item.distance.toFixed(1) + " km") : "Cơ sở y tế hỗ trợ gần khu vực";
+    return '<div class="nearest-item">'
+      + '<strong>' + escHtml(item.name) + '</strong>'
+      + '<p>' + escHtml(item.province) + ' • ' + escHtml(item.desc) + '</p>'
+      + '<p>' + escHtml(distanceText + (label ? (" • " + label) : "")) + '</p>'
+      + '<div class="nearest-actions">'
+      + '<a href="https://www.google.com/maps/dir/?api=1&destination=' + item.lat + ',' + item.lng + '" target="_blank" rel="noopener noreferrer">Chỉ đường</a>'
+      + '<a href="detail.html?type=medical&id=' + item.id + '">Xem chi tiết</a>'
+      + '</div>'
+      + '</div>';
+  }).join("");
+}
+
+function readCachedLocation() {
+  try {
+    var raw = localStorage.getItem("nearby_location_cache");
+    if (!raw) return null;
+    var parsed = JSON.parse(raw);
+    if (parsed && typeof parsed.lat === "number" && typeof parsed.lng === "number") return parsed;
+    return null;
+  } catch (e) {
+    return null;
+  }
+}
+
+function writeCachedLocation(lat, lng) {
+  localStorage.setItem("nearby_location_cache", JSON.stringify({ lat: lat, lng: lng, updatedAt: Date.now() }));
+}
+
+async function findNearestMedical() {
+  if (!navigator.geolocation) {
+    setStatus("Thiết bị này không hỗ trợ vị trí. Hãy gọi 115 ngay nếu tình huống nặng.");
+    renderNearest([], "");
+    return;
+  }
+
+  setStatus("Đang lấy vị trí để tìm bệnh viện gần nhất...");
+
+  navigator.geolocation.getCurrentPosition(function(pos) {
+    var lat = pos.coords.latitude;
+    var lng = pos.coords.longitude;
+    writeCachedLocation(lat, lng);
+
+    var nearest = medicals.map(function(med) {
+      return Object.assign({}, med, { distance: getDistance(lat, lng, med.lat, med.lng) });
+    }).sort(function(a, b) {
+      return a.distance - b.distance;
+    }).slice(0, 3);
+
+    renderNearest(nearest, "theo vị trí hiện tại");
+    setStatus("Đã tìm thấy " + nearest.length + " cơ sở y tế gần bạn nhất. Nếu có dấu hiệu nặng, gọi 115 trước khi di chuyển.");
+  }, function() {
+    var cached = readCachedLocation();
+    if (cached) {
+      var nearestCached = medicals.map(function(med) {
+        return Object.assign({}, med, { distance: getDistance(cached.lat, cached.lng, med.lat, med.lng) });
+      }).sort(function(a, b) {
+        return a.distance - b.distance;
+      }).slice(0, 3);
+
+      renderNearest(nearestCached, "theo vị trí đã lưu");
+      setStatus("Không lấy được vị trí mới, đang dùng vị trí đã lưu để gợi ý cơ sở y tế gần nhất.");
+      return;
+    }
+
+    renderNearest([], "");
+    setStatus("Không lấy được vị trí. Hãy bật quyền vị trí hoặc gọi 115 nếu đang có tình huống khẩn.");
+  }, {
+    enableHighAccuracy: true,
+    timeout: 12000,
+    maximumAge: 300000
+  });
+}
+</script>
+</body>
+</html>
