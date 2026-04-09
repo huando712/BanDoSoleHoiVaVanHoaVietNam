@@ -543,12 +543,34 @@ function buildSystemPrompt(locale, groundedContext) {
     "Primary language: " + (locale || "vi-VN") + ".",
     "Focus only on festivals, food, entertainment, itinerary suggestions.",
     "Reply in concise Vietnamese unless the user asks another language.",
+    "Avoid repetitive templates. Vary structure and style naturally while staying clear and practical.",
+    "When possible, provide 2-3 different directions or options the user can choose next.",
     "Use only the grounded data below when mentioning specific festivals, provinces, foods, or entertainment suggestions.",
     groundingText,
     "Output MUST be strict JSON object with this schema:",
     '{"reply":"string","actions":[{"label":"string","action":"openMap|nearMe|openCalendar|openModule|focusFestival|focusFood|focusEntertainment","payload":{}}]}',
     "If unsure, return helpful, safe suggestions and empty actions array.",
   ].join("\n");
+}
+
+function pickOne(items) {
+  return items[Math.floor(Math.random() * items.length)];
+}
+
+function rotateBySeed(items, seedText) {
+  const list = Array.isArray(items) ? [...items] : [];
+  if (!list.length) return list;
+  let seed = 0;
+  const text = String(seedText || "");
+  for (let i = 0; i < text.length; i++) {
+    seed = (seed * 31 + text.charCodeAt(i)) >>> 0;
+  }
+  const shift = seed % list.length;
+  return list.slice(shift).concat(list.slice(0, shift));
+}
+
+function formatSuggestionLines(title, list, formatter) {
+  return [title, ...list.map((item, idx) => `${idx + 1}. ${formatter(item)}`)].join("\n");
 }
 
 function localFallback(userMessage, context) {
@@ -558,45 +580,106 @@ function localFallback(userMessage, context) {
   const month = relevant.month;
   const year = relevant.year;
 
+  const wantsFamily = /gia dinh|tre em|be nho/.test(msg);
+  const wantsBudget = /re|tiet kiem|ngan sach|duoi\s*\d+/.test(msg);
+  const wantsFast = /nhanh|gap|toi uu thoi gian/.test(msg);
+
+  const genericNextStepActions = [
+    { label: "Lễ hội tháng này", action: "openCalendar", payload: {} },
+    { label: "Lễ hội gần tôi", action: "nearMe", payload: {} },
+    { label: "Mở tiện ích", action: "openModule", payload: { moduleId: "utilities" } },
+    { label: "Lên lịch trình", action: "openMap", payload: {} },
+  ];
+
+  if (/chao|hello|hi\b|xin chao/.test(msg)) {
+    return {
+      reply: pickOne([
+        "Chào bạn. Mình có thể tư vấn theo nhiều cách: theo tháng lễ hội, theo tỉnh/thành, theo nhu cầu ăn uống-vui chơi, hoặc lên lịch trình 1 ngày.",
+        "Xin chào. Bạn muốn mình gợi ý kiểu nào: nhanh gọn trong 30 giây, chi tiết theo từng khung giờ, hay ưu tiên ngân sách?",
+        "Rất vui được hỗ trợ. Mình có thể bắt đầu từ lễ hội nổi bật, sau đó ghép ăn uống và vui chơi thành 1 lộ trình liền mạch."
+      ]),
+      actions: rotateBySeed(genericNextStepActions, userMessage).slice(0, 4),
+    };
+  }
+
   if (msg.includes("an gi") || msg.includes("am thuc") || msg.includes("quan an") || msg.includes("mon ngon")) {
-    const suggestions = relevant.foods;
+    const suggestions = rotateBySeed(relevant.foods, userMessage).slice(0, 5);
     if (!suggestions.length) {
       return {
-        reply: "Mình chưa có dữ liệu ăn uống phù hợp cho khu vực này. Bạn thử một tỉnh/thành khác nhé.",
-        actions: [{ label: "Mở ẩm thực", action: "openModule", payload: { moduleId: "food" } }]
+        reply: pickOne([
+          "Mình chưa có dữ liệu ăn uống đủ tốt cho khu vực này. Bạn đổi sang tỉnh/thành gần đó giúp mình nhé.",
+          "Khu vực này hiện chưa có nhiều điểm ăn uống trong dữ liệu. Bạn muốn mình gợi ý theo vùng lân cận không?"
+        ]),
+        actions: [
+          { label: "Mở tiện ích", action: "openModule", payload: { moduleId: "utilities" } },
+          { label: "Lễ hội gần tôi", action: "nearMe", payload: {} },
+        ]
       };
     }
+
+    const lead = pickOne([
+      `Gợi ý ăn uống${province ? ` ở ${province}` : ""} theo hướng dễ đi:`,
+      `Danh sách món/điểm ăn đáng thử${province ? ` tại ${province}` : ""}:`,
+      `Nếu bạn muốn ăn ngon${wantsBudget ? " mà tiết kiệm" : ""}, mình đề xuất:`
+    ]);
+
+    const detailHint = wantsFamily
+      ? "Ưu tiên quán không gian rộng, đi nhóm gia đình thoải mái."
+      : wantsBudget
+      ? "Mình ưu tiên điểm phổ thông, giá dễ chịu."
+      : wantsFast
+      ? "Mình ưu tiên các điểm dễ di chuyển, ít vòng đường."
+      : "Bạn có thể chọn 1 điểm gần lễ hội để tiết kiệm thời gian.";
+
     return {
       reply: [
-        `Gợi ý ăn uống${province ? ` ở ${province}` : ""}:`,
-        ...suggestions.map((item, index) => `${index + 1}. ${item.name} - ${item.desc}`)
-      ].join("\n"),
-      actions: suggestions.slice(0, 3).map((item) => ({
+        formatSuggestionLines(lead, suggestions.slice(0, 4), (item) => `${item.name} - ${item.desc}`),
+        detailHint,
+      ].join("\n\n"),
+      actions: [
+        ...suggestions.slice(0, 2).map((item) => ({
         label: `Xem ${item.name}`,
         action: "focusFood",
         payload: { name: item.name }
-      }))
+        })),
+        { label: "Mở tiện ích", action: "openModule", payload: { moduleId: "utilities" } },
+        { label: "Lịch lễ hội", action: "openCalendar", payload: {} },
+      ]
     };
   }
 
   if (msg.includes("choi gi") || msg.includes("vui choi") || msg.includes("giai tri")) {
-    const suggestions = relevant.entertainments;
+    const suggestions = rotateBySeed(relevant.entertainments, userMessage).slice(0, 5);
     if (!suggestions.length) {
       return {
-        reply: "Mình chưa có dữ liệu vui chơi phù hợp cho khu vực này. Bạn thử địa điểm khác nhé.",
-        actions: [{ label: "Mở khu vui chơi", action: "openModule", payload: { moduleId: "entertainment" } }]
+        reply: pickOne([
+          "Mình chưa có dữ liệu vui chơi phù hợp cho khu vực này. Bạn thử địa điểm khác nhé.",
+          "Điểm vui chơi ở khu vực này còn ít dữ liệu. Bạn muốn mình mở tiện ích để bạn lọc nhanh không?"
+        ]),
+        actions: [
+          { label: "Mở tiện ích", action: "openModule", payload: { moduleId: "utilities" } },
+          { label: "Mở bản đồ", action: "openMap", payload: {} },
+        ]
       };
     }
+
+    const intro = pickOne([
+      `Gợi ý vui chơi${province ? ` ở ${province}` : ""}:`,
+      `Nếu ưu tiên trải nghiệm${wantsFamily ? " cho gia đình" : " cuối tuần"}, bạn có thể chọn:`,
+      `Danh sách điểm giải trí${province ? ` tại ${province}` : ""} đang phù hợp:`
+    ]);
+
     return {
-      reply: [
-        `Gợi ý vui chơi${province ? ` ở ${province}` : ""}:`,
-        ...suggestions.map((item, index) => `${index + 1}. ${item.name} - ${item.desc}`)
-      ].join("\n"),
-      actions: suggestions.slice(0, 3).map((item) => ({
+      reply: formatSuggestionLines(intro, suggestions.slice(0, 4), (item) => `${item.name} - ${item.desc}`),
+      actions: [
+        ...suggestions.slice(0, 2).map((item) => ({
         label: `Đến ${item.name}`,
         action: "focusEntertainment",
         payload: { name: item.name }
-      }))
+        })),
+        { label: "Mở tiện ích", action: "openModule", payload: { moduleId: "utilities" } },
+        { label: "Lễ hội gần tôi", action: "nearMe", payload: {} },
+      ]
     };
   }
 
@@ -604,17 +687,30 @@ function localFallback(userMessage, context) {
     const festival = relevant.festivals[0] || null;
     const food = relevant.foods[0] || null;
     const entertainment = relevant.entertainments[0] || null;
+    const styleLabel = wantsFast
+      ? "Kiểu nhanh-gọn"
+      : wantsFamily
+      ? "Kiểu gia đình"
+      : wantsBudget
+      ? "Kiểu tiết kiệm"
+      : "Kiểu cân bằng";
     return {
       reply: [
-        `Lịch trình gợi ý 1 ngày${province ? ` tại ${province}` : ""}:`,
+        `${styleLabel}: Lịch trình gợi ý 1 ngày${province ? ` tại ${province}` : ""}:`,
         `08:00 - 10:30: ${festival ? festival.name : "Tham quan lễ hội nổi bật trong khu vực"}`,
         `11:30 - 13:00: ${food ? food.name : "Ăn trưa với món đặc sản địa phương"}`,
         `14:30 - 17:00: ${entertainment ? entertainment.name : "Vui chơi hoặc tham quan trải nghiệm"}`,
-        `Gợi ý mùa vụ: ${relevant.seasonHint}`
+        `Gợi ý mùa vụ: ${relevant.seasonHint}`,
+        pickOne([
+          "Nếu bạn muốn, mình có thể tạo thêm phiên bản lịch trình thiên về check-in ảnh đẹp.",
+          "Bạn muốn mình đổi thành lịch trình buổi tối hoặc lịch trình có trẻ nhỏ không?",
+          "Mình có thể tinh chỉnh tiếp theo ngân sách của bạn (thấp/vừa/cao)."
+        ])
       ].join("\n"),
       actions: [
         { label: "Mở bản đồ", action: "openMap", payload: {} },
         { label: "Mở lịch lễ hội", action: "openCalendar", payload: {} },
+        { label: "Mở tiện ích", action: "openModule", payload: { moduleId: "utilities" } },
       ],
     };
   }
@@ -623,31 +719,47 @@ function localFallback(userMessage, context) {
     const list = relevant.festivals;
     if (!list.length) {
       return {
-        reply: `Hiện chưa có lễ hội có ngày cụ thể trong dữ liệu cho tháng ${month}/${year}${province ? ` tại ${province}` : ""}.`,
-        actions: [{ label: "Mở lịch lễ hội", action: "openCalendar", payload: {} }]
+        reply: pickOne([
+          `Hiện chưa có lễ hội có ngày cụ thể trong dữ liệu cho tháng ${month}/${year}${province ? ` tại ${province}` : ""}.`,
+          `Tháng ${month}/${year}${province ? ` tại ${province}` : ""} hiện chưa có lịch rõ ràng trong dữ liệu. Bạn có thể đổi tháng hoặc đổi địa điểm.`
+        ]),
+        actions: [
+          { label: "Mở lịch lễ hội", action: "openCalendar", payload: {} },
+          { label: "Lễ hội gần tôi", action: "nearMe", payload: {} },
+        ]
       };
     }
+
+    const sorted = rotateBySeed(list, userMessage);
     return {
       reply: [
-        `Lễ hội tháng ${month}/${year}${province ? ` tại ${province}` : ""}:`,
-        ...list.map((item, index) => `${index + 1}. ${item.name} (${item.start} -> ${item.end})`),
+        pickOne([
+          `Lễ hội tháng ${month}/${year}${province ? ` tại ${province}` : ""}:`,
+          `Danh sách lễ hội nổi bật tháng ${month}/${year}${province ? ` quanh ${province}` : ""}:`,
+          `Nếu bạn muốn đi trong tháng ${month}, đây là các lựa chọn phù hợp:`
+        ]),
+        ...sorted.map((item, index) => `${index + 1}. ${item.name} (${item.start} -> ${item.end})`),
         `Mẹo mùa vụ: ${relevant.seasonHint}`
       ].join("\n"),
-      actions: list.slice(0, 3).map((item) => ({
-        label: `Xem ${item.name}`,
-        action: "focusFestival",
-        payload: { id: item.id }
-      }))
+      actions: [
+        ...sorted.slice(0, 2).map((item) => ({
+          label: `Xem ${item.name}`,
+          action: "focusFestival",
+          payload: { id: item.id }
+        })),
+        { label: "Mở lịch lễ hội", action: "openCalendar", payload: {} },
+        { label: "Mở tiện ích", action: "openModule", payload: { moduleId: "utilities" } },
+      ]
     };
   }
 
   return {
-    reply:
-      "Mình có thể giúp bạn theo 4 nhóm: lễ hội, ăn uống, vui chơi, lịch trình 1 ngày. Bạn muốn bắt đầu từ nhóm nào?",
-    actions: [
-      { label: "Lễ hội tháng này", action: "openCalendar", payload: {} },
-      { label: "Lễ hội gần tôi", action: "nearMe", payload: {} },
-    ],
+    reply: pickOne([
+      "Mình hiểu ý bạn nhưng cần thêm 1 chút ngữ cảnh để gợi ý sắc nét hơn. Bạn muốn ưu tiên lễ hội, ăn uống, vui chơi hay lịch trình?",
+      "Để tư vấn không bị chung chung, bạn cho mình 1 trong 3 thứ nhé: địa điểm, thời gian đi, hoặc mục tiêu chuyến đi.",
+      "Mình có thể trả lời theo nhiều phong cách: nhanh gọn, chi tiết theo giờ, hoặc tối ưu ngân sách. Bạn chọn kiểu nào?"
+    ]),
+    actions: rotateBySeed(genericNextStepActions, userMessage).slice(0, 4),
   };
 }
 
@@ -739,7 +851,7 @@ function sanitizeReplyObject(obj) {
   const actions = Array.isArray(safe.actions)
     ? safe.actions
         .filter((a) => a && typeof a.label === "string" && typeof a.action === "string")
-        .slice(0, 4)
+        .slice(0, 6)
     : [];
   return { reply, actions };
 }

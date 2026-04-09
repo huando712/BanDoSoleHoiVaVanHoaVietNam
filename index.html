@@ -5,12 +5,8 @@
 <meta charset="UTF-8">
 <script src="lunar.js" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Bản đồ Lễ hội & Văn hóa Việt Nam</title>
 <meta name="description" content="Khám phá hơn 100 lễ hội và điểm văn hóa truyền thống Việt Nam trên bản đồ số tương tác.">
 <meta name="theme-color" content="#d94a2b">
-
-<!-- PWA -->
-<link rel="manifest" href="manifest.json">
 <link rel="icon" type="image/svg+xml" href="icon.svg">
 <link rel="apple-touch-icon" href="icon.svg">
 <meta name="mobile-web-app-capable" content="yes">
@@ -22,20 +18,14 @@
 <meta property="og:title" content="Bản đồ Lễ hội & Văn hóa Việt Nam">
 <meta property="og:description" content="Khám phá hơn 100 lễ hội và điểm văn hóa truyền thống Việt Nam trên bản đồ số tương tác.">
 <meta property="og:type" content="website">
-<meta property="og:image" content="icon.svg">
+
 
 <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800&family=Cormorant+Garamond:wght@600;700&display=swap" rel="stylesheet">
-
 <style>
-
 :root{
 --bg-cream:#fff5e6;
---bg-peach:#ffd4a8;
 --bg-gold:#ffc857;
---bg-red:#c63c2f;
 --brand:#d94a2b;
 --brand-dark:#972519;
 --brand-deep:#5e1711;
@@ -495,36 +485,45 @@ z-index:3;
 
 /* === COUNTDOWN WIDGET === */
 .festival-countdown{
+grid-area:countdown;
 background:linear-gradient(135deg,rgba(217,74,43,0.12),rgba(255,200,87,0.18));
 border:1px solid rgba(217,74,43,0.22);
 border-radius:14px;
-padding:14px 18px;
-margin-top:14px;
+padding:18px 22px;
+margin-top:0;
 display:none;
+min-height:148px;
+box-sizing:border-box;
+align-self:stretch;
 }
-.festival-countdown.visible{ display:block; }
+.festival-countdown.visible{
+display:flex;
+flex-direction:column;
+justify-content:center;
+}
 .countdown-label{
-font-size:12px;
+font-size:13px;
 font-weight:700;
 color:var(--brand);
 text-transform:uppercase;
 letter-spacing:.06em;
-margin-bottom:4px;
+margin-bottom:8px;
 }
 .countdown-name{
-font-size:15px;
+font-size:34px;
 font-weight:700;
 color:var(--ink);
-margin-bottom:6px;
+margin-bottom:12px;
+line-height:1.28;
 }
 .countdown-days{
-font-size:28px;
+font-size:44px;
 font-weight:800;
 color:var(--brand);
 line-height:1;
 }
 .countdown-days span{
-font-size:13px;
+font-size:17px;
 font-weight:500;
 color:var(--muted);
 margin-left:4px;
@@ -538,10 +537,23 @@ border-radius:16px;
 box-shadow:var(--card-shadow);
 padding:18px;
 display:grid;
-grid-template-columns:1.2fr 1fr;
-gap:16px;
+grid-template-columns:minmax(0,1.15fr) minmax(320px,0.95fr);
+grid-template-areas:
+"copy countdown"
+"stats stats";
+gap:18px 20px;
+align-items:stretch;
 position:relative;
 overflow:hidden;
+}
+
+.highlight-copy{
+grid-area:copy;
+display:flex;
+flex-direction:column;
+justify-content:center;
+min-width:0;
+padding-right:8px;
 }
 
 .highlight-panel::after{
@@ -569,6 +581,7 @@ line-height:1.6;
 }
 
 .highlight-stats{
+grid-area:stats;
 display:grid;
 grid-template-columns:repeat(3,1fr);
 gap:10px;
@@ -653,6 +666,52 @@ color:#6c402f;
 max-width:1100px;
 margin:20px auto;
 padding:28px 20px;
+position:relative;
+overflow:hidden;
+isolation:isolate;
+background-image:
+radial-gradient(circle at 14% 18%, rgba(255,210,128,0.12), transparent 20%),
+radial-gradient(circle at 88% 16%, rgba(217,74,43,0.08), transparent 18%),
+linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0));
+}
+
+.home-showcase::after{
+content:"";
+position:absolute;
+inset:auto 12px 10px auto;
+width:180px;
+height:180px;
+border-radius:50%;
+background:
+radial-gradient(circle, rgba(255,200,87,0.14) 0%, rgba(255,200,87,0.04) 32%, transparent 68%),
+repeating-linear-gradient(45deg, rgba(217,74,43,0.04) 0 6px, transparent 6px 14px);
+pointer-events:none;
+z-index:0;
+}
+
+.home-showcase > *{
+position:relative;
+z-index:1;
+}
+
+body.season-spring .highlight-panel,
+body.season-spring .festival-countdown{
+background-image:linear-gradient(135deg, rgba(255,252,246,0.98) 0%, rgba(255,237,214,0.96) 52%, rgba(255,225,188,0.96) 100%);
+}
+
+body.season-summer .highlight-panel,
+body.season-summer .festival-countdown{
+background-image:linear-gradient(135deg, rgba(246,253,255,0.98) 0%, rgba(225,246,255,0.95) 50%, rgba(255,239,212,0.94) 100%);
+}
+
+body.season-autumn .highlight-panel,
+body.season-autumn .festival-countdown{
+background-image:linear-gradient(135deg, rgba(255,249,242,0.98) 0%, rgba(255,233,207,0.96) 54%, rgba(252,217,171,0.94) 100%);
+}
+
+body.season-winter .highlight-panel,
+body.season-winter .festival-countdown{
+background-image:linear-gradient(135deg, rgba(253,248,243,0.98) 0%, rgba(242,238,234,0.95) 50%, rgba(255,230,210,0.94) 100%);
 }
 
 .home-lead{
@@ -760,6 +819,22 @@ flex-direction:column;
 justify-content:space-between;
 }
 
+.season-card.spring{
+background:linear-gradient(145deg, rgba(255,249,239,0.98) 0%, rgba(255,227,210,0.96) 100%);
+}
+
+.season-card.summer{
+background:linear-gradient(145deg, rgba(240,251,255,0.98) 0%, rgba(207,240,250,0.96) 100%);
+}
+
+.season-card.autumn{
+background:linear-gradient(145deg, rgba(255,248,234,0.98) 0%, rgba(255,227,176,0.96) 100%);
+}
+
+.season-card.winter{
+background:linear-gradient(145deg, rgba(252,246,240,0.98) 0%, rgba(240,232,225,0.96) 100%);
+}
+
 .season-tag{
 display:inline-flex;
 align-items:center;
@@ -795,6 +870,71 @@ font-size:14px;
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
 gap:14px;
+}
+
+.list-filter-panel{
+margin-bottom:18px;
+padding:16px;
+border-radius:18px;
+background:linear-gradient(145deg, rgba(255,251,244,0.98) 0%, rgba(255,236,206,0.92) 100%);
+border:1px solid rgba(217,74,43,0.14);
+box-shadow:0 10px 18px rgba(70,28,19,0.08);
+display:grid;
+gap:14px;
+}
+
+.list-filter-row{
+display:grid;
+grid-template-columns:repeat(6, minmax(0, 1fr));
+gap:12px;
+}
+
+.list-filter-field{
+display:grid;
+gap:6px;
+}
+
+.list-filter-field span{
+font-size:12px;
+font-weight:700;
+color:#7b4330;
+letter-spacing:0.02em;
+}
+
+.list-filter-field select{
+width:100%;
+padding:10px 12px;
+border-radius:12px;
+border:1px solid rgba(217,74,43,0.2);
+background:rgba(255,255,255,0.92);
+font-family:inherit;
+font-size:14px;
+color:var(--ink);
+outline:none;
+}
+
+.list-filter-summary{
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:12px;
+flex-wrap:wrap;
+}
+
+.list-filter-summary span{
+font-size:13px;
+color:#6a5146;
+}
+
+.list-filter-reset{
+border:1px solid rgba(217,74,43,0.18);
+background:rgba(255,255,255,0.78);
+color:#7a3526;
+padding:8px 14px;
+border-radius:999px;
+font-size:12px;
+font-weight:700;
+cursor:pointer;
 }
 
 .mission-board{
@@ -952,6 +1092,35 @@ font-weight:700;
 background:rgba(217,74,43,0.1);
 border:1px solid rgba(217,74,43,0.2);
 color:#7a3526;
+}
+
+.spotlight-kicker{
+font-size:12px;
+font-weight:700;
+letter-spacing:0.03em;
+color:#8f2919;
+text-transform:uppercase;
+margin-bottom:8px;
+}
+
+.spotlight-reason{
+font-size:13px;
+color:#5d4337;
+font-weight:600;
+margin-top:6px;
+}
+
+.spotlight-trust{
+display:inline-flex;
+align-items:center;
+padding:4px 10px;
+border-radius:999px;
+font-size:11px;
+font-weight:700;
+margin-top:8px;
+background:rgba(255,248,233,0.9);
+border:1px solid rgba(217,74,43,0.15);
+color:#7b3d24;
 }
 
 .deep-dive-wrap{
@@ -1262,8 +1431,19 @@ background:linear-gradient(to top, rgba(50,12,6,0.88) 0%, rgba(80,20,10,0.32) 45
 opacity:0;
 transition:opacity .35s ease;
 display:flex;
-align-items:flex-end;
+justify-content:space-between;
+flex-direction:column;
 padding:14px 14px;
+}
+
+.card-overlay-top,
+.card-overlay-bottom{
+display:flex;
+justify-content:space-between;
+align-items:flex-start;
+gap:8px;
+width:100%;
+flex-wrap:wrap;
 }
 
 .card-img-overlay .card-province-tag{
@@ -1280,6 +1460,33 @@ border:1px solid rgba(255,255,255,0.32);
 backdrop-filter:blur(8px);
 transition:background .25s;
 }
+
+.card-season-tag,
+.card-trust-badge{
+display:inline-flex;
+align-items:center;
+gap:5px;
+padding:6px 12px;
+border-radius:999px;
+font-size:11px;
+font-weight:700;
+backdrop-filter:blur(8px);
+border:1px solid rgba(255,255,255,0.28);
+}
+
+.card-season-tag{
+color:#fff9ee;
+background:rgba(77,28,15,0.42);
+}
+
+.card-trust-badge{
+color:#4d2719;
+background:rgba(255,246,229,0.88);
+}
+
+.card-trust-badge.verified{ color:#0f5132; background:rgba(225,248,236,0.9); }
+.card-trust-badge.lunar{ color:#7a3e00; background:rgba(255,236,198,0.92); }
+.card-trust-badge.check{ color:#7a1f1f; background:rgba(255,230,230,0.92); }
 
 .card:hover .card-img-overlay .card-province-tag{
 background:rgba(217,74,43,0.6);
@@ -1313,6 +1520,42 @@ margin:0 0 10px;
 line-height:1.55;
 font-size:13.5px;
 color:var(--muted);
+}
+
+.card-meta-strip{
+display:flex;
+gap:6px;
+flex-wrap:wrap;
+margin:0 0 10px;
+}
+
+.card-meta-pill{
+display:inline-flex;
+align-items:center;
+padding:5px 10px;
+border-radius:999px;
+font-size:11px;
+font-weight:700;
+background:rgba(217,74,43,0.08);
+border:1px solid rgba(217,74,43,0.18);
+color:#7a3526;
+}
+
+.card-date-line{
+font-weight:600;
+color:#674538;
+}
+
+.card-emotion-line{
+font-size:13px;
+color:#5f4638;
+min-height:42px;
+}
+
+.card-ritual-line{
+font-size:12px;
+color:#8a624d;
+margin-top:-2px;
 }
 
 .card-status-badge{
@@ -1496,18 +1739,21 @@ line-height:1;
 font-size:12px;
 padding:6px 10px;
 border-radius:999px;
-background:rgba(255,232,201,0.9);
+background:rgba(255,255,255,0.88);
 border:1px solid rgba(217,74,43,0.2);
 color:#7c3a21;
+font-weight:700;
+box-shadow:none;
 }
 
 .nearby-group-actions{
 display:flex;
+font-size:13px;
 align-items:center;
 gap:8px;
 flex-wrap:wrap;
 justify-content:flex-end;
-max-width:100%;
+margin-bottom:8px;
 min-width:0;
 }
 
@@ -1516,12 +1762,22 @@ min-width:0;
 .nearby-scroll-btn{
 padding:7px 10px;
 border-radius:999px;
-border:1px solid rgba(217,74,43,0.2);
+font-size:12px;
 background:rgba(255,255,255,0.88);
 color:#7c3a21;
 font-weight:700;
-font-size:12px;
 box-shadow:none;
+border:1px solid rgba(217,74,43,0.2);
+line-height:1.2;
+cursor:pointer;
+transition:all .2s ease;
+}
+
+.nearby-nav-btn:hover,
+.nearby-more-btn:hover,
+.nearby-scroll-btn:hover{
+transform:translateY(-1px);
+box-shadow:0 6px 12px rgba(70,28,19,0.12);
 }
 
 .nearby-nav-btn{
@@ -1851,8 +2107,301 @@ border:1px solid rgba(217,74,43,0.14);
 box-shadow:0 8px 16px rgba(70,28,19,0.08);
 }
 
+.util-nav button.active{
+background:linear-gradient(145deg, #ffe2bb 0%, #ffc36f 100%);
+border-color:rgba(217,74,43,0.32);
+color:#5f250f;
+}
+
 .util-nav button::before{
 background:linear-gradient(180deg, rgba(255,255,255,0.42), rgba(255,255,255,0));
+}
+
+.util-map-shortcut{
+display:grid;
+gap:12px;
+padding:16px;
+border:1px solid rgba(217,74,43,0.16);
+border-radius:14px;
+background:linear-gradient(145deg,#fff8ed 0%,#ffe3bb 100%);
+}
+
+.util-map-shortcut p{
+margin:0;
+color:#6b4a3d;
+}
+
+.util-collab-shortcut{
+display:grid;
+gap:12px;
+padding:16px;
+border:1px solid rgba(217,74,43,0.16);
+border-radius:14px;
+background:linear-gradient(145deg,#fff7ee 0%,#ffd7c5 100%);
+}
+
+.util-collab-shortcut p{
+margin:0;
+color:#6b4a3d;
+}
+
+.sos-section{
+max-width:1120px;
+margin:24px auto;
+padding:28px 22px;
+border-radius:28px;
+background:
+linear-gradient(145deg, rgba(125,16,16,0.95), rgba(199,49,39,0.92)),
+radial-gradient(circle at top right, rgba(255,255,255,0.12), transparent 36%);
+box-shadow:0 28px 60px rgba(85,18,18,0.28);
+color:#fff7f2;
+position:relative;
+overflow:hidden;
+}
+
+.sos-section::before{
+content:"";
+position:absolute;
+inset:0;
+background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='72' height='72'%3E%3Ccircle cx='36' cy='36' r='24' fill='none' stroke='rgba(255,255,255,0.08)' stroke-width='1.4'/%3E%3Cpath d='M36 18v36M18 36h36' stroke='rgba(255,255,255,0.08)' stroke-width='1.4'/%3E%3C/svg%3E");
+opacity:0.22;
+pointer-events:none;
+}
+
+.sos-section > *{
+position:relative;
+z-index:1;
+}
+
+.sos-head{
+display:flex;
+align-items:flex-start;
+justify-content:space-between;
+gap:18px;
+margin-bottom:18px;
+}
+
+.sos-kicker{
+display:inline-flex;
+align-items:center;
+gap:8px;
+padding:8px 14px;
+border-radius:999px;
+background:rgba(255,255,255,0.14);
+border:1px solid rgba(255,255,255,0.18);
+font-size:12px;
+font-weight:800;
+letter-spacing:.08em;
+text-transform:uppercase;
+}
+
+.sos-head h2{
+margin:10px 0 8px;
+font-size:clamp(28px, 4vw, 38px);
+font-family:"Playfair Display",serif;
+line-height:1.05;
+}
+
+.sos-head p{
+margin:0;
+max-width:760px;
+color:rgba(255,245,240,0.92);
+line-height:1.7;
+}
+
+.sos-badge{
+padding:10px 14px;
+border-radius:18px;
+background:rgba(255,255,255,0.12);
+border:1px solid rgba(255,255,255,0.18);
+font-size:13px;
+font-weight:700;
+white-space:nowrap;
+}
+
+.sos-grid{
+display:grid;
+grid-template-columns:minmax(0,1.15fr) minmax(320px,0.85fr);
+gap:16px;
+}
+
+.sos-card,
+.sos-side-card{
+padding:18px;
+border-radius:22px;
+background:rgba(255,255,255,0.1);
+border:1px solid rgba(255,255,255,0.14);
+backdrop-filter:blur(6px);
+}
+
+.sos-card h3,
+.sos-side-card h3{
+margin:0 0 12px;
+font-size:20px;
+}
+
+.sos-call-grid{
+display:grid;
+grid-template-columns:repeat(3,minmax(0,1fr));
+gap:12px;
+margin-bottom:14px;
+}
+
+.sos-call-card{
+display:grid;
+gap:8px;
+padding:14px;
+border-radius:18px;
+text-decoration:none;
+color:#fff7f2;
+background:rgba(255,255,255,0.12);
+border:1px solid rgba(255,255,255,0.16);
+box-shadow:inset 0 1px 0 rgba(255,255,255,0.08);
+transition:transform .18s ease, background .18s ease;
+}
+
+.sos-call-card:hover{
+transform:translateY(-1px);
+background:rgba(255,255,255,0.18);
+}
+
+.sos-call-card strong{
+font-size:28px;
+line-height:1;
+}
+
+.sos-call-card span{
+font-size:12px;
+font-weight:700;
+text-transform:uppercase;
+letter-spacing:.07em;
+opacity:0.84;
+}
+
+.sos-call-card small{
+font-size:13px;
+line-height:1.5;
+color:rgba(255,245,240,0.92);
+}
+
+.sos-action-row{
+display:flex;
+flex-wrap:wrap;
+gap:10px;
+margin-top:14px;
+}
+
+.sos-action-btn{
+display:inline-flex;
+align-items:center;
+justify-content:center;
+gap:8px;
+padding:11px 16px;
+border:none;
+border-radius:14px;
+font-weight:700;
+cursor:pointer;
+text-decoration:none;
+background:#fff2dc;
+color:#7a170f;
+box-shadow:0 12px 22px rgba(53,10,9,0.18);
+}
+
+.sos-action-btn.secondary{
+background:rgba(255,255,255,0.12);
+color:#fffaf4;
+border:1px solid rgba(255,255,255,0.16);
+box-shadow:none;
+}
+
+.sos-steps,
+.sos-checklist{
+margin:0;
+padding-left:18px;
+line-height:1.65;
+}
+
+.sos-steps li,
+.sos-checklist li{
+margin-bottom:6px;
+}
+
+.sos-status{
+margin-top:14px;
+padding:14px;
+border-radius:16px;
+background:rgba(48,10,10,0.24);
+border:1px solid rgba(255,255,255,0.14);
+}
+
+.sos-status strong{
+display:block;
+margin-bottom:6px;
+font-size:14px;
+}
+
+.sos-status p{
+margin:0;
+line-height:1.6;
+color:rgba(255,245,240,0.92);
+}
+
+.sos-nearest-list{
+display:grid;
+gap:10px;
+margin-top:12px;
+}
+
+.sos-nearest-item{
+padding:14px;
+border-radius:16px;
+background:rgba(255,255,255,0.08);
+border:1px solid rgba(255,255,255,0.14);
+}
+
+.sos-nearest-item strong{
+display:block;
+font-size:15px;
+margin-bottom:4px;
+}
+
+.sos-nearest-item p{
+margin:0;
+font-size:13px;
+line-height:1.55;
+color:rgba(255,245,240,0.92);
+}
+
+.sos-nearest-actions{
+display:flex;
+gap:8px;
+flex-wrap:wrap;
+margin-top:10px;
+}
+
+.sos-nearest-actions a{
+color:#fff1d2;
+font-size:13px;
+font-weight:700;
+text-decoration:none;
+}
+
+.sos-note{
+margin-top:14px;
+font-size:12px;
+line-height:1.6;
+color:rgba(255,242,236,0.84);
+}
+
+@media (max-width:900px){
+    .sos-grid,
+    .sos-call-grid{
+        grid-template-columns:1fr;
+    }
+
+    .sos-head{
+        flex-direction:column;
+    }
 }
 
 .chatbot-head h3,
@@ -1931,10 +2480,34 @@ border-radius:18px;
 @media (max-width: 900px){
 .highlight-panel{
 grid-template-columns:1fr;
+grid-template-areas:
+"copy"
+"countdown"
+"stats";
+}
+
+.festival-countdown{
+min-height:120px;
+}
+
+.highlight-copy{
+padding-right:0;
+}
+
+.countdown-name{
+font-size:30px;
+}
+
+.countdown-days{
+font-size:40px;
 }
 
 .highlight-stats{
 grid-template-columns:repeat(3,minmax(0,1fr));
+}
+
+.list-filter-row{
+grid-template-columns:repeat(3, minmax(0, 1fr));
 }
 
 .story-grid,
@@ -1956,9 +2529,35 @@ header{
 padding:92px 16px;
 }
 
+.festival-countdown{
+padding:16px;
+min-height:unset;
+}
+
+.countdown-name{
+font-size:28px;
+}
+
+.countdown-days{
+font-size:36px;
+}
+
+.countdown-days span{
+font-size:15px;
+}
+
 .hero-shell{
 padding:18px 14px 14px;
 border-radius:18px;
+}
+
+.list-filter-row,
+.mission-board{
+grid-template-columns:1fr;
+}
+
+.list-filter-panel{
+padding:14px;
 }
 
 .hero-insights{
@@ -3286,7 +3885,7 @@ scroll-behavior:auto !important;
 
 <div class="hero-highlight">
     <div class="highlight-panel">
-        <div>
+        <div class="highlight-copy">
             <h2 class="highlight-title">Mùa lễ hội Việt Nam 2026</h2>
             <p class="highlight-text">Khám phá nhanh các lễ hội đặc sắc theo vùng miền, tìm điểm ăn uống và tiện ích gần nhất chỉ với một lần bấm định vị.</p>
         </div>
@@ -3316,14 +3915,11 @@ scroll-behavior:auto !important;
         <p id="moduleHint" class="module-hint">Nhấn vào để hiển thị thông tin tương ứng.</p>
         <div class="module-grid">
             <button class="module-btn" onclick="document.getElementById('map').scrollIntoView({behavior:'smooth'})"><span class="btn-icon">🗺️</span>Bản đồ</button>
-            <button class="module-btn" data-target="supportMapPanel" onclick="openModule('supportMapPanel')"><span class="btn-icon">🧭</span>Bản đồ tiện ích</button>
             <button class="module-btn" onclick="document.getElementById('calendarHome').scrollIntoView({behavior:'smooth'})"><span class="btn-icon">📅</span>Lịch lễ hội</button>
             <button class="module-btn" data-target="list" onclick="openModule('list')"><span class="btn-icon">🏮</span>Danh sách lễ hội</button>
-            <button class="module-btn" data-target="entertainment" onclick="openModule('entertainment')"><span class="btn-icon">🎡</span>Khu vui chơi</button>
-            <button class="module-btn" data-target="food" onclick="openModule('food')"><span class="btn-icon">🍜</span>Ẩm thực</button>
             <button class="module-btn" data-target="utilities" onclick="openModule('utilities')"><span class="btn-icon">🔧</span>Tiện ích</button>
             <button class="module-btn" id="ar-btn"><span class="btn-icon">📷</span>AR Áo Dài</button>
-            <button class="module-btn" data-target="collaboration" onclick="openModule('collaboration')"><span class="btn-icon">🤝</span>Hợp tác & QC</button>
+            <button class="module-btn" type="button" onclick="openEmergencySupport()"><span class="btn-icon">🚑</span>SOS cấp cứu</button>
         </div>
     </section>
 
@@ -3383,6 +3979,70 @@ scroll-behavior:auto !important;
     <div id="supportMap"></div>
 </section>
 
+<section id="festivalSOS" class="sos-section reveal-up">
+    <div class="sos-head">
+        <div>
+            <span class="sos-kicker">SOS le hoi</span>
+            <h2>Hỗ trợ khẩn cấp khi đi lễ hội</h2>
+            <p>Nếu gặp ngã, chen lấn, mất phương hướng, khó thở hoặc tai nạn trên đường đi hội, hãy ưu tiên gọi cấp cứu, giữ vị trí an toàn và dùng các nút nhanh bên dưới để mở bệnh viện hoặc bản đồ hỗ trợ.</p>
+        </div>
+        <div class="sos-badge">Ưu tiên cứu người trước, đồ đạc sau</div>
+    </div>
+    <div class="sos-grid">
+        <article class="sos-card">
+            <h3>Gọi ngay khi có tình huống nguy hiểm</h3>
+            <div class="sos-call-grid">
+                <a class="sos-call-card" href="tel:115">
+                    <span>Cap cuu y te</span>
+                    <strong>115</strong>
+                    <small>Dùng khi bất tỉnh, chấn thương, khó thở, co giật hoặc tai nạn cần cứu thương.</small>
+                </a>
+                <a class="sos-call-card" href="tel:114">
+                    <span>Cuu hoa</span>
+                    <strong>114</strong>
+                    <small>Dùng khi có cháy nổ, kẹt người, khói dày hoặc nguy cơ bỏng, ngạt tại khu lễ hội.</small>
+                </a>
+                <a class="sos-call-card" href="tel:113">
+                    <span>Cong an</span>
+                    <strong>113</strong>
+                    <small>Dùng khi có cướp giật, gây rối, xô xát, trẻ lạc hoặc tình huống mất an ninh.</small>
+                </a>
+            </div>
+            <h3>3 bước xử lý ban đầu</h3>
+            <ol class="sos-steps">
+                <li>Đưa người gặp nạn ra khỏi vùng chen lấn, mép đường hoặc khu vực nguy hiểm nếu làm được an toàn.</li>
+                <li>Gọi đúng số khẩn cấp và nói ngắn gọn: đang ở đâu, có bao nhiêu người bị nạn, biểu hiện hiện tại là gì.</li>
+                <li>Nhờ người xung quanh hỗ trợ điều phối lối đi và mở bản đồ/bệnh viện gần nhất để chờ lực lượng đến.</li>
+            </ol>
+            <div class="sos-action-row">
+                <button type="button" class="sos-action-btn" onclick="findNearestMedicalForSOS()">📍 Tìm bệnh viện gần bạn</button>
+                <button type="button" class="sos-action-btn secondary" onclick="openMedicalSOS()">🏥 Mở danh sách bệnh viện</button>
+                <button type="button" class="sos-action-btn secondary" onclick="openSupportMapSOS()">🗺️ Mở bản đồ tiện ích</button>
+            </div>
+            <div class="sos-status" id="sosStatusBox">
+                <strong>Trạng thái hỗ trợ</strong>
+                <p id="sosStatusText">Bạn có thể bấm “Tìm bệnh viện gần bạn” để lấy gợi ý y tế gần nhất theo vị trí hiện tại.</p>
+            </div>
+        </article>
+        <aside class="sos-side-card">
+            <h3>Mang theo gì để giảm rủi ro</h3>
+            <ul class="sos-checklist">
+                <li>Pin điện thoại đủ dùng, bật chia sẻ vị trí với người đi cùng nếu đi đông người.</li>
+                <li>Nước uống, thuốc cá nhân, giấy tờ cơ bản và số liên hệ người thân.</li>
+                <li>Nếu đi cùng trẻ em hoặc người lớn tuổi, nên có điểm hẹn cố định khi lạc nhau.</li>
+                <li>Khi trời nắng gắt hoặc hội quá đông, ưu tiên nghỉ ngắn và bổ sung nước sớm.</li>
+            </ul>
+            <div class="sos-nearest-list" id="sosNearestMedical">
+                <div class="sos-nearest-item">
+                    <strong>Chưa lấy vị trí</strong>
+                    <p>Bấm nút tìm bệnh viện gần bạn để hiện các cơ sở y tế gần nhất và nút chỉ đường.</p>
+                </div>
+            </div>
+            <p class="sos-note">Lưu ý: đây là lớp hỗ trợ nhanh trong web. Với tình huống bất tỉnh, chảy máu nhiều, co giật, đau ngực hoặc khó thở, hãy gọi 115 trước rồi mới thao tác tiếp trên màn hình.</p>
+        </aside>
+    </div>
+</section>
+
 <section class="home-showcase reveal-up" id="homeStory">
     <div class="home-lead">
         <h2>Hành trình lễ hội xuyên Việt</h2>
@@ -3415,7 +4075,7 @@ scroll-behavior:auto !important;
         <p>Chọn mùa để mở nhanh danh sách gợi ý tương ứng. Dữ liệu được tối ưu để bạn tìm đúng vùng chỉ trong vài thao tác.</p>
     </div>
     <div class="season-grid">
-        <article class="season-card">
+        <article class="season-card spring">
             <div>
                 <span class="season-tag">MÙA XUÂN</span>
                 <h3>Lễ hội khai xuân</h3>
@@ -3423,7 +4083,7 @@ scroll-behavior:auto !important;
             </div>
             <button onclick="applyRegionAndOpen('bac')">Xem miền Bắc</button>
         </article>
-        <article class="season-card">
+        <article class="season-card summer">
             <div>
                 <span class="season-tag">MÙA HẠ</span>
                 <h3>Biển và giải trí</h3>
@@ -3431,15 +4091,15 @@ scroll-behavior:auto !important;
             </div>
             <button onclick="applyRegionAndOpen('trung')">Xem miền Trung</button>
         </article>
-        <article class="season-card">
+        <article class="season-card autumn">
             <div>
                 <span class="season-tag">MÙA THU</span>
                 <h3>Sắc màu văn hóa</h3>
                 <p>Nhiều lễ hội cộng đồng, ẩm thực vùng miền và hoạt động truyền thống diễn ra trong thời tiết dễ chịu.</p>
             </div>
-            <button onclick="openModule('food')">Xem ẩm thực</button>
+            <button onclick="openUtilitiesTab('utilFoodList')">Xem ẩm thực</button>
         </article>
-        <article class="season-card">
+        <article class="season-card winter">
             <div>
                 <span class="season-tag">MÙA ĐÔNG</span>
                 <h3>Hành trình cuối năm</h3>
@@ -3494,42 +4154,6 @@ scroll-behavior:auto !important;
     </div>
 </section>
 
-<section class="home-showcase reveal-up" id="itineraryHome">
-    <div class="home-lead">
-        <h2>Timeline gợi ý hành trình</h2>
-        <p>Gợi ý mẫu để người dùng mới có thể đi ngay, sau đó tùy chỉnh bằng chatbot hoặc bộ lọc khu vực theo nhu cầu thực tế.</p>
-    </div>
-    <div class="timeline-grid">
-        <article class="timeline-card">
-            <h3>2 ngày Hà Nội</h3>
-            <p>Lộ trình kết hợp lễ hội và ẩm thực phố cổ.</p>
-            <div class="timeline-line">
-                <div class="timeline-stop">Sáng: Chùa Hương hoặc Đền Sóc</div>
-                <div class="timeline-stop">Trưa: Phở Bát Đàn, bún chả Hàng Quạt</div>
-                <div class="timeline-stop">Chiều: Khu vui chơi Hồ Tây</div>
-            </div>
-        </article>
-        <article class="timeline-card">
-            <h3>3 ngày Huế - Đà Nẵng</h3>
-            <p>Dành cho nhóm bạn thích trải nghiệm văn hóa và vui chơi.</p>
-            <div class="timeline-line">
-                <div class="timeline-stop">Ngày 1: Festival Huế, ẩm thực cố đô</div>
-                <div class="timeline-stop">Ngày 2: Bà Nà Hills, Asia Park</div>
-                <div class="timeline-stop">Ngày 3: Mì Quảng, biển và mua sắm</div>
-            </div>
-        </article>
-        <article class="timeline-card">
-            <h3>2 ngày Phú Quốc</h3>
-            <p>Hành trình ngắn cho gia đình, tập trung vui chơi và nghỉ dưỡng.</p>
-            <div class="timeline-line">
-                <div class="timeline-stop">Sáng: VinWonders Phú Quốc</div>
-                <div class="timeline-stop">Chiều: Grand World, chợ đêm</div>
-                <div class="timeline-stop">Tối: Bún kèn và hải sản địa phương</div>
-            </div>
-        </article>
-    </div>
-</section>
-
 <section class="home-showcase reveal-up" id="festivalGalleryHome">
     <div class="home-lead">
         <h2>Không khí lễ hội</h2>
@@ -3558,18 +4182,73 @@ scroll-behavior:auto !important;
 <section id="list" class="module-panel">
 
 <h2>Danh sách lễ hội</h2>
-<div style="margin-bottom:18px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;">
-    <label>Vùng:
-        <select id="regionFilter">
-            <option value="">Tất cả</option>
-            <option value="bac">Miền Bắc</option>
-            <option value="trung">Miền Trung</option>
-            <option value="nam">Miền Nam</option>
-        </select>
-    </label>
-    <label>Tỉnh/Thành:
-        <select id="provinceFilter"><option value="">Tất cả</option></select>
-    </label>
+<div class="list-filter-panel">
+    <div class="list-filter-row">
+        <label class="list-filter-field"><span>Vùng</span>
+            <select id="regionFilter">
+                <option value="">Tất cả</option>
+                <option value="bac">Miền Bắc</option>
+                <option value="trung">Miền Trung</option>
+                <option value="nam">Miền Nam</option>
+            </select>
+        </label>
+        <label class="list-filter-field"><span>Tỉnh/Thành</span>
+            <select id="provinceFilter"><option value="">Tất cả</option></select>
+        </label>
+        <label class="list-filter-field"><span>Tháng diễn ra</span>
+            <select id="monthFilter">
+                <option value="">Tất cả các tháng</option>
+                <option value="1">Tháng 1</option>
+                <option value="2">Tháng 2</option>
+                <option value="3">Tháng 3</option>
+                <option value="4">Tháng 4</option>
+                <option value="5">Tháng 5</option>
+                <option value="6">Tháng 6</option>
+                <option value="7">Tháng 7</option>
+                <option value="8">Tháng 8</option>
+                <option value="9">Tháng 9</option>
+                <option value="10">Tháng 10</option>
+                <option value="11">Tháng 11</option>
+                <option value="12">Tháng 12</option>
+            </select>
+        </label>
+        <label class="list-filter-field"><span>Trạng thái</span>
+            <select id="timelineFilter">
+                <option value="">Tất cả trạng thái</option>
+                <option value="ongoing">Đang diễn ra</option>
+                <option value="upcoming">Sắp diễn ra</option>
+                <option value="past">Đã kết thúc</option>
+                <option value="undated">Chưa rõ lịch</option>
+            </select>
+        </label>
+        <label class="list-filter-field"><span>Loại lễ hội</span>
+            <select id="typeFilter">
+                <option value="">Tất cả loại hình</option>
+                <option value="tam-linh">Tâm linh</option>
+                <option value="dan-gian">Dân gian</option>
+                <option value="cong-dong">Cộng đồng</option>
+                <option value="bien-dao">Biển đảo</option>
+                <option value="cung-dinh">Cung đình</option>
+                <option value="am-thuc">Ẩm thực</option>
+                <option value="nghe-thuat">Nghệ thuật</option>
+                <option value="mien-nui">Miền núi</option>
+            </select>
+        </label>
+        <label class="list-filter-field"><span>Đi hội kiểu gì</span>
+            <select id="experienceFilter">
+                <option value="">Mọi phong cách</option>
+                <option value="hanh-huong">Hành hương</option>
+                <option value="gia-dinh">Gia đình</option>
+                <option value="chup-anh">Chụp ảnh</option>
+                <option value="van-hoa">Khám phá văn hóa</option>
+                <option value="an-uong">Kết hợp ăn uống</option>
+            </select>
+        </label>
+    </div>
+    <div class="list-filter-summary">
+        <span id="festivalFilterSummary">Đang tải bộ lọc lễ hội...</span>
+        <button type="button" class="list-filter-reset" onclick="resetFestivalFilters()">Xóa bộ lọc</button>
+    </div>
 </div>
 <div class="grid" id="festivalList"></div>
 
@@ -3590,15 +4269,39 @@ scroll-behavior:auto !important;
 <p>Các tiện ích hỗ trợ du lịch và tham quan.</p>
 
 <div class="util-nav">
-  <button onclick="showUtil('hotelList')">Khách sạn</button>
-  <button onclick="showUtil('medicalList')">Bệnh viện</button>
-  <button onclick="showUtil('storeList')">Cửa hàng tiện lợi</button>
+    <button data-util-target="utilSupportMapAction" onclick="showUtil('utilSupportMapAction', this)">Bản đồ tiện ích</button>
+    <button data-util-target="utilCollabAction" onclick="showUtil('utilCollabAction', this)">Hợp tác & QC</button>
+    <button data-util-target="utilEntertainmentList" class="active" onclick="showUtil('utilEntertainmentList', this)">Khu vui chơi</button>
+    <button data-util-target="utilFoodList" onclick="showUtil('utilFoodList', this)">Ẩm thực</button>
+    <button data-util-target="hotelList" onclick="showUtil('hotelList', this)">Khách sạn</button>
+    <button data-util-target="medicalList" onclick="showUtil('medicalList', this)">Bệnh viện</button>
+    <button data-util-target="storeList" onclick="showUtil('storeList', this)">Cửa hàng tiện lợi</button>
 </div>
 
 <div id="util-content">
-  <div id="hotelList" class="util-list"></div>
-  <div id="medicalList" class="util-list" style="display:none"></div>
-  <div id="storeList" class="util-list" style="display:none"></div>
+    <div id="utilSupportMapAction" class="util-list" style="display:none">
+        <article class="util-map-shortcut">
+            <h3 style="margin:0">Bản đồ tiện ích & dịch vụ</h3>
+            <p>Xem bản đồ tổng hợp điểm ăn uống, vui chơi, khách sạn, bệnh viện và cửa hàng tiện lợi trên cùng một màn hình.</p>
+            <div>
+                <button onclick="openModule('supportMapPanel')">Mở bản đồ tiện ích</button>
+            </div>
+        </article>
+    </div>
+    <div id="utilCollabAction" class="util-list" style="display:none">
+        <article class="util-collab-shortcut">
+            <h3 style="margin:0">Hợp tác & Quảng cáo</h3>
+            <p>Dành cho homestay, nhà hàng, đơn vị tour và thương hiệu muốn quảng bá theo mùa lễ hội.</p>
+            <div>
+                <button onclick="openModule('collaboration')">Mở mục hợp tác</button>
+            </div>
+        </article>
+    </div>
+    <div id="utilEntertainmentList" class="util-list"></div>
+    <div id="utilFoodList" class="util-list" style="display:none"></div>
+    <div id="hotelList" class="util-list" style="display:none"></div>
+    <div id="medicalList" class="util-list" style="display:none"></div>
+    <div id="storeList" class="util-list" style="display:none"></div>
 </div>
 </section>
 
@@ -3982,10 +4685,83 @@ function scoreFestivalMatch(festival, keyword) {
     return score;
 }
 
+function getFestivalMonthLabel(monthValue) {
+    var monthNames = ['Tháng 1','Tháng 2','Tháng 3','Tháng 4','Tháng 5','Tháng 6','Tháng 7','Tháng 8','Tháng 9','Tháng 10','Tháng 11','Tháng 12'];
+    var index = Number(monthValue) - 1;
+    return monthNames[index] || '';
+}
+
+function festivalMatchesMonth(festival, monthValue) {
+    if (!monthValue) return true;
+    if (!festival.start && !festival.end) return false;
+
+    var start = new Date(festival.start || festival.end);
+    var end = new Date(festival.end || festival.start);
+    if (isNaN(start) || isNaN(end)) return false;
+
+    var cursor = new Date(start.getFullYear(), start.getMonth(), 1);
+    var endCursor = new Date(end.getFullYear(), end.getMonth(), 1);
+    var targetMonth = Number(monthValue);
+    var guard = 0;
+
+    while (cursor <= endCursor && guard < 24) {
+        if ((cursor.getMonth() + 1) === targetMonth) return true;
+        cursor.setMonth(cursor.getMonth() + 1);
+        guard += 1;
+    }
+
+    return false;
+}
+
+function getFestivalTimelineStatus(festival) {
+    if (!festival.start && !festival.end) return 'undated';
+
+    var start = new Date(festival.start || festival.end);
+    var end = new Date(festival.end || festival.start);
+    if (isNaN(start) || isNaN(end)) return 'undated';
+
+    var now = new Date();
+    var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    var festivalStart = new Date(start.getFullYear(), start.getMonth(), start.getDate());
+    var festivalEnd = new Date(end.getFullYear(), end.getMonth(), end.getDate());
+
+    if (festivalStart <= today && festivalEnd >= today) return 'ongoing';
+    if (festivalStart > today) return 'upcoming';
+    return 'past';
+}
+
+function updateFestivalFilterSummary(totalCount) {
+    var summaryEl = document.getElementById('festivalFilterSummary');
+    if (!summaryEl) return;
+
+    var keyword = document.getElementById('searchBox')?.value.trim() || '';
+    var region = document.getElementById('regionFilter')?.selectedOptions?.[0]?.textContent || '';
+    var province = document.getElementById('provinceFilter')?.value || '';
+    var month = document.getElementById('monthFilter')?.value || '';
+    var timeline = document.getElementById('timelineFilter')?.selectedOptions?.[0]?.textContent || '';
+    var type = document.getElementById('typeFilter')?.selectedOptions?.[0]?.textContent || '';
+    var experience = document.getElementById('experienceFilter')?.selectedOptions?.[0]?.textContent || '';
+    var parts = [];
+
+    if (keyword) parts.push('Từ khóa: ' + keyword);
+    if (document.getElementById('regionFilter')?.value) parts.push(region);
+    if (province) parts.push(province);
+    if (month) parts.push(getFestivalMonthLabel(month));
+    if (document.getElementById('timelineFilter')?.value) parts.push(timeline);
+    if (document.getElementById('typeFilter')?.value) parts.push(type);
+    if (document.getElementById('experienceFilter')?.value) parts.push(experience);
+
+    summaryEl.textContent = totalCount + ' lễ hội phù hợp' + (parts.length ? ' • ' + parts.join(' • ') : ' • Không áp dụng bộ lọc nâng cao');
+}
+
 function getFilteredFestivals() {
     const keyword = document.getElementById('searchBox')?.value || '';
     const region = document.getElementById('regionFilter')?.value || '';
     const province = document.getElementById('provinceFilter')?.value || '';
+    const month = document.getElementById('monthFilter')?.value || '';
+    const timeline = document.getElementById('timelineFilter')?.value || '';
+    const type = document.getElementById('typeFilter')?.value || '';
+    const experience = document.getElementById('experienceFilter')?.value || '';
 
     return dedupeFestivals(festivals)
         .map(function(festival) {
@@ -3995,7 +4771,13 @@ function getFilteredFestivals() {
             };
         })
         .filter(function(entry) {
-            return entry.score > 0 && provinceBelongsToRegion(entry.festival.province, region) && provinceMatchesSelection(entry.festival.province, province);
+            return entry.score > 0
+                && provinceBelongsToRegion(entry.festival.province, region)
+                && provinceMatchesSelection(entry.festival.province, province)
+                && festivalMatchesMonth(entry.festival, month)
+                && (!timeline || getFestivalTimelineStatus(entry.festival) === timeline)
+                && festivalMatchesCultureType(entry.festival, type)
+                && festivalMatchesExperience(entry.festival, experience);
         })
         .sort(function(a, b) {
             if (b.score !== a.score) return b.score - a.score;
@@ -4030,7 +4812,30 @@ function updateProvinceFilter(region) {
 }
 
 function filterFestivals() {
-    render(getFilteredFestivals());
+    var filtered = getFilteredFestivals();
+    render(filtered);
+    updateFestivalFilterSummary(filtered.length);
+}
+
+function resetFestivalFilters() {
+    var regionFilter = document.getElementById('regionFilter');
+    var provinceFilter = document.getElementById('provinceFilter');
+    var monthFilter = document.getElementById('monthFilter');
+    var timelineFilter = document.getElementById('timelineFilter');
+    var typeFilter = document.getElementById('typeFilter');
+    var experienceFilter = document.getElementById('experienceFilter');
+    var searchBox = document.getElementById('searchBox');
+
+    if (searchBox) searchBox.value = '';
+    if (regionFilter) regionFilter.value = '';
+    updateProvinceFilter('');
+    if (provinceFilter) provinceFilter.value = '';
+    if (monthFilter) monthFilter.value = '';
+    if (timelineFilter) timelineFilter.value = '';
+    if (typeFilter) typeFilter.value = '';
+    if (experienceFilter) experienceFilter.value = '';
+
+    filterFestivals();
 }
 
 function applyRegionAndOpen(region) {
@@ -4223,6 +5028,126 @@ function buildFestivalExperienceTips(festival) {
     ];
 }
 
+function getFestivalSeasonKey(startDate) {
+    if (!startDate) return 'spring';
+    var d = new Date(startDate);
+    if (Number.isNaN(d.getTime())) return 'spring';
+    var m = d.getMonth() + 1;
+    if (m >= 1 && m <= 3) return 'spring';
+    if (m >= 4 && m <= 6) return 'summer';
+    if (m >= 7 && m <= 9) return 'autumn';
+    return 'winter';
+}
+
+function applySeasonMood() {
+    if (!document.body) return;
+    document.body.classList.remove('season-spring', 'season-summer', 'season-autumn', 'season-winter');
+    document.body.classList.add('season-' + getFestivalSeasonKey(new Date()));
+}
+
+function getFestivalCultureTypeKey(festival) {
+    var text = normalizeText((festival && festival.name ? festival.name : '') + ' ' + (festival && festival.desc ? festival.desc : '') + ' ' + (festival && festival.province ? festival.province : ''));
+    if (/chua|den|ba chua xu|huong|phat|tam linh|hanh huong/.test(text)) return 'tam-linh';
+    if (/quan ho|hoi|dan gian|lang|truyen thong/.test(text)) return 'dan-gian';
+    if (/hue|cung dinh|di san trieu|trieu nguyen/.test(text)) return 'cung-dinh';
+    if (/festival|am nhac|trinh dien|nghe thuat/.test(text)) return 'nghe-thuat';
+    if (/bien|dao|song|nha trang|phu quoc/.test(text)) return 'bien-dao';
+    if (/am thuc|banh|cho|mon/.test(text)) return 'am-thuc';
+    if (/tay nguyen|gia lai|dak|son|nui/.test(text)) return 'mien-nui';
+    return 'cong-dong';
+}
+
+function getFestivalCultureTypeLabel(festival) {
+    var key = getFestivalCultureTypeKey(festival);
+    var labelMap = {
+        'tam-linh': 'Tâm linh',
+        'dan-gian': 'Dân gian',
+        'cong-dong': 'Cộng đồng',
+        'bien-dao': 'Biển đảo',
+        'cung-dinh': 'Cung đình',
+        'am-thuc': 'Ẩm thực',
+        'nghe-thuat': 'Nghệ thuật',
+        'mien-nui': 'Miền núi'
+    };
+    return labelMap[key] || 'Cộng đồng';
+}
+
+function getFestivalExperienceKey(festival) {
+    var cultureKey = getFestivalCultureTypeKey(festival);
+    if (cultureKey === 'tam-linh') return 'hanh-huong';
+    if (cultureKey === 'am-thuc') return 'an-uong';
+    if (cultureKey === 'nghe-thuat' || cultureKey === 'cung-dinh') return 'chup-anh';
+    if (cultureKey === 'dan-gian' || cultureKey === 'cong-dong') return 'gia-dinh';
+    return 'van-hoa';
+}
+
+function getFestivalExperienceLabel(festival) {
+    var key = getFestivalExperienceKey(festival);
+    var labelMap = {
+        'hanh-huong': 'Đi hành hương',
+        'gia-dinh': 'Đi cùng gia đình',
+        'chup-anh': 'Đi chụp ảnh',
+        'van-hoa': 'Khám phá văn hóa',
+        'an-uong': 'Kết hợp ăn uống'
+    };
+    return labelMap[key] || 'Khám phá văn hóa';
+}
+
+function getFestivalTrustInfo(festival) {
+    if (!festival || !festival.start || !festival.end) {
+        return { label: 'Cần kiểm tra trước khi đi', className: 'check' };
+    }
+    if (getFestivalCultureTypeKey(festival) === 'tam-linh') {
+        return { label: 'Theo mùa hội - nên kiểm tra thêm', className: 'lunar' };
+    }
+    return { label: 'Đã có lịch 2026', className: 'verified' };
+}
+
+function getFestivalRegionLabel(province) {
+    if (provinceBelongsToRegion(province, 'bac')) return 'Miền Bắc';
+    if (provinceBelongsToRegion(province, 'trung')) return 'Miền Trung';
+    return 'Miền Nam';
+}
+
+function getFestivalDateLabel(festival) {
+    if (!festival || !festival.start) return 'Đang cập nhật lịch';
+    if (!festival.end || festival.end === festival.start) return festival.start;
+    return festival.start + ' đến ' + festival.end;
+}
+
+function getFestivalReasonToGo(festival) {
+    var cultureKey = getFestivalCultureTypeKey(festival);
+    if (cultureKey === 'tam-linh') return 'Hợp cho hành hương, cầu an và trải nghiệm không khí mùa hội truyền thống.';
+    if (cultureKey === 'dan-gian') return 'Nổi bật với trò hội, âm nhạc dân gian và nhịp sinh hoạt cộng đồng đặc sắc.';
+    if (cultureKey === 'cung-dinh') return 'Phù hợp để xem trình diễn di sản, nghi lễ trang trọng và chụp ảnh đẹp.';
+    if (cultureKey === 'nghe-thuat') return 'Đáng đi nếu bạn thích sân khấu, trình diễn văn hóa và trải nghiệm đêm hội.';
+    if (cultureKey === 'bien-dao') return 'Có thể kết hợp đi hội với du lịch biển, nghỉ dưỡng và khám phá địa phương.';
+    if (cultureKey === 'am-thuc') return 'Hợp cho hành trình kết hợp lễ hội với món ngon và chợ địa phương.';
+    if (cultureKey === 'mien-nui') return 'Mang màu sắc bản địa, hợp cho người thích trải nghiệm vùng cao và cộng đồng.';
+    return 'Phù hợp để cảm nhận bản sắc địa phương và đi hội theo phong cách khám phá văn hóa.';
+}
+
+function festivalMatchesCultureType(festival, typeKey) {
+    return !typeKey || getFestivalCultureTypeKey(festival) === typeKey;
+}
+
+function festivalMatchesExperience(festival, experienceKey) {
+    return !experienceKey || getFestivalExperienceKey(festival) === experienceKey;
+}
+
+function getFestivalTimePriorityForNearby(festival) {
+    var status = getFestivalTimelineStatus(festival);
+    if (status === 'ongoing') return 0;
+    if (status === 'upcoming') {
+        var start = new Date(festival.start || festival.end);
+        var diffDays = Math.round((start - new Date()) / 86400000);
+        if (diffDays <= 14) return 1;
+        return 2;
+    }
+    if (status === 'undated') return 4;
+    return 3;
+}
+
 function renderFestivalDeepDive() {
     var statsEl = document.getElementById('deepDiveStats');
     var gridEl = document.getElementById('deepDiveGrid');
@@ -4293,23 +5218,34 @@ function renderHomeMonthSpotlight() {
 
     var now = new Date();
     var items = getCurrentMonthFestivals(4);
-    titleEl.textContent = 'Spotlight ' + monthNames[now.getMonth()] + ' ' + now.getFullYear();
-    metaEl.textContent = items.length + ' lễ hội đang được đề xuất cho tháng hiện tại.';
+    titleEl.textContent = 'Trọng điểm ' + monthNames[now.getMonth()] + ' ' + now.getFullYear();
+    metaEl.textContent = items.length + ' lễ hội nổi bật cho người thích đi hội, chụp ảnh và khám phá văn hóa trong tháng này.';
 
     gridEl.innerHTML = '';
+    var usedSpotlightImages = new Set();
     items.forEach(function(f) {
         var wishActive = isFestivalSaved(f.id, 'wish') ? ' active' : '';
         var doneActive = isFestivalSaved(f.id, 'done') ? ' active' : '';
         var themeLabel = getFestivalThemeLabel(f);
         var seasonLabel = getFestivalSeasonLabel(f.start);
+        var cultureLabel = getFestivalCultureTypeLabel(f);
+        var experienceLabel = getFestivalExperienceLabel(f);
+        var trustInfo = getFestivalTrustInfo(f);
+        var reasonToGo = getFestivalReasonToGo(f);
+        var spotlightImage = getUniqueFestivalImageForGroup(f, usedSpotlightImages);
         var card = document.createElement('article');
         card.className = 'spotlight-card';
         card.innerHTML = `
-            <img src="${resolveImageUrl(f.img,'festival',f)}" loading="lazy" decoding="async" onerror="${getImageOnError('festival',f)}" alt="${f.name}">
+            <img src="${spotlightImage}" loading="lazy" decoding="async" onerror="${getImageOnError('festival',f)}" alt="${f.name}">
+            <div class="spotlight-kicker">${getFestivalRegionLabel(f.province)} • ${cultureLabel}</div>
             <h3>${f.name}</h3>
+            <p class="spotlight-reason">${reasonToGo}</p>
             <p>${f.desc || 'Lễ hội truyền thống nổi bật.'}</p>
-            <p class="spotlight-meta">${f.province} • ${f.start || 'Đang cập nhật lịch'}</p>
+            <p class="spotlight-meta">${f.province} • ${getFestivalDateLabel(f)}</p>
+            <span class="spotlight-trust ${trustInfo.className}">${trustInfo.label}</span>
             <div class="spotlight-tags">
+                <span class="spotlight-tag">${cultureLabel}</span>
+                <span class="spotlight-tag">${experienceLabel}</span>
                 <span class="spotlight-tag">${themeLabel}</span>
                 <span class="spotlight-tag">${seasonLabel}</span>
             </div>
@@ -4370,6 +5306,100 @@ function openModule(moduleId) {
     }
 }
 
+function openUtilitiesTab(tabId) {
+    openModule('utilities');
+    showUtil(tabId);
+}
+
+function openEmergencySupport() {
+    var section = document.getElementById('festivalSOS');
+    if (!section) return;
+    section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function updateSOSStatus(message) {
+    var status = document.getElementById('sosStatusText');
+    if (status) status.textContent = message;
+}
+
+function renderSOSNearestMedical(items, sourceLabel) {
+    var host = document.getElementById('sosNearestMedical');
+    if (!host) return;
+
+    if (!items || !items.length) {
+        host.innerHTML = '<div class="sos-nearest-item"><strong>Chưa có dữ liệu gần bạn</strong><p>Web chưa tìm được cơ sở y tế gần vị trí hiện tại. Hãy mở tab bệnh viện để xem toàn bộ danh sách.</p></div>';
+        return;
+    }
+
+    host.innerHTML = items.map(function(item) {
+        var distanceText = typeof item.distance === 'number' ? 'Cách bạn khoảng ' + item.distance.toFixed(1) + ' km' : 'Cơ sở y tế hỗ trợ gần khu vực';
+        return '<div class="sos-nearest-item">'
+            + '<strong>' + escHtml(item.name) + '</strong>'
+            + '<p>' + escHtml(item.province || '') + ' • ' + escHtml(item.desc || distanceText) + '</p>'
+            + '<p>' + escHtml(distanceText) + (sourceLabel ? ' • ' + escHtml(sourceLabel) : '') + '</p>'
+            + '<div class="sos-nearest-actions">'
+            + '<a href="https://www.google.com/maps/dir/?api=1&destination=' + item.lat + ',' + item.lng + '" target="_blank" rel="noopener noreferrer">Chi duong</a>'
+            + '<a href="detail.html?type=medical&id=' + item.id + '">Xem chi tiet</a>'
+            + '</div>'
+            + '</div>';
+    }).join('');
+}
+
+function openMedicalSOS() {
+    openUtilitiesTab('medicalList');
+    updateSOSStatus('Đã mở danh sách bệnh viện trong mục Tiện ích để bạn xem và chọn nhanh.');
+}
+
+function openSupportMapSOS() {
+    openModule('supportMapPanel');
+    updateSOSStatus('Đã mở bản đồ tiện ích để bạn xem vị trí bệnh viện, khách sạn và điểm hỗ trợ xung quanh.');
+}
+
+async function findNearestMedicalForSOS() {
+    openEmergencySupport();
+
+    if (!navigator.geolocation) {
+        updateSOSStatus('Thiết bị hoặc trình duyệt này không hỗ trợ vị trí. Hãy mở ngay danh sách bệnh viện hoặc gọi 115 nếu tình huống nặng.');
+        renderSOSNearestMedical([], '');
+        return;
+    }
+
+    updateSOSStatus('Đang lấy vị trí để tìm cơ sở y tế gần nhất...');
+
+    try {
+        var position = await getCurrentPositionSafe({
+            enableHighAccuracy: true,
+            timeout: 12000,
+            maximumAge: 300000
+        });
+        var userLat = position.coords.latitude;
+        var userLng = position.coords.longitude;
+        var nearest = medicals.map(function(med) {
+            return Object.assign({}, med, { distance: getDistance(userLat, userLng, med.lat, med.lng) });
+        }).sort(function(a, b) {
+            return a.distance - b.distance;
+        }).slice(0, 3);
+
+        renderSOSNearestMedical(nearest, 'theo vị trí hiện tại');
+        updateSOSStatus('Đã tìm thấy ' + nearest.length + ' cơ sở y tế gần bạn nhất. Nếu có dấu hiệu nặng, gọi 115 ngay trước khi di chuyển.');
+    } catch (error) {
+        var cached = typeof readCachedNearLocation === 'function' ? readCachedNearLocation() : null;
+        if (cached) {
+            var nearestCached = medicals.map(function(med) {
+                return Object.assign({}, med, { distance: getDistance(cached.lat, cached.lng, med.lat, med.lng) });
+            }).sort(function(a, b) {
+                return a.distance - b.distance;
+            }).slice(0, 3);
+            renderSOSNearestMedical(nearestCached, 'theo vị trí đã lưu');
+            updateSOSStatus('Không lấy được vị trí mới, web đang dùng vị trí đã lưu trước đó để gợi ý bệnh viện gần nhất.');
+            return;
+        }
+
+        updateSOSStatus('Không lấy được vị trí hiện tại. Hãy bật quyền vị trí, mở danh sách bệnh viện hoặc gọi 115 nếu tình huống khẩn.');
+        renderSOSNearestMedical([], '');
+    }
+}
+
 // AR Section toggle
 function toggleARSection(show) {
     const arSection = document.getElementById('ar-costume-section');
@@ -4400,6 +5430,7 @@ window.toggleARSection = toggleARSection;
 
 window.addEventListener('DOMContentLoaded', function() {
     loadTripPlanState();
+    applySeasonMood();
     updateProvinceFilter("");
     document.getElementById('regionFilter').addEventListener('change', function() {
         updateProvinceFilter(this.value);
@@ -4407,10 +5438,15 @@ window.addEventListener('DOMContentLoaded', function() {
         filterFestivals();
     });
     document.getElementById('provinceFilter').addEventListener('change', filterFestivals);
+    document.getElementById('monthFilter').addEventListener('change', filterFestivals);
+    document.getElementById('timelineFilter').addEventListener('change', filterFestivals);
+    document.getElementById('typeFilter').addEventListener('change', filterFestivals);
+    document.getElementById('experienceFilter').addEventListener('change', filterFestivals);
     renderMissionBoard();
     renderHomeMonthSpotlight();
     renderFestivalDeepDive();
     initHomeReveal();
+    updateFestivalFilterSummary(getFilteredFestivals().length);
     
     // Setup AR Button
     const arBtn = document.getElementById('ar-btn');
@@ -4867,6 +5903,138 @@ var festivals=[
 {id:165,name:"Lễ hội Phát Diệm",province:"Ninh Bình",lat:20.093909923749496,lng:106.0794038732288,desc:"Lễ hội truyền thống",img:"image/default.jpg"},
 {id:166,name:"Lễ hội Nhà Thờ Lớn",province:"Hà Nội",lat:21.028856052559103,lng:105.84884986678153,desc:"Lễ hội truyền thống",img:"image/default.jpg"},
 ];
+
+var localFestivalImagePool = [
+    "image/14061_duabobaynui.jpg",
+    "image/15402.png",
+    "image/16-places-to-pray-for-fortune-and-luck-are-considered-the-most-sacred-in-vietnam-20.jpg",
+    "image/1709817111-viber_image_2024-03-07_19-58-15-855.jpg",
+    "image/20220607_110345(0)-transformed.jpg",
+    "image/3_Nghi_le_tam_Phat_thieng_lieng-1652665453288.jpg",
+    "image/49DB30A4-E57B-41F7-BBF3-5CCB6BA75670.jpeg",
+    "image/5563833c-le-hoi-nui-ba-den-4.jpg",
+    "image/7613c755-phu-tay-ho-6.jpg",
+    "image/8cf7e45d-le-hoi-nui-ba-den-11.jpg",
+    "image/ao-dai-218-14-56-2.jpg",
+    "image/baodantoc_paco1.jpg",
+    "image/choang-ngop-voi-canh-tuong-du-xuan-ngoan-muc-tai-nui-ba-den-tay-ninh-22-126-7522.jpg",
+    "image/chuahuongg.jpg",
+    "image/chùa  bút tháp.jpg",
+    "image/con-son-kiep-bac-thumb.jpg",
+    "image/d7f856a4-le-hoi-yen-tu-11.jpg",
+    "image/denhung.jpg",
+    "image/dsc-0491-2-1007-2391.jpg",
+    "image/dua_bo_3.webp",
+    "image/fd67c1c2-le-hoi-nui-ba-den.jpg",
+    "image/feshue.jpg",
+    "image/hoi-giong-ha-noi-8.jpg",
+    "image/hoilim.jpg",
+    "image/istockphoto-515999868-170667a.jpg",
+    "image/khai-mac-le-hoi-trai-cay-nam-bo-2025-174876379677220328540.jpg",
+    "image/le-hoi-ao-dai-ha-noi-1.webp",
+    "image/le-hoi-ba-chua-xu-chau-doc-an-giang-2.webp",
+    "image/Le-Hoi-Dien-Hon-Chen.jpg",
+    "image/le-hoi-dua-bo-bay-nui-thumbnail.jpg",
+    "image/le-hoi-ky-yen-dinh-binh-thuy-2.jpg",
+    "image/le-hoi-phu-giay.jpg",
+    "image/le-hoi-trai-cay-nam-bo-tai-suoi-tien.jpg",
+    "image/le-phu-tay-ho-1639475621983787288427.webp",
+    "image/le-tam-phat-trong-dai-hoi-phat-dan.webp",
+    "image/lechoitrau.jpg",
+    "image/le_hoi_cong_chieng_tay_nguyen_-_gia_tri_van_hoa_ngan_doi_-_baodantocvn.jpg",
+    "image/le_hoi_trai_cay_nam_bo_lan_thu_16_2.jpg",
+    "image/le_xay_chau_106260219.jpg",
+    "image/lễ hội bạch đằng.jpg",
+    "image/lễ hội dim thầy thính.jpg",
+    "image/lễ hội tháp bà.jpg",
+    "image/lễ hội đua bò.jpg",
+    "image/lễ hội đua ghe go.jpg",
+    "image/lễ hội đua voi.jpg",
+    "image/lễ hội đâm trâu.jpg",
+    "image/lễ hội đền trăng.jpg",
+    "image/lễ hội đền ông.jpg",
+    "image/m4.jpg",
+    "image/ntk-1741424021666785346336.jpg",
+    "image/OIP.jpg",
+    "image/OIP.webp",
+    "image/phat-dan1-7096-16847271287051463161472.webp",
+    "image/phat-tu-tam-phat-2211.jpg",
+    "image/photo-1747583537175-17475835412781418566308-37-0-725-1314-crop-17475839873411728637165.webp",
+    "image/photo_2023-06-21_14-27-18.jpg",
+    "image/Phu-Tay-Ho-Mung6-3.jpg",
+    "image/Phu-Tay-Ho-Mung6-4.jpg",
+    "image/phu-tay-ho-nguoiduatinvn-84-17393362286421319716452-0-0-1600-2560-crop-173933753289113811468.webp",
+    "image/su-kien-le-hoi-dua-bo-bay-nui-an-giang.jpg",
+    "image/trekking-yen-tu-2.png",
+    "image/unnamed.png",
+    "image/vov_-_le_hoi_ky_yen_ha_dien_dinh_binh_thuy_nam_nay_dien_ra_trong_2_ngay_24_va_25_01_2024_nham_ngay_14_va_15_thang_chap_am_lich._.webp",
+    "image/z5228693508774439a557ef770e1150b39225862f024fa-17119654858421192546544-1712046231958-1712046232106288622331.jpg",
+    "image/z7709250229256_f064b3df0b61d61828f5e22130e078ff.jpg",
+    "image/z7709250230239_7bfa86a7efba95463219fb1f104cbbee.jpg",
+    "image/z7709250233464_8ba13e944f0c863f76a734b2788fdce2.jpg",
+    "image/z7709250237183_464673750f0497c9c8f590178086b4ff.jpg",
+    "image/z7709250268240_b1e4667543266083215dbc903f42fc4f.jpg",
+    "image/z7709250270519_5835c975c411be74e2bcbb9777fe4efd.jpg",
+    "image/z7709250271311_9146bd9d7ca39c4c0fdd091d03a9bf68.jpg",
+    "image/z7709250275771_671c33ec1d5726e3fb915754a4c54d9c.jpg",
+    "image/z7709250276083_0c260f7573ed98c91f76f5fd792c1abc.jpg",
+    "image/z7709250280496_4da0afed78969c3e8782b634634c2bc6.jpg",
+    "image/z7709250281248_98294bbfbda12c6d454da972934ea684.jpg",
+    "image/z7709250283368_b70238bb775283b69e21a297a4b51185.jpg",
+    "image/z7709250284190_50bef1c517290aba791b3b232f063d19.jpg",
+    "image/z7709250288400_e5cf7a947b17ae86e166921b74772656.jpg",
+    "image/z7709250292192_83075b833c6c9c26cf0dce3d73ffdc6b.jpg",
+    "image/z7709250326391_a28275d4cb8e22735d58e2c66818eb21.jpg",
+    "image/z7709250328356_055ce555b5a910eac70e9c8e5184f247.jpg",
+    "image/z7709250328468_39fec1377f452aad4deda0a684358660.jpg",
+    "image/z7709250329503_0ceeaec7960d1a48e9b049180088e2f1.jpg",
+    "image/z7709250332155_2adfa5c82cd43a9b64aa49837a280c8f.jpg",
+    "image/Đua_bò_Bảy_Núi.jpg",
+    "image/Đỉnh núi đông khách.jpg"
+];
+
+function hashFestivalImageSeed(text) {
+    var value = 0;
+    var normalized = String(text || '').toLowerCase();
+    for (var i = 0; i < normalized.length; i++) {
+        value = ((value << 5) - value) + normalized.charCodeAt(i);
+        value |= 0;
+    }
+    return Math.abs(value);
+}
+
+function assignLocalFestivalImages(items) {
+    if (!Array.isArray(items) || !items.length || !localFestivalImagePool.length) return;
+    items.forEach(function(item) {
+        var key = [item && item.id, item && item.name, item && item.province].filter(Boolean).join('|');
+        var imageIndex = hashFestivalImageSeed(key) % localFestivalImagePool.length;
+        item.img = localFestivalImagePool[imageIndex];
+    });
+}
+
+function getUniqueFestivalImageForGroup(item, usedImages) {
+    var usedSet = usedImages instanceof Set ? usedImages : new Set();
+    if (!localFestivalImagePool.length) {
+        return resolveImageUrl(item.img, 'festival', item);
+    }
+
+    var key = [item && item.id, item && item.name, item && item.province].filter(Boolean).join('|');
+    var startIndex = hashFestivalImageSeed(key) % localFestivalImagePool.length;
+
+    for (var offset = 0; offset < localFestivalImagePool.length; offset++) {
+        var candidate = localFestivalImagePool[(startIndex + offset) % localFestivalImagePool.length];
+        if (!usedSet.has(candidate)) {
+            usedSet.add(candidate);
+            return candidate;
+        }
+    }
+
+    var fallback = localFestivalImagePool[startIndex];
+    usedSet.add(fallback);
+    return fallback;
+}
+
+assignLocalFestivalImages(festivals);
 
 // DỮ LIỆU KHU VUI CHƠI
 var entertainments=[
@@ -5384,10 +6552,13 @@ function getImageOnError(type, item) {
 }
 
 function renderEntertainment(data){
-    var entList=document.getElementById("entertainmentList");
-    entList.innerHTML="";
-    data.forEach(e=>{
-        entList.innerHTML+=`
+    var targets=["entertainmentList","utilEntertainmentList"];
+    targets.forEach(function(listId){
+        var entList=document.getElementById(listId);
+        if(!entList) return;
+        entList.innerHTML="";
+        data.forEach(e=>{
+            entList.innerHTML+=`
         <div class="card" onclick="window.location.href='detail.html?type=entertainment&id=${e.id}'">
             <div class="card-img-wrap">
                 <img src="${resolveImageUrl(e.img,'entertainment',e)}" loading="lazy" decoding="async" onerror="${getImageOnError('entertainment',e)}" alt="${e.name}">
@@ -5398,14 +6569,18 @@ function renderEntertainment(data){
                 <p>${e.desc}</p>
             </div>
         </div>`;
+        });
     });
 }
 
 function renderFood(data){
-    var foodList=document.getElementById("foodList");
-    foodList.innerHTML="";
-    data.forEach(f=>{
-        foodList.innerHTML+=`
+    var targets=["foodList","utilFoodList"];
+    targets.forEach(function(listId){
+        var foodList=document.getElementById(listId);
+        if(!foodList) return;
+        foodList.innerHTML="";
+        data.forEach(f=>{
+            foodList.innerHTML+=`
         <div class="card" onclick="window.location.href='detail.html?type=food&id=${f.id}'">
             <div class="card-img-wrap">
                 <img src="${resolveImageUrl(f.img,'food',f)}" loading="lazy" decoding="async" onerror="${getImageOnError('food',f)}" alt="${f.name}">
@@ -5416,6 +6591,7 @@ function renderFood(data){
                 <p>${f.desc}</p>
             </div>
         </div>`;
+        });
     });
 }
 
@@ -5482,8 +6658,14 @@ renderStores(stores);
 
 // utility tab switching
 function showUtil(id){
-    ['hotelList','medicalList','storeList'].forEach(function(el){
-        document.getElementById(el).style.display = (el===id?'grid':'none');
+    ['utilSupportMapAction','utilCollabAction','utilEntertainmentList','utilFoodList','hotelList','medicalList','storeList'].forEach(function(el){
+        var node = document.getElementById(el);
+        if (node) node.style.display = (el===id?'grid':'none');
+    });
+
+    var utilButtons = document.querySelectorAll('.util-nav button[data-util-target]');
+    utilButtons.forEach(function(btn){
+        btn.classList.toggle('active', btn.dataset.utilTarget === id);
     });
 }
 // hiển thị ban đầu cho các danh mục mới
@@ -5738,7 +6920,11 @@ function handleLocationBannerPrimary(){
 function buildNearbyResults(userLat,userLng){
     var nearest=festivals.map(function(f){
         return Object.assign({}, f, { distance:getDistance(userLat,userLng,f.lat,f.lng) });
-    }).sort(function(a,b){ return a.distance-b.distance; }).slice(0,10);
+    }).sort(function(a,b){
+        var timeDiff = getFestivalTimePriorityForNearby(a) - getFestivalTimePriorityForNearby(b);
+        if (timeDiff !== 0) return timeDiff;
+        return a.distance-b.distance;
+    }).slice(0,10);
 
     var entResults=entertainments.map(function(e){
         return Object.assign({}, e, { distance:getDistance(userLat,userLng,e.lat,e.lng) });
@@ -5968,6 +7154,12 @@ if (!data.length) {
 data.forEach((f,index)=>{
     var wishActive = isFestivalSaved(f.id, 'wish') ? ' active' : '';
     var doneActive = isFestivalSaved(f.id, 'done') ? ' active' : '';
+    var trustInfo = getFestivalTrustInfo(f);
+    var cultureLabel = getFestivalCultureTypeLabel(f);
+    var experienceLabel = getFestivalExperienceLabel(f);
+    var seasonLabel = getFestivalSeasonLabel(f.start);
+    var regionLabel = getFestivalRegionLabel(f.province);
+    var reasonToGo = getFestivalReasonToGo(f);
     var statusBadge = '';
     if (f.start && f.end) {
         var now = new Date();
@@ -5980,12 +7172,27 @@ data.forEach((f,index)=>{
 <div class="card" onclick="window.location.href='detail.html?type=festival&id=${f.id}'" style="animation-delay:${index * 60}ms">
     <div class="card-img-wrap">
         <img src="${resolveImageUrl(f.img,'festival',f)}" loading="lazy" decoding="async" onerror="${getImageOnError('festival',f)}" alt="${f.name}">
-        <div class="card-img-overlay"><span class="card-province-tag">📍 ${f.province}</span></div>
+        <div class="card-img-overlay">
+            <div class="card-overlay-top">
+                <span class="card-season-tag">${seasonLabel}</span>
+                <span class="card-trust-badge ${trustInfo.className}">${trustInfo.label}</span>
+            </div>
+            <div class="card-overlay-bottom">
+                <span class="card-province-tag">📍 ${f.province}</span>
+                <span class="card-province-tag">${regionLabel}</span>
+            </div>
+        </div>
         ${statusBadge}
     </div>
     <div class="card-content">
+        <div class="card-meta-strip">
+            <span class="card-meta-pill">${cultureLabel}</span>
+            <span class="card-meta-pill">${experienceLabel}</span>
+        </div>
         <h3>${f.name}</h3>
-        <p><b>${f.province}</b>${f.start ? ' • ' + f.start : ''}</p>
+        <p class="card-date-line"><b>${f.province}</b>${f.start ? ' • ' + getFestivalDateLabel(f) : ' • Đang cập nhật lịch'}</p>
+        <p class="card-emotion-line">${reasonToGo}</p>
+        <p class="card-ritual-line">${f.desc || 'Lễ hội truyền thống giàu bản sắc địa phương.'}</p>
         <div class="plan-btn-row">
             <button>Xem chi tiết</button>
             <button class="plan-btn${wishActive}" onclick="toggleTripStatus('${f.id}','wish',event)">⚡ Muốn đi</button>
@@ -6335,10 +7542,15 @@ function resolveAuthApiUrl(path) {
         return customBase.replace(/\/+$/, '') + normalizedPath;
     }
 
+    var isFile = window.location.protocol === 'file:';
+    var isLocalHost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+    var notBackendPort = window.location.port && window.location.port !== '3000';
+
+    if (isFile || (isLocalHost && notBackendPort)) {
+        return 'http://localhost:3000' + normalizedPath;
+    }
+
     if (window.location.protocol === 'http:' || window.location.protocol === 'https:') {
-        if (window.location.port && window.location.port !== '3000') {
-            return window.location.protocol + '//' + window.location.hostname + ':3000' + normalizedPath;
-        }
         return window.location.origin + normalizedPath;
     }
 
@@ -6355,7 +7567,12 @@ async function authRequest(path, options, allowNoToken) {
         throw new Error('Bạn chưa đăng nhập.');
     }
 
-    var response = await fetch(resolveAuthApiUrl(path), reqOptions);
+    var response;
+    try {
+        response = await fetch(resolveAuthApiUrl(path), reqOptions);
+    } catch (error) {
+        throw new Error('Không kết nối được máy chủ đăng nhập. Hãy chạy server bằng "node server.js" hoặc cấu hình LEHOI_AUTH_API_BASE đúng địa chỉ API.');
+    }
     var data = null;
     try {
         data = await response.json();
@@ -6778,7 +7995,7 @@ function addChatMessage(text, type, actions) {
     if (type === 'bot' && Array.isArray(actions) && actions.length) {
         var actionsWrap = document.createElement('div');
         actionsWrap.className = 'chat-actions';
-        actions.slice(0, 4).forEach(function(item) {
+        actions.slice(0, 6).forEach(function(item) {
             if (!item || !item.label || !item.action) return;
             var btn = document.createElement('button');
             btn.className = 'chat-action-btn';

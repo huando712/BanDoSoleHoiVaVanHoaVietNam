@@ -22,6 +22,17 @@
     },
     "activities": [
       {
+        "id": "06f14436-9a45-43b4-8c08-d76f17408497",
+        "action": "open_profile",
+        "type": "profile",
+        "itemId": null,
+        "itemName": "",
+        "keyword": "",
+        "location": "",
+        "meta": {},
+        "createdAt": "2026-04-09T15:12:38.825Z"
+      },
+      {
         "id": "25417718-c589-415f-8ae6-1de883a7a403",
         "action": "view_detail",
         "type": "festival",
