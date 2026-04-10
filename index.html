@@ -6,7 +6,7 @@
 <script src="lunar.js" defer></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="description" content="Khám phá hơn 100 lễ hội và điểm văn hóa truyền thống Việt Nam trên bản đồ số tương tác.">
-<meta name="theme-color" content="#d94a2b">
+<meta name="theme-color" content="#A01515">
 <link rel="icon" type="image/svg+xml" href="icon.svg">
 <link rel="apple-touch-icon" href="icon.svg">
 <meta name="mobile-web-app-capable" content="yes">
@@ -23,19 +23,22 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
 <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800&family=Cormorant+Garamond:wght@600;700&display=swap" rel="stylesheet">
 <style>
+/* === TRUYỀN THỐNG VIỆT: Đỏ son · Vàng cổ · Họa tiết Mây === */
 :root{
---bg-cream:#fff5e6;
---bg-gold:#ffc857;
---brand:#d94a2b;
---brand-dark:#972519;
---brand-deep:#5e1711;
---accent-soft:#fff1d7;
---accent-line:rgba(217,74,43,0.22);
---ink:#2a1f18;
---muted:#5f5148;
---surface:rgba(255,249,239,0.88);
---surface-strong:rgba(255,252,246,0.96);
---card-shadow:0 18px 38px rgba(70,28,19,0.16);
+--bg-cream:#F2E0B0;
+--bg-gold:#C8901A;
+--brand:#A01515;
+--brand-dark:#6A0F0F;
+--brand-deep:#3D0808;
+--accent-soft:#FBF0DE;
+--accent-line:rgba(160,21,21,0.24);
+--ink:#1C0F0A;
+--muted:#5f4a38;
+--surface:rgba(250,240,218,0.90);
+--surface-strong:rgba(255,247,230,0.97);
+--card-shadow:0 18px 38px rgba(61,8,8,0.18);
+--gold:#C8901A;
+--gold-light:#D4AF37;
 --chatbot-image:url("image/chatbot-ai-festival.jpg");
 }
 
@@ -43,10 +46,11 @@ body{
 margin:0;
 font-family:"Be Vietnam Pro",sans-serif;
 background:
-radial-gradient(circle at 14% 16%, rgba(255,214,122,0.34), transparent 24%),
-radial-gradient(circle at 86% 14%, rgba(198,60,47,0.22), transparent 28%),
-radial-gradient(circle at 50% 120%, rgba(255,177,86,0.26), transparent 36%),
-linear-gradient(145deg, #fff5e7 0%, #ffe3c0 44%, #ffd2af 100%);
+url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='80'%3E%3Cpath d='M0,22 Q14,8 28,18 Q35,23 43,15 Q55,4 68,16 Q75,22 83,14 Q95,3 109,15 Q116,21 124,13 Q136,4 152,14 Q157,18 160,14' fill='none' stroke='%23C8901A' stroke-width='1.3' stroke-linecap='round' opacity='0.55'/%3E%3Cpath d='M0,52 Q18,36 36,46 Q44,51 54,43 Q66,33 78,44 Q86,51 96,43 Q108,33 120,44 Q128,51 138,43 Q150,33 160,42' fill='none' stroke='%23C8901A' stroke-width='1.1' stroke-linecap='round' opacity='0.35'/%3E%3C/svg%3E") repeat,
+radial-gradient(circle at 14% 16%, rgba(200,144,26,0.24), transparent 24%),
+radial-gradient(circle at 86% 14%, rgba(160,21,21,0.18), transparent 28%),
+radial-gradient(circle at 50% 120%, rgba(200,144,26,0.20), transparent 36%),
+linear-gradient(145deg, #F7E4C2 0%, #EDCE92 44%, #E6BE7A 100%);
 min-height: 100vh;
 color:var(--ink);
 position:relative;
@@ -70,7 +74,7 @@ width:360px;
 height:360px;
 top:72px;
 left:-120px;
-background:radial-gradient(circle, rgba(255,202,107,0.42) 0%, rgba(255,202,107,0) 72%);
+background:radial-gradient(circle, rgba(200,144,26,0.38) 0%, rgba(200,144,26,0) 72%);
 }
 
 body::after{
@@ -78,7 +82,7 @@ width:420px;
 height:420px;
 right:-120px;
 bottom:80px;
-background:radial-gradient(circle, rgba(198,60,47,0.22) 0%, rgba(198,60,47,0) 72%);
+background:radial-gradient(circle, rgba(160,21,21,0.22) 0%, rgba(160,21,21,0) 72%);
 }
 
 /* === HEADER SLIDESHOW === */
@@ -93,13 +97,13 @@ opacity:0;
 .header-slide.active{opacity:1;}
 
 header{
-background:#3b1510;
+background:#380808;
 padding:60px 20px 50px;
 text-align:center;
 color:white;
 position:relative;
 overflow:hidden;
-box-shadow:inset 0 -70px 90px rgba(0,0,0,0.18);
+box-shadow:inset 0 -70px 90px rgba(0,0,0,0.22), 0 6px 0 #6A0F0F;
 }
 
 header::before{
@@ -113,16 +117,16 @@ radial-gradient(circle at 84% 18%, rgba(255,255,255,0.1), transparent 30%);
 z-index:1;
 }
 
-/* Hoa văn trống đồng SVG overlay */
+/* Họa tiết mây vàng cổ truyền thống */
 header::after{
 content:"";
 position:absolute;
 inset:0;
-opacity:0.07;
+opacity:0.12;
 z-index:1;
 pointer-events:none;
-background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Ccircle cx='40' cy='40' r='36' fill='none' stroke='%23fff' stroke-width='1.2'/%3E%3Ccircle cx='40' cy='40' r='28' fill='none' stroke='%23fff' stroke-width='0.8'/%3E%3Ccircle cx='40' cy='40' r='20' fill='none' stroke='%23fff' stroke-width='0.8'/%3E%3Ccircle cx='40' cy='40' r='5' fill='%23fff'/%3E%3Cline x1='40' y1='4' x2='40' y2='76' stroke='%23fff' stroke-width='0.5'/%3E%3Cline x1='4' y1='40' x2='76' y2='40' stroke='%23fff' stroke-width='0.5'/%3E%3Cline x1='14' y1='14' x2='66' y2='66' stroke='%23fff' stroke-width='0.5'/%3E%3Cline x1='66' y1='14' x2='14' y2='66' stroke='%23fff' stroke-width='0.5'/%3E%3C/svg%3E");
-background-size:80px 80px;
+background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='80'%3E%3Cpath d='M0,22 Q14,8 28,18 Q35,23 43,15 Q55,4 68,16 Q75,22 83,14 Q95,3 109,15 Q116,21 124,13 Q136,4 152,14 Q157,18 160,14' fill='none' stroke='%23E8C878' stroke-width='1.5' stroke-linecap='round' opacity='0.85'/%3E%3Cpath d='M0,52 Q18,36 36,46 Q44,51 54,43 Q66,33 78,44 Q86,51 96,43 Q108,33 120,44 Q128,51 138,43 Q150,33 160,42' fill='none' stroke='%23E8C878' stroke-width='1.2' stroke-linecap='round' opacity='0.65'/%3E%3Ccircle cx='28' cy='18' r='2.2' fill='%23E8C878' opacity='0.6'/%3E%3Ccircle cx='83' cy='14' r='2.2' fill='%23E8C878' opacity='0.6'/%3E%3Ccircle cx='138' cy='43' r='2' fill='%23E8C878' opacity='0.5'/%3E%3C/svg%3E");
+background-size:160px 80px;
 }
 
 header > *{
@@ -163,8 +167,8 @@ content:"";
 width:8px;
 height:8px;
 border-radius:50%;
-background:#ffc457;
-box-shadow:0 0 0 5px rgba(255,196,87,0.24);
+background:#D4AF37;
+box-shadow:0 0 0 5px rgba(212,175,55,0.28);
 }
 
 header h1{
@@ -324,16 +328,16 @@ filter:saturate(1.05);
 }
 
 nav{
-background:linear-gradient(90deg, rgba(94,23,17,0.94), rgba(151,37,25,0.9));
+background:linear-gradient(90deg, rgba(47,4,4,0.97), rgba(96,12,12,0.95));
 padding:10px;
 text-align:center;
 backdrop-filter:blur(8px);
-border-top:1px solid rgba(255,220,162,0.18);
-border-bottom:1px solid rgba(255,220,162,0.18);
+border-top:1px solid rgba(200,144,26,0.40);
+border-bottom:1px solid rgba(200,144,26,0.40);
 }
 
 nav a{
-color:white;
+color:#E8C26A;
 margin:0 10px;
 text-decoration:none;
 font-weight:bold;
@@ -350,7 +354,7 @@ left:0;
 bottom:0;
 height:2px;
 width:0;
-background:#ffc26a;
+background:#D4AF37;
 transition:width .25s ease;
 }
 
@@ -440,11 +444,11 @@ background:
 linear-gradient(180deg, var(--surface-strong) 0%, var(--surface) 100%);
 margin: 12px auto;
 border-radius: 18px;
-box-shadow: 0 16px 34px rgba(70,28,19,0.12);
-border:1px solid rgba(217,74,43,0.12);
+box-shadow: 0 16px 34px rgba(61,8,8,0.13);
+border:1px solid rgba(200,144,26,0.22);
 backdrop-filter:blur(8px);
 position:relative;
-overflow:hidden;
+overflow:clip;
 }
 
 section::before{
@@ -453,8 +457,8 @@ position:absolute;
 top:0;
 left:24px;
 right:24px;
-height:1px;
-background:linear-gradient(90deg, transparent, rgba(255,200,87,0.78), transparent);
+height:2px;
+background:linear-gradient(90deg, transparent, rgba(212,175,55,0.92), rgba(200,144,26,0.70), rgba(212,175,55,0.92), transparent);
 pointer-events:none;
 }
 
@@ -476,7 +480,7 @@ bottom:-6px;
 width:56%;
 height:3px;
 border-radius:4px;
-background:linear-gradient(90deg, var(--brand), #ffbb6c);
+background:linear-gradient(90deg, var(--brand), #C8901A, #D4AF37);
 }
 
 .hero-highlight{
@@ -979,7 +983,7 @@ overflow:hidden;
 .mission-progress-fill{
 height:100%;
 width:0%;
-background:linear-gradient(90deg, #e58d3b 0%, #d94a2b 100%);
+background:linear-gradient(90deg, #C8901A 0%, #A01515 100%);
 transition:width .3s ease;
 }
 
@@ -1247,7 +1251,7 @@ left:4px;
 top:2px;
 bottom:2px;
 width:2px;
-background:linear-gradient(180deg, #d94a2b, rgba(217,74,43,0.15));
+background:linear-gradient(180deg, #A01515, rgba(160,21,21,0.15));
 }
 
 .timeline-stop{
@@ -1265,8 +1269,8 @@ top:6px;
 width:8px;
 height:8px;
 border-radius:50%;
-background:#d94a2b;
-box-shadow:0 0 0 3px rgba(217,74,43,0.16);
+background:#A01515;
+box-shadow:0 0 0 3px rgba(160,21,21,0.20);
 }
 
 .gallery-grid{
@@ -1317,13 +1321,13 @@ transform:translateY(0);
 }
 
 .stat-box{
-background:linear-gradient(155deg, rgba(255,255,255,0.95) 0%, rgba(255,239,214,0.98) 100%);
-border:1px solid rgba(217,74,43,0.16);
+background:linear-gradient(155deg, rgba(255,250,238,0.97) 0%, rgba(251,237,206,0.98) 100%);
+border:1px solid rgba(160,21,21,0.16);
 border-radius:12px;
 padding:12px 10px;
 text-align:center;
 animation:floatCard 4.8s ease-in-out infinite;
-box-shadow:0 10px 18px rgba(94,23,17,0.08);
+box-shadow:0 10px 18px rgba(61,8,8,0.10);
 }
 
 .stat-box:nth-child(2){
@@ -1344,7 +1348,7 @@ line-height:1;
 .stat-box strong{
 display:block;
 font-size:24px;
-color:#9f301f;
+color:#8A1A0F;
 font-family:"Cormorant Garamond",serif;
 letter-spacing:0.5px;
 }
@@ -1357,15 +1361,15 @@ color:var(--muted);
 #map{
 height:500px;
 border-radius:16px;
-box-shadow:0 12px 28px rgba(70,28,19,0.14);
-border:1px solid rgba(217,74,43,0.14);
+box-shadow:0 12px 28px rgba(61,8,8,0.16);
+border:2px solid rgba(200,144,26,0.38);
 }
 
 #supportMap{
 height:500px;
 border-radius:16px;
-box-shadow:0 12px 28px rgba(70,28,19,0.14);
-border:1px solid rgba(217,74,43,0.14);
+box-shadow:0 12px 28px rgba(61,8,8,0.16);
+border:2px solid rgba(200,144,26,0.38);
 }
 
 .grid{
@@ -1397,7 +1401,7 @@ top:0;
 left:0;
 right:0;
 height:4px;
-background:linear-gradient(90deg, var(--brand), #ffbf63, var(--brand-dark), #ffbf63, var(--brand));
+background:linear-gradient(90deg, var(--brand), #C8901A, #D4AF37, #C8901A, var(--brand-dark));
 background-size:200% 100%;
 opacity:0.9;
 animation:cardTopShine 3s linear infinite;
@@ -2101,7 +2105,17 @@ font-family:"Be Vietnam Pro",sans-serif;
 display:flex;
 gap:10px;
 flex-wrap:wrap;
-margin:16px 0 18px;
+margin:0 -10%;
+padding:14px 10% 14px;
+position:sticky;
+top:0;
+z-index:80;
+background:rgba(255,249,239,0.97);
+backdrop-filter:blur(12px);
+-webkit-backdrop-filter:blur(12px);
+border-bottom:1px solid rgba(217,74,43,0.12);
+box-shadow:0 4px 16px rgba(70,28,19,0.08);
+transition:box-shadow 0.2s;
 }
 
 .util-nav button{
@@ -3297,6 +3311,38 @@ backdrop-filter:blur(8px);
 box-shadow:0 12px 24px rgba(42,26,18,0.22);
 }
 
+.lang-launch-wrap{
+position:fixed;
+top:16px;
+right:126px;
+z-index:990;
+display:flex;
+gap:6px;
+padding:4px;
+border-radius:999px;
+border:1px solid rgba(255,255,255,0.26);
+background:rgba(56,22,16,0.74);
+backdrop-filter:blur(8px);
+box-shadow:0 12px 24px rgba(42,26,18,0.22);
+}
+
+.lang-launch-btn{
+border:none;
+border-radius:999px;
+padding:8px 10px;
+font-size:12px;
+font-weight:800;
+letter-spacing:.04em;
+background:transparent;
+color:#fff4e6;
+cursor:pointer;
+}
+
+.lang-launch-btn.active{
+background:rgba(255,255,255,0.2);
+color:#fff;
+}
+
 .auth-modal{
 position:fixed;
 inset:0;
@@ -3468,6 +3514,10 @@ top:10px;
 right:10px;
 padding:9px 12px;
 }
+.lang-launch-wrap{
+top:10px;
+right:98px;
+}
 }
 
 /* === SPLASH SCREEN === */
@@ -3563,6 +3613,169 @@ font-size:18px;
 }
 }
 
+/* === FESTIVAL QUICK MODAL === */
+#festivalQuickModal{
+position:fixed;
+inset:0;
+z-index:9995;
+display:flex;
+align-items:flex-end;
+justify-content:center;
+background:rgba(26,14,8,0);
+pointer-events:none;
+transition:background 0.28s ease;
+}
+#festivalQuickModal.open{
+pointer-events:auto;
+background:rgba(26,14,8,0.52);
+}
+.fqm-sheet{
+width:100%;
+max-width:700px;
+max-height:90vh;
+background:linear-gradient(180deg,#fff9ef 0%,#fff4e3 100%);
+border-radius:28px 28px 0 0;
+box-shadow:0 -12px 50px rgba(70,28,19,0.22);
+overflow:hidden;
+display:flex;
+flex-direction:column;
+position:relative;
+transform:translateY(102%);
+transition:transform 0.32s cubic-bezier(0.4,0,0.2,1);
+}
+#festivalQuickModal.open .fqm-sheet{
+transform:translateY(0);
+}
+.fqm-drag{
+width:48px;
+height:5px;
+border-radius:999px;
+background:rgba(217,74,43,0.22);
+margin:12px auto 0;
+flex-shrink:0;
+}
+.fqm-scroll{
+overflow-y:auto;
+flex:1;
+padding:14px 20px 32px;
+-webkit-overflow-scrolling:touch;
+}
+.fqm-img{
+width:100%;
+height:200px;
+object-fit:cover;
+border-radius:18px;
+margin-bottom:14px;
+}
+.fqm-kicker{
+display:inline-flex;
+gap:6px;
+align-items:center;
+padding:5px 12px;
+border-radius:999px;
+background:rgba(217,74,43,0.1);
+color:#9a2b1d;
+font-size:11px;
+font-weight:800;
+letter-spacing:.07em;
+text-transform:uppercase;
+margin-bottom:8px;
+}
+.fqm-title{
+margin:0 0 4px;
+font-family:"Playfair Display",serif;
+font-size:clamp(20px,4vw,26px);
+line-height:1.2;
+color:#2a1f18;
+}
+.fqm-meta{
+margin:0 0 12px;
+font-size:14px;
+color:#6d4e3a;
+}
+.fqm-reason{
+padding:12px 14px;
+border-radius:14px;
+background:linear-gradient(145deg,rgba(255,249,237,0.98),rgba(255,231,200,0.88));
+border:1px solid rgba(217,74,43,0.16);
+font-size:14px;
+line-height:1.65;
+color:#4e372a;
+margin-bottom:12px;
+}
+.fqm-tags{
+display:flex;
+flex-wrap:wrap;
+gap:7px;
+margin-bottom:16px;
+}
+.fqm-tag{
+padding:5px 12px;
+border-radius:999px;
+background:rgba(217,74,43,0.08);
+border:1px solid rgba(217,74,43,0.18);
+color:#7d2418;
+font-size:12px;
+font-weight:700;
+}
+.fqm-actions{
+display:flex;
+flex-wrap:wrap;
+gap:10px;
+margin-top:4px;
+}
+.fqm-btn{
+border:none;
+border-radius:999px;
+padding:11px 20px;
+font-size:14px;
+font-weight:700;
+cursor:pointer;
+font-family:"Be Vietnam Pro",sans-serif;
+transition:transform .18s,box-shadow .18s;
+}
+.fqm-btn.primary{
+background:linear-gradient(135deg,#d94a2b,#f06a3f);
+color:#fff;
+box-shadow:0 8px 18px rgba(217,74,43,0.22);
+}
+.fqm-btn.secondary{
+background:rgba(255,255,255,0.92);
+color:#8f2b1b;
+border:1px solid rgba(217,74,43,0.24);
+}
+.fqm-btn.secondary.active{
+background:rgba(217,74,43,0.1);
+border-color:rgba(217,74,43,0.3);
+}
+.fqm-btn:hover{ transform:translateY(-1px); }
+.fqm-close{
+position:absolute;
+top:18px;
+right:18px;
+width:34px;
+height:34px;
+border-radius:50%;
+border:none;
+background:rgba(217,74,43,0.1);
+color:#9a2b1d;
+font-size:20px;
+line-height:1;
+display:flex;
+align-items:center;
+justify-content:center;
+cursor:pointer;
+z-index:2;
+}
+.spotlight-card{
+cursor:pointer;
+transition:transform .2s ease,box-shadow .2s ease;
+}
+.spotlight-card:hover{
+transform:translateY(-4px);
+box-shadow:0 20px 40px rgba(70,28,19,0.18);
+}
+
 @media (prefers-reduced-motion: reduce){
 *{
 animation-duration:0.01ms !important;
@@ -3570,6 +3783,74 @@ animation-iteration-count:1 !important;
 transition-duration:0.01ms !important;
 scroll-behavior:auto !important;
 }
+}
+
+/* === STICKY MODULE NAV === */
+#stickyModuleNav{
+position:fixed;
+top:0;left:0;right:0;
+z-index:9990;
+background:rgba(255,249,239,0.97);
+backdrop-filter:blur(18px);
+-webkit-backdrop-filter:blur(18px);
+border-bottom:1px solid rgba(217,74,43,0.18);
+box-shadow:0 4px 20px rgba(70,28,19,0.13);
+padding:8px 14px;
+display:flex;
+align-items:center;
+gap:8px;
+flex-wrap:nowrap;
+overflow-x:auto;
+-webkit-overflow-scrolling:touch;
+transform:translateY(-110%);
+opacity:0;
+transition:transform 0.3s cubic-bezier(0.4,0,0.2,1), opacity 0.3s ease;
+pointer-events:none;
+scrollbar-width:none;
+}
+#stickyModuleNav::-webkit-scrollbar{display:none;}
+#stickyModuleNav.show{
+transform:translateY(0);
+opacity:1;
+pointer-events:auto;
+}
+.sticky-nav-logo{
+font-family:"Playfair Display",serif;
+font-size:14px;
+font-weight:700;
+color:var(--brand-dark);
+white-space:nowrap;
+flex:none;
+margin-right:2px;
+}
+.sticky-nav-btn{
+flex:none;
+display:inline-flex;
+align-items:center;
+gap:5px;
+padding:6px 13px;
+border-radius:999px;
+border:1px solid rgba(217,74,43,0.18);
+background:linear-gradient(145deg,#fff9ef,#ffe5c4);
+color:#5a2f1c;
+font-size:13px;
+font-weight:700;
+font-family:"Be Vietnam Pro",sans-serif;
+cursor:pointer;
+white-space:nowrap;
+transition:transform 0.18s, box-shadow 0.18s, background 0.18s;
+}
+.sticky-nav-btn:hover{
+transform:translateY(-1px);
+box-shadow:0 5px 14px rgba(70,28,19,0.13);
+background:linear-gradient(145deg,#ffe8bf,#ffc36f);
+}
+.sticky-nav-icon{font-size:15px;line-height:1;}
+@media (max-width:600px){
+.sticky-nav-label{display:none;}
+.sticky-nav-btn{padding:8px 10px;gap:0;}
+.sticky-nav-icon{font-size:18px;}
+.sticky-nav-logo{display:none;}
 }
 
 </style>
@@ -3581,8 +3862,8 @@ scroll-behavior:auto !important;
 <!-- SPLASH SCREEN -->
 <div id="splashScreen">
   <div class="splash-logo">🏮</div>
-  <p class="splash-title">Bản đồ Lễ hội Việt Nam</p>
-  <p class="splash-sub">Đang tải dữ liệu lễ hội...</p>
+    <p id="splashTitle" class="splash-title">Bản đồ Lễ hội Việt Nam</p>
+    <p id="splashSub" class="splash-sub">Đang tải dữ liệu lễ hội...</p>
   <div class="splash-bar-wrap"><div class="splash-bar"></div></div>
 </div>
 
@@ -3596,14 +3877,14 @@ scroll-behavior:auto !important;
 <div class="header-slide" style="background-image:url('image/chuahuongg.jpg')"></div>
 
 <div class="hero-shell">
-    <span class="hero-badge">Bản đồ số văn hóa Việt Nam</span>
+    <span id="heroBadge" class="hero-badge">Bản đồ số văn hóa Việt Nam</span>
     <h1>Vietnam Festival Explorer</h1>
-    <p class="hero-subtitle">Khám phá lịch lễ hội toàn quốc, tìm điểm vui chơi, ẩm thực và tiện ích gần bạn trong một trải nghiệm bản đồ duy nhất.</p>
+    <p id="heroSubtitle" class="hero-subtitle">Khám phá lịch lễ hội toàn quốc, tìm điểm vui chơi, ẩm thực và tiện ích gần bạn trong một trải nghiệm bản đồ duy nhất.</p>
 
     <div class="hero-insights" aria-label="Điểm nổi bật nền tảng">
-        <div class="hero-insight-chip">🏮 Hơn 275 lễ hội truyền thống</div>
-        <div class="hero-insight-chip">🗺️ Gợi ý theo vị trí thực tế</div>
-        <div class="hero-insight-chip">⚡ Tra cứu nhanh theo tỉnh/tháng</div>
+        <div id="insight1" class="hero-insight-chip">🏮 Hơn 275 lễ hội truyền thống</div>
+        <div id="insight2" class="hero-insight-chip">🗺️ Gợi ý theo vị trí thực tế</div>
+        <div id="insight3" class="hero-insight-chip">⚡ Tra cứu nhanh theo tỉnh/tháng</div>
     </div>
 
     <div class="search">
@@ -3619,7 +3900,7 @@ scroll-behavior:auto !important;
         <div class="location-permission-actions">
             <button id="locationAllowBtn" type="button" onclick="handleLocationBannerPrimary()">Cho phép vị trí ngay</button>
             <button id="locationCachedBtn" type="button" class="location-secondary-btn" style="display:none;" onclick="useCachedNearLocation()">Dùng vị trí đã lưu</button>
-            <button type="button" class="location-secondary-btn" onclick="dismissLocationBanner()">Ẩn</button>
+            <button id="locationHideBtn" type="button" class="location-secondary-btn" onclick="dismissLocationBanner()">Ẩn</button>
         </div>
     </div>
 </div>
@@ -3631,40 +3912,40 @@ scroll-behavior:auto !important;
 <div class="hero-highlight">
     <div class="highlight-panel">
         <div class="highlight-copy">
-            <h2 class="highlight-title">Mùa lễ hội Việt Nam 2026</h2>
-            <p class="highlight-text">Khám phá nhanh các lễ hội đặc sắc theo vùng miền, tìm điểm ăn uống và tiện ích gần nhất chỉ với một lần bấm định vị.</p>
+            <h2 id="highlightTitle" class="highlight-title">Mùa lễ hội Việt Nam 2026</h2>
+            <p id="highlightText" class="highlight-text">Khám phá nhanh các lễ hội đặc sắc theo vùng miền, tìm điểm ăn uống và tiện ích gần nhất chỉ với một lần bấm định vị.</p>
         </div>
         <div id="festivalCountdown" class="festival-countdown"></div>
         <div class="highlight-stats">
             <div class="stat-box">
                 <span class="stat-icon">🏛️</span>
                 <strong>275+</strong>
-                <span>Lễ hội truyền thống</span>
+                <span id="statLabel1">Lễ hội truyền thống</span>
             </div>
             <div class="stat-box">
                 <span class="stat-icon">🗺️</span>
                 <strong>3 miền</strong>
-                <span>Lọc theo khu vực</span>
+                <span id="statLabel2">Lọc theo khu vực</span>
             </div>
             <div class="stat-box">
                 <span class="stat-icon">📍</span>
                 <strong>1 chạm</strong>
-                <span>Tìm điểm gần bạn</span>
+                <span id="statLabel3">Tìm điểm gần bạn</span>
             </div>
         </div>
     </div>
 </div>
 
     <section id="moduleHub" style="max-width:900px;margin:20px auto;padding:24px 18px;">
-        <h2>Khám phá nhanh</h2>
+        <h2 id="moduleHubTitle">Khám phá nhanh</h2>
         <p id="moduleHint" class="module-hint">Nhấn vào để hiển thị thông tin tương ứng.</p>
         <div class="module-grid">
-            <button class="module-btn" onclick="setSosFocusMode(false);document.getElementById('map').scrollIntoView({behavior:'smooth'})"><span class="btn-icon">🗺️</span>Bản đồ</button>
-            <button class="module-btn" onclick="setSosFocusMode(false);document.getElementById('calendarHome').scrollIntoView({behavior:'smooth'})"><span class="btn-icon">📅</span>Lịch lễ hội</button>
-            <button class="module-btn" data-target="list" onclick="openModule('list')"><span class="btn-icon">🏮</span>Danh sách lễ hội</button>
-            <button class="module-btn" data-target="utilities" onclick="openModule('utilities')"><span class="btn-icon">🔧</span>Tiện ích</button>
-            <button class="module-btn" data-target="sosPanel" onclick="openModule('sosPanel')"><span class="btn-icon">🚑</span>SOS cấp cứu</button>
-            <button class="module-btn" id="ar-btn"><span class="btn-icon">📷</span>AR Áo Dài</button>
+            <button id="moduleBtnMap" class="module-btn" onclick="setSosFocusMode(false);document.getElementById('map').scrollIntoView({behavior:'smooth'})"><span class="btn-icon">🗺️</span>Bản đồ</button>
+            <button id="moduleBtnCal" class="module-btn" onclick="setSosFocusMode(false);document.getElementById('calendarHome').scrollIntoView({behavior:'smooth'})"><span class="btn-icon">📅</span>Lịch lễ hội</button>
+            <button id="moduleBtnList" class="module-btn" data-target="list" onclick="openModule('list')"><span class="btn-icon">🏮</span>Danh sách lễ hội</button>
+            <button id="moduleBtnUtil" class="module-btn" data-target="utilities" onclick="openModule('utilities')"><span class="btn-icon">🔧</span>Tiện ích</button>
+            <button id="moduleBtnSos" class="module-btn" data-target="sosPanel" onclick="openModule('sosPanel')"><span class="btn-icon">🚑</span>SOS cấp cứu</button>
+            <button id="ar-btn" class="module-btn"><span class="btn-icon">📷</span>AR Áo Dài</button>
         </div>
     </section>
 
@@ -3730,31 +4011,7 @@ scroll-behavior:auto !important;
     <a href="sos.html" class="btn" style="background:#b32a24;color:#fff;text-decoration:none;display:inline-flex;">Mở trang SOS</a>
 </section>
 
-<section class="home-showcase reveal-up" id="homeStory">
-    <div class="home-lead">
-        <h2>Hành trình lễ hội xuyên Việt</h2>
-        <p>Trang chủ mới được mở rộng theo kiểu kể chuyện: chọn mùa, khám phá vùng, xem điểm nổi bật trong tháng và nhận gợi ý lịch trình theo phong cách du lịch của bạn.</p>
-    </div>
-    <div class="story-grid">
-        <article class="story-card">
-            <h3>Bắt đầu từ một mùa bạn thích</h3>
-            <p>Mỗi mùa có sắc thái khác nhau: mùa xuân rộn ràng tâm linh, mùa hạ sôi động biển đảo, mùa thu giàu bản sắc văn hóa và mùa đông phù hợp khám phá ẩm thực lễ hội.</p>
-            <div class="story-chip-row">
-                <span class="story-chip">Tìm theo tháng</span>
-                <span class="story-chip">Gợi ý theo vùng</span>
-                <span class="story-chip">Kế hoạch 1-3 ngày</span>
-            </div>
-        </article>
-        <article class="story-card">
-            <h3>Lọc thông minh</h3>
-            <p>Chọn miền Bắc, Trung, Nam hoặc tỉnh cụ thể để ra danh sách có độ chính xác cao, tránh trùng lặp và ưu tiên địa điểm khớp nhất với từ khóa.</p>
-        </article>
-        <article class="story-card">
-            <h3>Đi là có tiện ích</h3>
-            <p>Khi xem lễ hội, bạn có thể chuyển nhanh sang ăn uống, khu vui chơi và tiện ích gần nhất để hoàn thiện chuyến đi trong cùng một giao diện.</p>
-        </article>
-    </div>
-</section>
+
 
 <section class="home-showcase reveal-up" id="seasonJourney">
     <div class="home-lead">
@@ -4186,15 +4443,20 @@ scroll-behavior:auto !important;
 <div class="footer-bg-pattern"></div>
 <svg class="footer-wave" viewBox="0 0 1200 40" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,20 C200,0 400,40 600,20 C800,0 1000,40 1200,20 L1200,0 L0,0 Z" fill="white"/></svg>
 <p class="footer-logo">🏮 Vietnam Festival Explorer</p>
-<p class="footer-tagline">Nền tảng số khám phá lễ hội và văn hóa Việt Nam</p>
+<p id="footerTagline" class="footer-tagline">Nền tảng số khám phá lễ hội và văn hóa Việt Nam</p>
 <div class="footer-socials">
   <a class="footer-social-link" href="#" aria-label="Facebook" title="Facebook">📘</a>
   <a class="footer-social-link" href="#" aria-label="YouTube" title="YouTube">📺</a>
   <a class="footer-social-link" href="#" aria-label="TikTok" title="TikTok">🎵</a>
   <a class="footer-social-link" href="mailto:dmhuan.24174600112@sv.uneti.edu.vn" aria-label="Email" title="Email">✉️</a>
 </div>
-<p class="footer-copy">© 2026 Vietnam Festival Explorer · Khám phá 275+ lễ hội trên toàn quốc</p>
+<p id="footerCopy" class="footer-copy">© 2026 Vietnam Festival Explorer · Khám phá 275+ lễ hội trên toàn quốc</p>
 </footer>
+
+<div class="lang-launch-wrap" aria-label="Language switch">
+    <button type="button" id="langViBtn" class="lang-launch-btn">VI</button>
+    <button type="button" id="langEnBtn" class="lang-launch-btn">EN</button>
+</div>
 
 <button id="authLaunchBtn" class="auth-launch-btn" aria-label="Mở đăng nhập">Tài khoản</button>
 
@@ -4372,10 +4634,196 @@ function scoreFestivalMatch(festival, keyword) {
     return score;
 }
 
+var LANG_KEY = 'lehoi_ui_lang';
+var currentLang = (localStorage.getItem(LANG_KEY) === 'en') ? 'en' : 'vi';
+
+var HOME_I18N = {
+    vi: {
+        splashTitle: 'Bản đồ Lễ hội Việt Nam',
+        splashSub: 'Đang tải dữ liệu lễ hội...',
+        heroBadge: 'Bản đồ số văn hóa Việt Nam',
+        heroSubtitle: 'Khám phá lịch lễ hội toàn quốc, tìm điểm vui chơi, ẩm thực và tiện ích gần bạn trong một trải nghiệm bản đồ duy nhất.',
+        insight1: '🏮 Hơn 275 lễ hội truyền thống',
+        insight2: '🗺️ Gợi ý theo vị trí thực tế',
+        insight3: '⚡ Tra cứu nhanh theo tỉnh/tháng',
+        searchPlaceholder: 'Tìm lễ hội hoặc tỉnh...',
+        nearMeBtn: '📍 Lễ hội gần tôi',
+        highlightTitle: 'Mùa lễ hội Việt Nam 2026',
+        highlightText: 'Khám phá nhanh các lễ hội đặc sắc theo vùng miền, tìm điểm ăn uống và tiện ích gần nhất chỉ với một lần bấm định vị.',
+        statLabel1: 'Lễ hội truyền thống',
+        statLabel2: 'Lọc theo khu vực',
+        statLabel3: 'Tìm điểm gần bạn',
+        moduleHubTitle: 'Khám phá nhanh',
+        moduleHint: 'Nhấn vào để hiển thị thông tin tương ứng.',
+        moduleMap: 'Bản đồ',
+        moduleCal: 'Lịch lễ hội',
+        moduleList: 'Danh sách lễ hội',
+        moduleUtil: 'Tiện ích',
+        moduleSos: 'SOS cấp cứu',
+        moduleAr: 'AR Áo Dài',
+        footerTagline: 'Nền tảng số khám phá lễ hội và văn hóa Việt Nam',
+        footerCopy: '© 2026 Vietnam Festival Explorer · Khám phá 275+ lễ hội trên toàn quốc',
+        noFestival: 'Không có lễ hội phù hợp',
+        scheduleUpdating: 'Đang cập nhật lịch',
+        descFallback: 'Lễ hội truyền thống giàu bản sắc địa phương.',
+        live: '🔴 Đang diễn ra',
+        soon: '🟡 Sắp diễn ra',
+        viewDetail: 'Xem chi tiết',
+        wish: '⚡ Muốn đi',
+        done: '✅ Đã đi',
+        spotlightTitlePrefix: 'Trọng điểm',
+        spotlightMeta: 'lễ hội nổi bật cho người thích đi hội, chụp ảnh và khám phá văn hóa trong tháng này.'
+    },
+    en: {
+        splashTitle: 'Vietnam Festival Map',
+        splashSub: 'Loading festival data...',
+        heroBadge: 'Vietnam Cultural Digital Map',
+        heroSubtitle: 'Explore nationwide festivals, and discover entertainment, food, and useful services near you in one map experience.',
+        insight1: '🏮 275+ traditional festivals',
+        insight2: '🗺️ Location-based suggestions',
+        insight3: '⚡ Fast search by province/month',
+        searchPlaceholder: 'Search festivals or provinces...',
+        nearMeBtn: '📍 Festivals near me',
+        highlightTitle: 'Vietnam Festival Season 2026',
+        highlightText: 'Quickly discover standout festivals by region, plus nearby food and useful places with one location tap.',
+        statLabel1: 'Traditional festivals',
+        statLabel2: 'Regional filters',
+        statLabel3: 'Find places nearby',
+        moduleHubTitle: 'Quick Explore',
+        moduleHint: 'Tap a module to open related content.',
+        moduleMap: 'Map',
+        moduleCal: 'Festival Calendar',
+        moduleList: 'Festival List',
+        moduleUtil: 'Utilities',
+        moduleSos: 'Emergency SOS',
+        moduleAr: 'Ao Dai AR',
+        footerTagline: 'A digital platform to explore Vietnamese festivals and culture',
+        footerCopy: '© 2026 Vietnam Festival Explorer · Explore 275+ festivals nationwide',
+        noFestival: 'No matching festivals found',
+        scheduleUpdating: 'Schedule updating',
+        descFallback: 'A notable traditional festival with local cultural identity.',
+        live: '🔴 Ongoing',
+        soon: '🟡 Upcoming soon',
+        viewDetail: 'View details',
+        wish: '⚡ Want to go',
+        done: '✅ Visited',
+        spotlightTitlePrefix: 'Highlights',
+        spotlightMeta: 'featured festivals for culture lovers, photographers, and explorers this month.'
+    }
+};
+
+function tHome(key) {
+    return (HOME_I18N[currentLang] && HOME_I18N[currentLang][key]) || (HOME_I18N.vi[key] || key);
+}
+
+function getUiMonthLabel(monthNumber) {
+    if (currentLang === 'en') {
+        var enMonths = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+        return enMonths[monthNumber - 1] || '';
+    }
+    var viMonths = ['Tháng 1','Tháng 2','Tháng 3','Tháng 4','Tháng 5','Tháng 6','Tháng 7','Tháng 8','Tháng 9','Tháng 10','Tháng 11','Tháng 12'];
+    return viMonths[monthNumber - 1] || '';
+}
+
+function toEnglishLabel(label) {
+    var text = normalizeLocationText(label || '');
+    if (!text) return '';
+    if (text.includes('tam linh') || text.includes('phat')) return 'Spiritual';
+    if (text.includes('lich su')) return 'Historical';
+    if (text.includes('dan gian')) return 'Folk Culture';
+    if (text.includes('am thuc')) return 'Cuisine';
+    if (text.includes('bien') || text.includes('song')) return 'Coastal & River';
+    if (text.includes('gia dinh')) return 'Family-friendly';
+    if (text.includes('chup anh')) return 'Photo-friendly';
+    if (text.includes('muon di')) return 'Want to go';
+    if (text.includes('da di')) return 'Visited';
+    if (text.includes('mua xuan')) return 'Spring';
+    if (text.includes('mua ha')) return 'Summer';
+    if (text.includes('mua thu')) return 'Autumn';
+    if (text.includes('mua dong')) return 'Winter';
+    if (text.includes('dang cap nhat')) return 'Updating';
+    return label;
+}
+
+function localizeLabel(label) {
+    return currentLang === 'en' ? toEnglishLabel(label) : label;
+}
+
+function getLocalizedFestivalReason(festival) {
+    if (currentLang !== 'en') return getFestivalReasonToGo(festival);
+    var theme = localizeLabel(getFestivalThemeLabel(festival));
+    var experience = localizeLabel(getFestivalExperienceLabel(festival));
+    return 'A great pick for ' + String(experience || 'travelers').toLowerCase() + ' with a strong ' + String(theme || 'cultural').toLowerCase() + ' atmosphere.';
+}
+
+function getLocalizedFestivalDesc(festival) {
+    if (currentLang !== 'en') return festival.desc || tHome('descFallback');
+    var culture = localizeLabel(getFestivalCultureTypeLabel(festival));
+    var season = localizeLabel(getFestivalSeasonLabel(festival.start));
+    return festival.name + ' in ' + festival.province + ' is a ' + culture.toLowerCase() + ' festival, ideal for ' + season.toLowerCase() + ' trips.';
+}
+
+function applyHomeLanguage() {
+    var map = {
+        splashTitle: 'splashTitle',
+        splashSub: 'splashSub',
+        heroBadge: 'heroBadge',
+        heroSubtitle: 'heroSubtitle',
+        insight1: 'insight1',
+        insight2: 'insight2',
+        insight3: 'insight3',
+        highlightTitle: 'highlightTitle',
+        highlightText: 'highlightText',
+        statLabel1: 'statLabel1',
+        statLabel2: 'statLabel2',
+        statLabel3: 'statLabel3',
+        moduleHubTitle: 'moduleHubTitle',
+        moduleHint: 'moduleHint',
+        footerTagline: 'footerTagline',
+        footerCopy: 'footerCopy'
+    };
+    Object.keys(map).forEach(function(key){
+        var el = document.getElementById(map[key]);
+        if (el) el.textContent = tHome(key);
+    });
+
+    var searchBox = document.getElementById('searchBox');
+    if (searchBox) searchBox.placeholder = tHome('searchPlaceholder');
+    var nearBtn = document.getElementById('nearMeBtn');
+    if (nearBtn) nearBtn.textContent = tHome('nearMeBtn');
+
+    var setBtnLabel = function(id, emoji, key) {
+        var btn = document.getElementById(id);
+        if (!btn) return;
+        btn.innerHTML = '<span class="btn-icon">' + emoji + '</span>' + tHome(key);
+    };
+    setBtnLabel('moduleBtnMap', '🗺️', 'moduleMap');
+    setBtnLabel('moduleBtnCal', '📅', 'moduleCal');
+    setBtnLabel('moduleBtnList', '🏮', 'moduleList');
+    setBtnLabel('moduleBtnUtil', '🔧', 'moduleUtil');
+    setBtnLabel('moduleBtnSos', '🚑', 'moduleSos');
+    setBtnLabel('ar-btn', '📷', 'moduleAr');
+
+    var viBtn = document.getElementById('langViBtn');
+    var enBtn = document.getElementById('langEnBtn');
+    if (viBtn) viBtn.classList.toggle('active', currentLang === 'vi');
+    if (enBtn) enBtn.classList.toggle('active', currentLang === 'en');
+}
+
+function setLanguage(lang) {
+    currentLang = (lang === 'en') ? 'en' : 'vi';
+    localStorage.setItem(LANG_KEY, currentLang);
+    applyHomeLanguage();
+    refreshAuthUi();
+    render(getFilteredFestivals());
+    renderHomeMonthSpotlight();
+    updateFestivalFilterSummary(getFilteredFestivals().length);
+}
+
 function getFestivalMonthLabel(monthValue) {
     var monthNames = ['Tháng 1','Tháng 2','Tháng 3','Tháng 4','Tháng 5','Tháng 6','Tháng 7','Tháng 8','Tháng 9','Tháng 10','Tháng 11','Tháng 12'];
     var index = Number(monthValue) - 1;
-    return monthNames[index] || '';
+    return getUiMonthLabel(Number(monthValue));
 }
 
 function festivalMatchesMonth(festival, monthValue) {
@@ -4882,15 +5330,15 @@ function renderFestivalDeepDive() {
                 <span class="deep-meta-chip">${season}</span>
                 <span class="deep-meta-chip">${f.province || 'Đang cập nhật'}</span>
             </div>
-            <p>${f.desc || 'Lễ hội truyền thống giàu bản sắc địa phương.'}</p>
+            <p>${getLocalizedFestivalDesc(f)}</p>
             <ul class="deep-detail-list">
                 <li>${tips[0]}</li>
                 <li>${tips[1]}</li>
                 <li>${tips[2]}</li>
             </ul>
             <div class="spotlight-action-row">
-                <button onclick="openModule('list')">Khám phá chi tiết</button>
-                <button class="plan-btn${isFestivalSaved(f.id, 'wish') ? ' active' : ''}" onclick="toggleTripStatus('${f.id}','wish',event)">Muốn đi</button>
+                <button onclick="openModule('list')">${currentLang === 'en' ? 'Explore details' : 'Khám phá chi tiết'}</button>
+                <button class="plan-btn${isFestivalSaved(f.id, 'wish') ? ' active' : ''}" onclick="toggleTripStatus('${f.id}','wish',event)">${currentLang === 'en' ? 'Want to go' : 'Muốn đi'}</button>
             </div>
         `;
         gridEl.appendChild(card);
@@ -4905,44 +5353,59 @@ function renderHomeMonthSpotlight() {
 
     var now = new Date();
     var items = getCurrentMonthFestivals(4);
-    titleEl.textContent = 'Trọng điểm ' + monthNames[now.getMonth()] + ' ' + now.getFullYear();
-    metaEl.textContent = items.length + ' lễ hội nổi bật cho người thích đi hội, chụp ảnh và khám phá văn hóa trong tháng này.';
+    var monthLabel = currentLang === 'en'
+        ? (new Date(now.getFullYear(), now.getMonth(), 1)).toLocaleString('en-US', { month: 'long' })
+        : monthNames[now.getMonth()];
+    titleEl.textContent = tHome('spotlightTitlePrefix') + ' ' + monthLabel + ' ' + now.getFullYear();
+    metaEl.textContent = items.length + ' ' + tHome('spotlightMeta');
 
     gridEl.innerHTML = '';
     var usedSpotlightImages = new Set();
     items.forEach(function(f) {
         var wishActive = isFestivalSaved(f.id, 'wish') ? ' active' : '';
         var doneActive = isFestivalSaved(f.id, 'done') ? ' active' : '';
-        var themeLabel = getFestivalThemeLabel(f);
-        var seasonLabel = getFestivalSeasonLabel(f.start);
-        var cultureLabel = getFestivalCultureTypeLabel(f);
-        var experienceLabel = getFestivalExperienceLabel(f);
+        var themeLabel = localizeLabel(getFestivalThemeLabel(f));
+        var seasonLabel = localizeLabel(getFestivalSeasonLabel(f.start));
+        var cultureLabel = localizeLabel(getFestivalCultureTypeLabel(f));
+        var experienceLabel = localizeLabel(getFestivalExperienceLabel(f));
         var trustInfo = getFestivalTrustInfo(f);
-        var reasonToGo = getFestivalReasonToGo(f);
+        var trustLabel = localizeLabel(trustInfo.label);
+        var reasonToGo = getLocalizedFestivalReason(f);
         var spotlightImage = getUniqueFestivalImageForGroup(f, usedSpotlightImages);
-        var card = document.createElement('article');
-        card.className = 'spotlight-card';
-        card.innerHTML = `
-            <img src="${spotlightImage}" loading="lazy" decoding="async" onerror="${getImageOnError('festival',f)}" alt="${f.name}">
-            <div class="spotlight-kicker">${getFestivalRegionLabel(f.province)} • ${cultureLabel}</div>
-            <h3>${f.name}</h3>
-            <p class="spotlight-reason">${reasonToGo}</p>
-            <p>${f.desc || 'Lễ hội truyền thống nổi bật.'}</p>
-            <p class="spotlight-meta">${f.province} • ${getFestivalDateLabel(f)}</p>
-            <span class="spotlight-trust ${trustInfo.className}">${trustInfo.label}</span>
-            <div class="spotlight-tags">
-                <span class="spotlight-tag">${cultureLabel}</span>
-                <span class="spotlight-tag">${experienceLabel}</span>
-                <span class="spotlight-tag">${themeLabel}</span>
-                <span class="spotlight-tag">${seasonLabel}</span>
-            </div>
-            <div class="spotlight-action-row">
-                <button onclick="openModule('list')">Xem trong danh sách</button>
-                <button class="plan-btn${wishActive}" onclick="toggleTripStatus('${f.id}','wish',event)">Muốn đi</button>
-                <button class="plan-btn${doneActive}" onclick="toggleTripStatus('${f.id}','done',event)">Đã đi</button>
-            </div>
-        `;
-        gridEl.appendChild(card);
+                var card = document.createElement('article');
+                card.className = 'spotlight-card';
+                card.setAttribute('role','button');
+                card.setAttribute('tabindex','0');
+                card.innerHTML = `
+                        <img src="${spotlightImage}" loading="lazy" decoding="async" onerror="${getImageOnError('festival',f)}" alt="${f.name}">
+                        <div class="spotlight-kicker">${localizeLabel(getFestivalRegionLabel(f.province))} • ${cultureLabel}</div>
+                        <h3>${f.name}</h3>
+                        <p class="spotlight-reason">${reasonToGo}</p>
+                        <p>${getLocalizedFestivalDesc(f)}</p>
+                        <p class="spotlight-meta">${f.province} • ${getFestivalDateLabel(f)}</p>
+                        <span class="spotlight-trust ${trustInfo.className}">${trustLabel}</span>
+                        <div class="spotlight-tags">
+                                <span class="spotlight-tag">${cultureLabel}</span>
+                                <span class="spotlight-tag">${experienceLabel}</span>
+                                <span class="spotlight-tag">${themeLabel}</span>
+                                <span class="spotlight-tag">${seasonLabel}</span>
+                        </div>
+                        <div class="spotlight-action-row" onclick="event.stopPropagation()">
+                                <button onclick="openModule('list')">${currentLang === 'en' ? 'View in list' : 'Xem trong danh sách'}</button>
+                                <button class="plan-btn${wishActive}" onclick="toggleTripStatus('${f.id}','wish',event)">${currentLang === 'en' ? 'Want to go' : 'Muốn đi'}</button>
+                                <button class="plan-btn${doneActive}" onclick="toggleTripStatus('${f.id}','done',event)">${currentLang === 'en' ? 'Visited' : 'Đã đi'}</button>
+                        </div>
+                `;
+                (function(festival){ 
+                    card.addEventListener('click', function(e){
+                        if(e.target.tagName === 'BUTTON' || e.target.closest('.spotlight-action-row')) return;
+                        openFestivalModal(festival);
+                    });
+                    card.addEventListener('keydown', function(e){
+                        if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); openFestivalModal(festival); }
+                    });
+                })(f);
+                gridEl.appendChild(card);
     });
 }
 
@@ -5039,6 +5502,11 @@ window.toggleARSection = toggleARSection;
 
 window.addEventListener('DOMContentLoaded', function() {
     loadTripPlanState();
+    applyHomeLanguage();
+    var viBtn = document.getElementById('langViBtn');
+    var enBtn = document.getElementById('langEnBtn');
+    if (viBtn) viBtn.addEventListener('click', function(){ setLanguage('vi'); });
+    if (enBtn) enBtn.addEventListener('click', function(){ setLanguage('en'); });
     applySeasonMood();
     updateProvinceFilter("");
     document.getElementById('regionFilter').addEventListener('change', function() {
@@ -6426,7 +6894,9 @@ function setNearMeButtonLoading(isLoading){
     var nearBtn=document.getElementById('nearMeBtn');
     if(!nearBtn) return;
     nearBtn.classList.toggle('loading', !!isLoading);
-    nearBtn.textContent=isLoading ? 'Đang tìm quanh bạn' : '📍 Lễ hội gần tôi';
+    var idleLabel = (typeof tHome === 'function') ? tHome('nearMeBtn') : '📍 Lễ hội gần tôi';
+    var loadingLabel = (typeof currentLang !== 'undefined' && currentLang === 'en') ? 'Finding nearby festivals...' : 'Đang tìm quanh bạn';
+    nearBtn.textContent=isLoading ? loadingLabel : idleLabel;
 }
 
 function showNearMeLoadingState(){
@@ -6697,7 +7167,8 @@ function enableNearbyDragScroll(){
         grid.addEventListener('pointermove', function(event){
             if(!state.isPointerDown) return;
             var deltaX=event.clientX - state.startX;
-            if(Math.abs(deltaX)>6) state.moved=true;
+            // Tăng ngưỡng để tránh touch jitter bị nhận nhầm là kéo
+            if(Math.abs(deltaX)>12) state.moved=true;
             grid.scrollLeft=state.startScrollLeft - deltaX;
         });
 
@@ -6726,6 +7197,10 @@ function enableNearbyDragScroll(){
 
         grid.addEventListener('click', function(event){
             if(grid.dataset.suppressClick==='1'){
+                var interactiveTarget=event.target && event.target.closest ? event.target.closest('button, a, .nearby-festival-info-link, .nearby-direction-link') : null;
+                if(interactiveTarget){
+                    return;
+                }
                 event.preventDefault();
                 event.stopPropagation();
             }
@@ -6758,25 +7233,26 @@ function render(data){
 setFestivalListMode(false);
 list.innerHTML="";
 if (!data.length) {
-    list.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:#e53935;font-size:18px;">Không có lễ hội phù hợp</div>';
+    list.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:#e53935;font-size:18px;">' + tHome('noFestival') + '</div>';
     return;
 }
 data.forEach((f,index)=>{
     var wishActive = isFestivalSaved(f.id, 'wish') ? ' active' : '';
     var doneActive = isFestivalSaved(f.id, 'done') ? ' active' : '';
     var trustInfo = getFestivalTrustInfo(f);
-    var cultureLabel = getFestivalCultureTypeLabel(f);
-    var experienceLabel = getFestivalExperienceLabel(f);
-    var seasonLabel = getFestivalSeasonLabel(f.start);
-    var regionLabel = getFestivalRegionLabel(f.province);
-    var reasonToGo = getFestivalReasonToGo(f);
+    var cultureLabel = localizeLabel(getFestivalCultureTypeLabel(f));
+    var experienceLabel = localizeLabel(getFestivalExperienceLabel(f));
+    var seasonLabel = localizeLabel(getFestivalSeasonLabel(f.start));
+    var regionLabel = localizeLabel(getFestivalRegionLabel(f.province));
+    var trustLabel = localizeLabel(trustInfo.label);
+    var reasonToGo = getLocalizedFestivalReason(f);
     var statusBadge = '';
     if (f.start && f.end) {
         var now = new Date();
         var s = new Date(f.start);
         var e = new Date(f.end);
-        if (now >= s && now <= e) statusBadge = '<span class="card-status-badge live">🔴 Đang diễn ra</span>';
-        else if (s > now && (s - now) < 30*86400000) statusBadge = '<span class="card-status-badge soon">🟡 Sắp diễn ra</span>';
+        if (now >= s && now <= e) statusBadge = '<span class="card-status-badge live">' + tHome('live') + '</span>';
+        else if (s > now && (s - now) < 30*86400000) statusBadge = '<span class="card-status-badge soon">' + tHome('soon') + '</span>';
     }
     list.innerHTML+=`
 <div class="card" onclick="window.location.href='detail.html?type=festival&id=${f.id}'" style="animation-delay:${index * 60}ms">
@@ -6785,7 +7261,7 @@ data.forEach((f,index)=>{
         <div class="card-img-overlay">
             <div class="card-overlay-top">
                 <span class="card-season-tag">${seasonLabel}</span>
-                <span class="card-trust-badge ${trustInfo.className}">${trustInfo.label}</span>
+                <span class="card-trust-badge ${trustInfo.className}">${trustLabel}</span>
             </div>
             <div class="card-overlay-bottom">
                 <span class="card-province-tag">📍 ${f.province}</span>
@@ -6800,13 +7276,13 @@ data.forEach((f,index)=>{
             <span class="card-meta-pill">${experienceLabel}</span>
         </div>
         <h3>${f.name}</h3>
-        <p class="card-date-line"><b>${f.province}</b>${f.start ? ' • ' + getFestivalDateLabel(f) : ' • Đang cập nhật lịch'}</p>
+        <p class="card-date-line"><b>${f.province}</b>${f.start ? ' • ' + getFestivalDateLabel(f) : ' • ' + tHome('scheduleUpdating')}</p>
         <p class="card-emotion-line">${reasonToGo}</p>
-        <p class="card-ritual-line">${f.desc || 'Lễ hội truyền thống giàu bản sắc địa phương.'}</p>
+        <p class="card-ritual-line">${getLocalizedFestivalDesc(f)}</p>
         <div class="plan-btn-row">
-            <button>Xem chi tiết</button>
-            <button class="plan-btn${wishActive}" onclick="toggleTripStatus('${f.id}','wish',event)">⚡ Muốn đi</button>
-            <button class="plan-btn${doneActive}" onclick="toggleTripStatus('${f.id}','done',event)">✅ Đã đi</button>
+            <button>${tHome('viewDetail')}</button>
+            <button class="plan-btn${wishActive}" onclick="toggleTripStatus('${f.id}','wish',event)">${tHome('wish')}</button>
+            <button class="plan-btn${doneActive}" onclick="toggleTripStatus('${f.id}','done',event)">${tHome('done')}</button>
         </div>
     </div>
 </div>
@@ -6930,6 +7406,23 @@ try{
 
 }
 
+function openNearbyFestivalById(festivalId, event){
+if(event){
+event.preventDefault();
+event.stopPropagation();
+}
+var idText=String(festivalId || '').trim();
+window.location.href='detail.html?type=festival&id=' + encodeURIComponent(idText);
+}
+
+function handleNearbyFestivalKey(event, festivalId){
+if(!event) return;
+if(event.key==='Enter' || event.key===' '){
+event.preventDefault();
+openNearbyFestivalById(festivalId, event);
+}
+}
+
 /* HIỂN THỊ 10 LỄ HỘI */
 
 function showNearestFestivals(festivalsData, entertainData, foodData, hotelData, medicalData, storeData, preferredTabKey){
@@ -6943,7 +7436,7 @@ medicalData:medicalData,
 storeData:storeData
 };
 var groups=[
-{ key:'festival', title:'Lễ hội gần bạn', shortTitle:'Lễ hội', icon:'🎉', items:festivalsData, type:'festival', topN:10, previewCount:4 },
+{ key:'festival', title:'Lễ hội gần bạn', shortTitle:'Lễ hội', icon:'🎉', items:festivalsData, type:'festival', topN:10, previewCount:10 },
 { key:'entertainment', title:'Khu vui chơi gần bạn', shortTitle:'Vui chơi', icon:'🎡', items:entertainData, type:'entertainment', topN:5, previewCount:4 },
 { key:'food', title:'Ẩm thực gần bạn', shortTitle:'Ẩm thực', icon:'🍜', items:foodData, type:'food', topN:5, previewCount:4 },
 { key:'hotel', title:'Khách sạn gần bạn', shortTitle:'Khách sạn', icon:'🏨', items:hotelData, type:'hotel', topN:5, previewCount:4 },
@@ -7018,7 +7511,14 @@ html += '<h3>' + cardTitle + '</h3>';
 if(item.province) html += '<p><b>' + escHtml(item.province) + '</b></p>';
 if(typeof item.distance === 'number') html += '<span class="nearby-distance">Cách bạn ' + item.distance.toFixed(1) + ' km</span>';
 html += '<p>' + escHtml(item.desc || 'Địa điểm nổi bật gần bạn.') + '</p>';
-html += '<a href="https://www.google.com/maps/dir/?api=1&destination=' + item.lat + ',' + item.lng + '" target="_blank" rel="noopener noreferrer"><button>Chỉ đường</button></a>';
+if(group.type === 'festival'){
+html += '<div class="plan-btn-row">';
+html += '<a class="nearby-festival-info-link" href="detail.html?type=festival&id=' + encodeURIComponent(item.id) + '"><button type="button">Thông tin lễ hội</button></a>';
+html += '<a class="nearby-direction-link" href="https://www.google.com/maps/dir/?api=1&destination=' + item.lat + ',' + item.lng + '" target="_blank" rel="noopener noreferrer"><button type="button">Chỉ đường</button></a>';
+html += '</div>';
+}else{
+html += '<a href="https://www.google.com/maps/dir/?api=1&destination=' + item.lat + ',' + item.lng + '" target="_blank" rel="noopener noreferrer"><button type="button">Chỉ đường</button></a>';
+}
 html += '</div></article>';
 });
 html += '</div>';
@@ -7029,6 +7529,7 @@ html += '</div></section>';
 
 html += '</div>';
 list.innerHTML=html;
+
 enableNearbyDragScroll();
 Array.prototype.forEach.call(list.querySelectorAll('.nearby-grid'), function(grid){
     grid.addEventListener('scroll', updateNearbyGridFadeState, { passive:true });
@@ -7131,7 +7632,11 @@ function refreshAuthUi() {
     var userBar = document.getElementById('authUserBar');
     var userName = document.getElementById('authUserName');
     if (launchBtn) {
-        launchBtn.textContent = authState.user ? ('Xin chào, ' + (authState.user.name || 'bạn')) : 'Tài khoản';
+        if (authState.user) {
+            launchBtn.textContent = (currentLang === 'en' ? 'Hi, ' : 'Xin chào, ') + (authState.user.name || (currentLang === 'en' ? 'friend' : 'bạn'));
+        } else {
+            launchBtn.textContent = currentLang === 'en' ? 'Account' : 'Tài khoản';
+        }
     }
     if (userBar) {
         userBar.classList.toggle('show', !!authState.user);
@@ -7167,6 +7672,18 @@ function resolveAuthApiUrl(path) {
     return 'http://localhost:3000' + normalizedPath;
 }
 
+function resolveAuthFallbackUrl(path) {
+    var customBase = (window.LEHOI_AUTH_API_BASE || '').trim();
+    if (customBase) return '';
+
+    var normalizedPath = path || '';
+    if (normalizedPath.charAt(0) !== '/') normalizedPath = '/' + normalizedPath;
+
+    var localhostApi = 'http://localhost:3000' + normalizedPath;
+    var primary = resolveAuthApiUrl(path);
+    return primary === localhostApi ? '' : localhostApi;
+}
+
 async function authRequest(path, options, allowNoToken) {
     var reqOptions = Object.assign({ method: 'GET' }, options || {});
     reqOptions.headers = Object.assign({ 'Content-Type': 'application/json' }, reqOptions.headers || {});
@@ -7177,24 +7694,79 @@ async function authRequest(path, options, allowNoToken) {
         throw new Error('Bạn chưa đăng nhập.');
     }
 
-    var response;
-    try {
-        response = await fetch(resolveAuthApiUrl(path), reqOptions);
-    } catch (error) {
-        throw new Error('Không kết nối được máy chủ đăng nhập. Hãy chạy server bằng "node server.js" hoặc cấu hình LEHOI_AUTH_API_BASE đúng địa chỉ API.');
-    }
-    var data = null;
-    try {
-        data = await response.json();
-    } catch (e) {
-        data = null;
+    var primaryUrl = resolveAuthApiUrl(path);
+    var fallbackUrl = resolveAuthFallbackUrl(path);
+
+    async function requestOnce(url) {
+        var response = await fetch(url, reqOptions);
+        var contentType = (response.headers.get('content-type') || '').toLowerCase();
+        var isJson = contentType.indexOf('application/json') !== -1;
+        var data = null;
+
+        if (isJson) {
+            try {
+                data = await response.json();
+            } catch (e) {
+                data = null;
+            }
+        } else {
+            // Một số host tĩnh trả HTML cho /api/*; đọc text để tạo lỗi rõ ràng.
+            try { await response.text(); } catch (e) {}
+        }
+
+        return {
+            response: response,
+            data: data,
+            isJson: isJson
+        };
     }
 
-    if (!response.ok) {
-        var message = data && (data.error || data.message) ? (data.error || data.message) : 'Không thể kết nối máy chủ. Vui lòng chạy server bằng node server.js';
+    var primaryResult;
+    try {
+        primaryResult = await requestOnce(primaryUrl);
+    } catch (error) {
+        if (fallbackUrl) {
+            try {
+                var fallbackOnNetworkError = await requestOnce(fallbackUrl);
+                if (!fallbackOnNetworkError.response.ok) {
+                    var fallbackNetMsg = fallbackOnNetworkError.data && (fallbackOnNetworkError.data.error || fallbackOnNetworkError.data.message)
+                        ? (fallbackOnNetworkError.data.error || fallbackOnNetworkError.data.message)
+                        : 'Không thể kết nối máy chủ. Vui lòng chạy server bằng node server.js';
+                    throw new Error(fallbackNetMsg);
+                }
+                if (!fallbackOnNetworkError.isJson) {
+                    throw new Error('API đăng nhập trả về định dạng không hợp lệ. Hãy kiểm tra địa chỉ API backend.');
+                }
+                return fallbackOnNetworkError.data || {};
+            } catch (fallbackErr) {
+                throw new Error('Không kết nối được máy chủ đăng nhập. Hãy chạy server bằng "node server.js" hoặc cấu hình LEHOI_AUTH_API_BASE đúng địa chỉ API.');
+            }
+        }
+        throw new Error('Không kết nối được máy chủ đăng nhập. Hãy chạy server bằng "node server.js" hoặc cấu hình LEHOI_AUTH_API_BASE đúng địa chỉ API.');
+    }
+
+    var needFallback = (!primaryResult.response.ok || !primaryResult.isJson) && !!fallbackUrl;
+    if (needFallback) {
+        try {
+            var fallbackResult = await requestOnce(fallbackUrl);
+            if (fallbackResult.response.ok && fallbackResult.isJson) {
+                return fallbackResult.data || {};
+            }
+        } catch (e) {
+            // Bỏ qua để dùng lỗi từ primaryResult bên dưới.
+        }
+    }
+
+    if (!primaryResult.response.ok) {
+        var message = primaryResult.data && (primaryResult.data.error || primaryResult.data.message)
+            ? (primaryResult.data.error || primaryResult.data.message)
+            : 'Không thể kết nối máy chủ. Vui lòng chạy server bằng node server.js';
         throw new Error(message);
     }
-    return data || {};
+    if (!primaryResult.isJson) {
+        throw new Error('API đăng nhập trả về dữ liệu không hợp lệ. Hãy kiểm tra backend auth.');
+    }
+    return primaryResult.data || {};
 }
 
 async function fetchAuthMe() {
@@ -8422,6 +8994,99 @@ window.addEventListener('appinstalled', () => {
     });
 })();
 
+// === FESTIVAL QUICK MODAL ===
+function openFestivalModal(f) {
+        var modal = document.getElementById('festivalQuickModal');
+        var content = document.getElementById('fqmContent');
+        if (!modal || !content) return;
+
+        var wishActive = isFestivalSaved(f.id, 'wish') ? ' active' : '';
+        var doneActive = isFestivalSaved(f.id, 'done') ? ' active' : '';
+        var cultureLabel = localizeLabel(getFestivalCultureTypeLabel(f));
+        var themeLabel = localizeLabel(getFestivalThemeLabel(f));
+        var seasonLabel = localizeLabel(getFestivalSeasonLabel(f.start));
+        var experienceLabel = localizeLabel(getFestivalExperienceLabel(f));
+        var reasonToGo = getLocalizedFestivalReason(f);
+        var regionLabel = localizeLabel(getFestivalRegionLabel(f.province));
+        var dateLabel = getFestivalDateLabel(f);
+        var trustInfo = getFestivalTrustInfo(f);
+        var trustLabel = localizeLabel(trustInfo.label);
+        var imgSrc = f.img || 'https://source.unsplash.com/700x300/?vietnam+festival';
+
+        content.innerHTML =
+                '<img class="fqm-img" src="' + escHtml(imgSrc) + '" onerror="this.src=\'https://source.unsplash.com/700x300/?vietnam+festival\'" alt="' + escHtml(f.name) + '">' +
+                '<div class="fqm-kicker">' + escHtml(regionLabel) + ' • ' + escHtml(cultureLabel) + '</div>' +
+                '<h2 class="fqm-title">' + escHtml(f.name) + '</h2>' +
+                '<p class="fqm-meta">' + escHtml(f.province) + ' • ' + escHtml(dateLabel) + '</p>' +
+                '<div class="fqm-reason">' + escHtml(reasonToGo) + '</div>' +
+                '<p style="margin:0 0 12px;font-size:14px;line-height:1.65;color:#4a3529;">' + escHtml(getLocalizedFestivalDesc(f)) + '</p>' +
+                '<div class="fqm-tags">' +
+                    '<span class="fqm-tag">' + escHtml(themeLabel) + '</span>' +
+                    '<span class="fqm-tag">' + escHtml(cultureLabel) + '</span>' +
+                    '<span class="fqm-tag">' + escHtml(experienceLabel) + '</span>' +
+                    '<span class="fqm-tag">' + escHtml(seasonLabel) + '</span>' +
+                    '<span class="fqm-tag ' + trustInfo.className + '">' + escHtml(trustLabel) + '</span>' +
+                '</div>' +
+                '<div class="fqm-actions">' +
+                    '<a href="detail.html?type=festival&id=' + encodeURIComponent(f.id) + '" class="fqm-btn primary">' + (currentLang === 'en' ? 'View full details' : 'Xem chi tiết đầy đủ') + '</a>' +
+                    '<button class="fqm-btn secondary' + wishActive + '" onclick="toggleTripStatus(\'' + f.id + '\',\'wish\',event);this.classList.toggle(\'active\')">' + (currentLang === 'en' ? '⚡ Want to go' : '⚡ Muốn đi') + '</button>' +
+                    '<button class="fqm-btn secondary' + doneActive + '" onclick="toggleTripStatus(\'' + f.id + '\',\'done\',event);this.classList.toggle(\'active\')">' + (currentLang === 'en' ? '✅ Visited' : '✅ Đã đi') + '</button>' +
+                '</div>';
+
+        modal.classList.add('open');
+        document.body.style.overflow = 'hidden';
+
+        modal._closeOnBg = function(e) { if (e.target === modal) closeFestivalModal(); };
+        modal.addEventListener('click', modal._closeOnBg);
+}
+
+function closeFestivalModal() {
+        var modal = document.getElementById('festivalQuickModal');
+        if (!modal) return;
+        modal.classList.remove('open');
+        document.body.style.overflow = '';
+        if (modal._closeOnBg) { modal.removeEventListener('click', modal._closeOnBg); modal._closeOnBg = null; }
+}
+
+document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') closeFestivalModal();
+});
+
+// === STICKY MODULE NAV ===
+document.addEventListener('DOMContentLoaded', function(){
+    var nav = document.getElementById('stickyModuleNav');
+    var hub = document.getElementById('moduleHub');
+    if(!nav || !hub) return;
+
+    // Wire AR button
+    var stickyArBtn = document.getElementById('sticky-ar-btn');
+    if(stickyArBtn){
+        stickyArBtn.addEventListener('click', function(e){
+            e.preventDefault();
+            if(typeof setSosFocusMode === 'function') setSosFocusMode(false);
+            if(window.toggleARSection) window.toggleARSection(true);
+        });
+    }
+
+    // Dùng IntersectionObserver để track khi hub ra khỏi màn hình
+    var hubOut = false;
+    var observer = new IntersectionObserver(function(entries){
+        hubOut = !entries[0].isIntersecting;
+        if(!hubOut) nav.classList.remove('show');
+    }, { threshold: 0 });
+    observer.observe(hub);
+
+    var scrollTimer = null;
+    window.addEventListener('scroll', function(){
+        clearTimeout(scrollTimer);
+        nav.classList.remove('show');
+        if(!hubOut) return;
+        scrollTimer = setTimeout(function(){
+            if(hubOut) nav.classList.add('show');
+        }, 500);
+    }, { passive:true });
+});
+
 // === HEADER SLIDESHOW ===
 (function(){
   var slides = document.querySelectorAll('.header-slide');
@@ -8600,6 +9265,25 @@ function applyMapMonthFilter(){
 }</script>
 
 <button id="scrollTopBtn" class="scroll-top-btn" aria-label="Lên đầu trang" title="Lên đầu trang">↑</button>
+
+<!-- FESTIVAL QUICK MODAL -->
+<div id="festivalQuickModal" role="dialog" aria-modal="true" aria-label="Thông tin lễ hội">
+    <div class="fqm-sheet">
+        <div class="fqm-drag"></div>
+        <button class="fqm-close" onclick="closeFestivalModal()" aria-label="Đóng">×</button>
+        <div class="fqm-scroll" id="fqmContent"></div>
+    </div>
+</div>
+
+<nav id="stickyModuleNav" role="navigation" aria-label="Điều hướng nhanh">
+  <span class="sticky-nav-logo">🎋 Lễ hội VN</span>
+  <button class="sticky-nav-btn" onclick="setSosFocusMode(false);document.getElementById('map').scrollIntoView({behavior:'smooth'})"><span class="sticky-nav-icon">🗺️</span><span class="sticky-nav-label">Bản đồ</span></button>
+  <button class="sticky-nav-btn" onclick="setSosFocusMode(false);document.getElementById('calendarHome').scrollIntoView({behavior:'smooth'})"><span class="sticky-nav-icon">📅</span><span class="sticky-nav-label">Lịch lễ hội</span></button>
+  <button class="sticky-nav-btn" onclick="openModule('list')"><span class="sticky-nav-icon">🏮</span><span class="sticky-nav-label">Danh sách lễ hội</span></button>
+  <button class="sticky-nav-btn" onclick="openModule('utilities')"><span class="sticky-nav-icon">🔧</span><span class="sticky-nav-label">Tiện ích</span></button>
+  <button class="sticky-nav-btn" onclick="window.location.href='sos.html'"><span class="sticky-nav-icon">🚑</span><span class="sticky-nav-label">SOS cấp cứu</span></button>
+  <button class="sticky-nav-btn" id="sticky-ar-btn"><span class="sticky-nav-icon">📷</span><span class="sticky-nav-label">AR Áo Dài</span></button>
+</nav>
 
 <!-- ===== AR VIRTUAL COSTUME TRY-ON ===== -->
 <!-- TensorFlow.js & Pose Detection Models (Load first - no defer) -->

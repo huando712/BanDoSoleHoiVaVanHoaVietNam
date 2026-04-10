@@ -3,10 +3,11 @@
    Chiến lược: Cache-first cho local, Network-first cho external
    ========================================================= */
 
-const CACHE_VERSION = 'lehoi-vn-v2';
+const CACHE_VERSION = 'lehoi-vn-v3';
 const STATIC_ASSETS = [
   './',
   './index.html',
+  './sos.html',
   './detail.html',
   './profile.html',
   './partnership.html',
@@ -64,11 +65,11 @@ self.addEventListener('fetch', (event) => {
         .then((response) => {
           if (response && response.status === 200) {
             const clone = response.clone();
-            caches.open(CACHE_VERSION).then((cache) => cache.put('./index.html', clone));
+            caches.open(CACHE_VERSION).then((cache) => cache.put(event.request, clone));
           }
           return response;
         })
-        .catch(() => caches.match('./index.html'))
+        .catch(() => caches.match(event.request).then((cached) => cached || caches.match('./index.html')))
     );
     return;
   }

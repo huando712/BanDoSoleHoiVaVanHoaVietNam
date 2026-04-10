@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Chi tiết - Bản đồ Lễ hội & Văn hóa Việt Nam</title>
-<meta name="theme-color" content="#d94a2b">
+<meta name="theme-color" content="#A01515">
 <!-- PWA -->
 <link rel="manifest" href="manifest.json">
 <link rel="icon" type="image/svg+xml" href="icon.svg">
@@ -16,49 +16,159 @@
 <meta name="apple-mobile-web-app-title" content="Lễ hội VN">
 
 <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
 
 <style>
 
 body{
 margin:0;
-font-family:Arial;
-background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%);
+font-family:"Be Vietnam Pro",sans-serif;
+background:
+url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='80'%3E%3Cpath d='M0,22 Q14,8 28,18 Q35,23 43,15 Q55,4 68,16 Q75,22 83,14 Q95,3 109,15 Q116,21 124,13 Q136,4 152,14 Q157,18 160,14' fill='none' stroke='%23C8901A' stroke-width='1.3' stroke-linecap='round' opacity='0.55'/%3E%3Cpath d='M0,52 Q18,36 36,46 Q44,51 54,43 Q66,33 78,44 Q86,51 96,43 Q108,33 120,44 Q128,51 138,43 Q150,33 160,42' fill='none' stroke='%23C8901A' stroke-width='1.1' stroke-linecap='round' opacity='0.35'/%3E%3C/svg%3E") repeat,
+radial-gradient(circle at 12% 10%, rgba(200,144,26,0.22), transparent 28%),
+radial-gradient(circle at 85% 8%, rgba(160,21,21,0.16), transparent 26%),
+linear-gradient(145deg,#F7E4C2 0%,#EDCE92 55%,#E6BE7A 100%);
 min-height: 100vh;
+color:#1C0F0A;
+background-attachment:fixed;
 }
 
 header{
 background:url("https://images.unsplash.com/photo-1528127269322-539801943592");
 background-size:cover;
 background-position:center;
-padding:60px 20px;
+padding:92px 20px 84px;
 text-align:center;
 color:white;
+position:relative;
+overflow:hidden;
+box-shadow:0 24px 56px rgba(20,6,4,0.36), 0 6px 0 #6A0F0F;
+}
+
+header::before{
+content:"";
+position:absolute;
+inset:0;
+background:linear-gradient(180deg, rgba(38,6,4,0.52), rgba(18,4,2,0.74));
+}
+
+/* HỌA TIẾT MÂY VÀNG cổ truyền */
+header::after{
+content:"";
+position:absolute;
+inset:0;
+opacity:0.14;
+pointer-events:none;
+z-index:1;
+background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='80'%3E%3Cpath d='M0,22 Q14,8 28,18 Q35,23 43,15 Q55,4 68,16 Q75,22 83,14 Q95,3 109,15 Q116,21 124,13 Q136,4 152,14 Q157,18 160,14' fill='none' stroke='%23E8C878' stroke-width='1.5' stroke-linecap='round' opacity='0.85'/%3E%3Cpath d='M0,52 Q18,36 36,46 Q44,51 54,43 Q66,33 78,44 Q86,51 96,43 Q108,33 120,44 Q128,51 138,43 Q150,33 160,42' fill='none' stroke='%23E8C878' stroke-width='1.2' stroke-linecap='round' opacity='0.65'/%3E%3Ccircle cx='28' cy='18' r='2.2' fill='%23E8C878' opacity='0.7'/%3E%3Ccircle cx='83' cy='14' r='2.2' fill='%23E8C878' opacity='0.7'/%3E%3Ccircle cx='36' cy='46' r='2' fill='%23E8C878' opacity='0.5'/%3E%3Ccircle cx='96' cy='43' r='2' fill='%23E8C878' opacity='0.5'/%3E%3C/svg%3E");
+background-size:160px 80px;
+}
+
+header > *{
+position:relative;
+z-index:2;
 }
 
 header h1{
-font-size:35px;
+margin:0;
+font-family:"Playfair Display",serif;
+font-size:clamp(34px,4.3vw,54px);
+line-height:1.08;
+text-shadow:0 6px 18px rgba(0,0,0,0.34);
+}
+
+header p{
+margin:14px 0 0;
+font-size:clamp(20px,2vw,31px);
+font-weight:700;
+letter-spacing:.04em;
+text-transform:uppercase;
+color:rgba(255,247,240,0.95);
 }
 
 nav{
-background:#111;
-padding:15px;
+position:sticky;
+top:0;
+z-index:20;
+background:rgba(30,4,4,0.95);
+backdrop-filter:blur(10px);
+padding:14px 12px;
 text-align:center;
+border-top:1px solid rgba(212,175,55,0.28);
+border-bottom:2px solid rgba(212,175,55,0.52);
+box-shadow:0 8px 24px rgba(10,3,2,0.30);
+display:flex;
+flex-wrap:wrap;
+justify-content:center;
+gap:10px;
 }
 
 nav a{
-color:white;
-margin:20px;
+color:#E8C26A;
+margin:0;
 text-decoration:none;
-font-weight:bold;
+font-weight:700;
+padding:9px 14px;
+border-radius:999px;
+font-size:15px;
+transition:background .18s ease, transform .18s ease;
+}
+
+nav a:hover{
+background:rgba(212,175,55,0.18);
+color:#F5DFA0;
+transform:translateY(-1px);
+}
+
+.lang-switch{
+display:inline-flex;
+align-items:center;
+gap:6px;
+margin-left:8px;
+padding:4px;
+border-radius:999px;
+background:rgba(255,255,255,0.12);
+border:1px solid rgba(255,255,255,0.16);
+}
+
+.lang-btn{
+border:none;
+border-radius:999px;
+padding:7px 12px;
+font-size:12px;
+font-weight:800;
+cursor:pointer;
+color:#fff5e8;
+background:transparent;
+letter-spacing:.03em;
+}
+
+.lang-btn.active{
+background:rgba(255,255,255,0.24);
+color:#ffffff;
 }
 
 section{
-padding:50px 10%;
-background: rgba(255,255,255,0.9);
-margin: 20px auto;
-border-radius: 15px;
-box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-max-width: 800px;
+padding:42px clamp(18px,4vw,44px);
+background: linear-gradient(180deg, rgba(255,250,232,0.97), rgba(250,238,208,0.95));
+margin: 28px auto;
+border-radius: 28px;
+box-shadow: 0 24px 56px rgba(61,8,8,0.15), 0 2px 0 rgba(212,175,55,0.45);
+max-width: 1120px;
+border:1px solid rgba(200,144,26,0.28);
+position:relative;
+}
+
+section::before{
+content:"";
+position:absolute;
+top:0;
+left:32px;
+right:32px;
+height:2px;
+border-radius:999px;
+background:linear-gradient(90deg, transparent, rgba(212,175,55,0.95), rgba(200,144,26,0.7), rgba(212,175,55,0.95), transparent);
+pointer-events:none;
 }
 
 .detail-card{
@@ -106,9 +216,9 @@ padding:6px 12px;
 border-radius:999px;
 font-size:12px;
 font-weight:700;
-background:rgba(229,57,53,0.1);
-color:#8f2b1b;
-border:1px solid rgba(229,57,53,0.2);
+background:rgba(160,21,21,0.09);
+color:#7A1010;
+border:1px solid rgba(160,21,21,0.22);
 }
 
 .detail-lead{
@@ -137,7 +247,7 @@ box-shadow:0 6px 14px rgba(0,0,0,0.06);
 .detail-block h3{
 margin:0 0 8px;
 font-size:18px;
-color:#9b2f24;
+color:#8A1010;
 }
 
 .detail-list{
@@ -187,7 +297,7 @@ transform:translateY(-1px);
 }
 
 .detail-action-button.primary{
-background:linear-gradient(135deg,#d94a2b,#f06a3f);
+background:linear-gradient(135deg,#A01515,#C8901A);
 color:#fff;
 }
 
@@ -231,8 +341,8 @@ align-items:center;
 gap:8px;
 padding:7px 12px;
 border-radius:999px;
-background:rgba(217,74,43,0.1);
-color:#9a2b1d;
+background:rgba(160,21,21,0.10);
+color:#7A1010;
 font-size:12px;
 font-weight:800;
 letter-spacing:.08em;
@@ -437,12 +547,12 @@ background:#f3dfc8;
 transition:background .2s;
 }
 .audience-dot.filled{
-background:#d94a2b;
-border-color:#d94a2b;
+background:#A01515;
+border-color:#A01515;
 }
 .audience-dot.half{
-background:linear-gradient(90deg,#d94a2b 50%,#f3dfc8 50%);
-border-color:#d94a2b;
+background:linear-gradient(90deg,#A01515 50%,#e8d0b0 50%);
+border-color:#A01515;
 }
 .audience-tag{
 font-size:11px;
@@ -490,24 +600,42 @@ color:#553d2f;
 }
 
 .back-button{
-background:#e53935;
-color:white;
+background:linear-gradient(135deg,#A01515,#C8901A);
+color:#fff;
 border:none;
-padding:10px 20px;
-border-radius:5px;
+padding:12px 22px;
+border-radius:999px;
 cursor:pointer;
 margin-top:20px;
+font-weight:700;
+box-shadow:0 10px 22px rgba(217,74,43,0.24);
+transition:transform .18s ease, box-shadow .18s ease;
 }
 
 .back-button:hover{
-background:#d32f2f;
+transform:translateY(-1px);
+box-shadow:0 14px 26px rgba(217,74,43,0.3);
 }
 
 footer{
-background:#111;
-color:white;
+background:linear-gradient(180deg,#200606,#0E0202);
+color:rgba(255,240,210,0.92);
 text-align:center;
-padding:30px;
+padding:40px 18px 36px;
+margin-top:28px;
+border-top:2px solid rgba(212,175,55,0.42);
+position:relative;
+overflow:hidden;
+}
+
+footer::before{
+content:"";
+position:absolute;
+inset:0;
+opacity:0.07;
+pointer-events:none;
+background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='80'%3E%3Cpath d='M0,22 Q14,8 28,18 Q35,23 43,15 Q55,4 68,16 Q75,22 83,14 Q95,3 109,15 Q116,21 124,13 Q136,4 152,14 Q157,18 160,14' fill='none' stroke='%23E8C878' stroke-width='1.5' stroke-linecap='round'/%3E%3Cpath d='M0,52 Q18,36 36,46 Q44,51 54,43 Q66,33 78,44 Q86,51 96,43 Q108,33 120,44 Q128,51 138,43 Q150,33 160,42' fill='none' stroke='%23E8C878' stroke-width='1.2' stroke-linecap='round' opacity='0.7'/%3E%3C/svg%3E");
+background-size:160px 80px;
 }
 
 </style>
@@ -520,18 +648,22 @@ padding:30px;
 
 <h1>🇻🇳 Bản đồ số Lễ hội và Văn hóa Việt Nam</h1>
 
-<p>Chi tiết thông tin</p>
+<p data-i18n="page_subtitle">Chi tiết thông tin</p>
 
 </header>
 
 <nav>
-<a href="index.html#map">Bản đồ</a>
-<a href="index.html#list">Danh sách lễ hội</a>
-<a href="index.html#entertainment">Khu vui chơi</a>
-<a href="index.html#food">Ẩm thực</a>
-<a href="index.html#utilities">Tiện ích</a>
-<a href="index.html#history">Lịch sử</a>
-<a href="index.html#collaboration">Hợp tác</a>
+<a href="index.html#map" data-i18n="nav_map">Bản đồ</a>
+<a href="index.html#list" data-i18n="nav_list">Danh sách lễ hội</a>
+<a href="index.html#entertainment" data-i18n="nav_entertainment">Khu vui chơi</a>
+<a href="index.html#food" data-i18n="nav_food">Ẩm thực</a>
+<a href="index.html#utilities" data-i18n="nav_utilities">Tiện ích</a>
+<a href="index.html#history" data-i18n="nav_history">Lịch sử</a>
+<a href="index.html#collaboration" data-i18n="nav_collab">Hợp tác</a>
+<div class="lang-switch" aria-label="Language switch">
+    <button type="button" id="langViBtn" class="lang-btn" onclick="setLanguage('vi')">VI</button>
+    <button type="button" id="langEnBtn" class="lang-btn" onclick="setLanguage('en')">EN</button>
+</div>
 </nav>
 
 <section>
@@ -544,14 +676,14 @@ padding:30px;
 
 </div>
 
-<button class="back-button" onclick="window.history.back()">Quay lại</button>
+<button id="backBtn" class="back-button" onclick="window.history.back()" data-i18n="back_btn">Quay lại</button>
 
 </section>
 
 <footer>
 
-<p>Bản đồ số Lễ hội và Văn hóa Việt Nam</p>
-<p>Nền tảng số khám phá lễ hội và văn hóa Việt Nam</p>
+<p data-i18n="footer_brand">Bản đồ số Lễ hội và Văn hóa Việt Nam</p>
+<p data-i18n="footer_tagline">Nền tảng số khám phá lễ hội và văn hóa Việt Nam</p>
 
 </footer>
 
@@ -1111,7 +1243,7 @@ function updateFestivalSaveButton(id) {
     if (!button) return;
     var active = isFestivalSaved(id);
     button.classList.toggle('active', active);
-    button.textContent = active ? 'Da luu vao hanh trinh' : 'Luu vao hanh trinh';
+    button.textContent = active ? t('saved_on_trip') : t('save_to_trip');
 }
 
 function toggleFestivalSaved(id) {
@@ -1626,19 +1758,193 @@ function getRegionByProvince(province) {
     return 'nam';
 }
 
+var LANG_KEY = 'lehoi_ui_lang';
+var currentLang = (localStorage.getItem(LANG_KEY) === 'en') ? 'en' : 'vi';
+
+var I18N = {
+    vi: {
+        page_title: 'Chi tiết - Bản đồ Lễ hội & Văn hóa Việt Nam',
+        page_subtitle: 'Chi tiết thông tin',
+        nav_map: 'Bản đồ',
+        nav_list: 'Danh sách lễ hội',
+        nav_entertainment: 'Khu vui chơi',
+        nav_food: 'Ẩm thực',
+        nav_utilities: 'Tiện ích',
+        nav_history: 'Lịch sử',
+        nav_collab: 'Hợp tác',
+        back_btn: 'Quay lại',
+        footer_brand: 'Bản đồ số Lễ hội và Văn hóa Việt Nam',
+        footer_tagline: 'Nền tảng số khám phá lễ hội và văn hóa Việt Nam',
+        suggest_for: 'Gợi ý cho',
+        you: 'bạn',
+        saved_on_trip: 'Da luu vao hanh trinh',
+        save_to_trip: 'Luu vao hanh trinh',
+        not_found: 'Không tìm thấy thông tin.',
+        festival: 'Lễ hội',
+        entertainment: 'Khu vui chơi',
+        food: 'Ẩm thực',
+        hotel: 'Khách sạn',
+        medical: 'Bệnh viện',
+        store: 'Cửa hàng tiện lợi',
+        hero_profile: 'Ho so le hoi',
+        hero_best_time: 'Khung giờ đẹp',
+        hero_location: 'Địa phương',
+        hero_style: 'Nen di kieu nao',
+        hero_atmosphere: 'Khong khi',
+        hero_fit: 'Hop voi ai',
+        data_note_chip: 'Nen kiem tra lich cong bo truoc khi di',
+        why_worth: 'Vi sao dang den',
+        before_arrive: 'Luu y truoc khi toi',
+        highlights: 'Điểm đặc sắc',
+        rituals: 'Nghi lễ nên chờ',
+        checklist: 'Checklist khi đi lễ hội',
+        etiquette: 'Ung xu khi tham du',
+        must_try: 'Top trải nghiệm phải thử',
+        timeline: 'Timeline gợi ý 1 ngày',
+        food_nearby: 'An gi gan do',
+        after_ritual: 'Choi gi sau phan le',
+        overnight: 'Neu o lai qua dem',
+        support_need: 'Ho tro can biet',
+        right_time: 'Đi đúng thời điểm',
+        data_notice: 'Lưu ý dữ liệu',
+        data_notice_text: 'Lịch và quy mô lễ hội có thể thay đổi theo năm hoặc theo thông báo của địa phương. Bạn nên kiểm tra thêm trước khi đi xa.',
+        coord: 'Tọa độ',
+        format: 'Hình thức',
+        seasonal_tip: 'Gợi ý theo mùa',
+        directions: 'Chi duong',
+        utility_best_time: 'Khung giờ phù hợp',
+        utility_location: 'Địa phương',
+        utility_highlights: 'Điểm nổi bật',
+        utility_for_who: 'Phù hợp cho ai',
+        utility_tips: 'Mẹo sử dụng hiệu quả',
+        utility_nearby: 'Gợi ý kết hợp gần đây',
+        utility_type: 'Loại tiện ích',
+        utility_quick_tip: 'Mẹo nhanh',
+        utility_quick_tip_text: 'Ưu tiên gom các điểm cùng khu vực để tiết kiệm thời gian di chuyển.'
+    },
+    en: {
+        page_title: 'Details - Vietnam Festival & Culture Map',
+        page_subtitle: 'Information Details',
+        nav_map: 'Map',
+        nav_list: 'Festival List',
+        nav_entertainment: 'Entertainment',
+        nav_food: 'Food',
+        nav_utilities: 'Utilities',
+        nav_history: 'History',
+        nav_collab: 'Partnership',
+        back_btn: 'Back',
+        footer_brand: 'Vietnam Festival & Culture Digital Map',
+        footer_tagline: 'A digital platform to explore Vietnamese festivals and culture',
+        suggest_for: 'Suggestions for',
+        you: 'you',
+        saved_on_trip: 'Saved to your trip',
+        save_to_trip: 'Save to trip',
+        not_found: 'Information not found.',
+        festival: 'Festival',
+        entertainment: 'Entertainment',
+        food: 'Food',
+        hotel: 'Hotel',
+        medical: 'Hospital',
+        store: 'Convenience Store',
+        hero_profile: 'Festival Profile',
+        hero_best_time: 'Best Time',
+        hero_location: 'Location',
+        hero_style: 'Best Visit Style',
+        hero_atmosphere: 'Atmosphere',
+        hero_fit: 'Best For',
+        data_note_chip: 'Check the official schedule before your trip',
+        why_worth: 'Why it is worth visiting',
+        before_arrive: 'Before you go',
+        highlights: 'Highlights',
+        rituals: 'Rituals to watch',
+        checklist: 'Festival checklist',
+        etiquette: 'Etiquette',
+        must_try: 'Top experiences',
+        timeline: '1-day suggested timeline',
+        food_nearby: 'What to eat nearby',
+        after_ritual: 'After-ritual activities',
+        overnight: 'If staying overnight',
+        support_need: 'Useful support',
+        right_time: 'Go at the right time',
+        data_notice: 'Data note',
+        data_notice_text: 'Festival schedules and scale may change each year or by local announcements. Please verify before long-distance travel.',
+        coord: 'Coordinates',
+        format: 'Category',
+        seasonal_tip: 'Seasonal tip',
+        directions: 'Directions',
+        utility_best_time: 'Best Time',
+        utility_location: 'Location',
+        utility_highlights: 'Highlights',
+        utility_for_who: 'Best for',
+        utility_tips: 'Usage tips',
+        utility_nearby: 'Nearby combos',
+        utility_type: 'Utility type',
+        utility_quick_tip: 'Quick tip',
+        utility_quick_tip_text: 'Group nearby places in one route to save travel time.'
+    }
+};
+
+function t(key) {
+    return (I18N[currentLang] && I18N[currentLang][key]) || (I18N.vi[key] || key);
+}
+
+function localizeType(type) {
+    if (type === 'festival') return t('festival');
+    if (type === 'entertainment') return t('entertainment');
+    if (type === 'food') return t('food');
+    if (type === 'hotel') return t('hotel');
+    if (type === 'medical') return t('medical');
+    if (type === 'store') return t('store');
+    return type || '';
+}
+
+function getThemeLabelLocalized(theme) {
+    if (currentLang !== 'en') return getThemeLabelVietnamese(theme);
+    if (theme === 'tam linh phat giao') return 'Spiritual - Buddhist';
+    if (theme === 'lich su tam linh') return 'Historical - Spiritual';
+    if (theme === 'van hoa bien') return 'Coastal Culture';
+    if (theme === 'ban sac dan toc') return 'Ethnic Identity';
+    if (theme === 'le hoi du lich') return 'Travel Festival';
+    return 'Cultural Festival';
+}
+
+function applyStaticTranslations() {
+    document.title = t('page_title');
+    var nodes = document.querySelectorAll('[data-i18n]');
+    nodes.forEach(function(node) {
+        var key = node.getAttribute('data-i18n');
+        if (key) node.textContent = t(key);
+    });
+    var viBtn = document.getElementById('langViBtn');
+    var enBtn = document.getElementById('langEnBtn');
+    if (viBtn) viBtn.classList.toggle('active', currentLang === 'vi');
+    if (enBtn) enBtn.classList.toggle('active', currentLang === 'en');
+}
+
+function setLanguage(lang) {
+    currentLang = (lang === 'en') ? 'en' : 'vi';
+    localStorage.setItem(LANG_KEY, currentLang);
+    applyStaticTranslations();
+    displayDetail();
+}
+
 function buildPersonalizedText(item, type, profileData) {
     if (!profileData || !profileData.profile) return '';
     var profile = profileData.profile;
     var messages = [];
 
     if (type === 'festival' && Array.isArray(profile.favoriteFestivalIds) && profile.favoriteFestivalIds.includes(item.id)) {
-        messages.push('Lễ hội này nằm trong danh sách yêu thích của bạn.');
+        messages.push(currentLang === 'en'
+            ? 'This festival is in your favorites list.'
+            : 'Lễ hội này nằm trong danh sách yêu thích của bạn.');
     }
 
     if (type === 'festival' && Array.isArray(profile.favoriteRegions) && profile.favoriteRegions.length) {
         var region = getRegionByProvince(item.province);
         if (profile.favoriteRegions.includes(region)) {
-            messages.push('Khu vực lễ hội này trùng với vùng bạn ưu tiên trong hồ sơ.');
+            messages.push(currentLang === 'en'
+                ? 'This festival is in a region you prefer in your profile.'
+                : 'Khu vực lễ hội này trùng với vùng bạn ưu tiên trong hồ sơ.');
         }
     }
 
@@ -1646,12 +1952,16 @@ function buildPersonalizedText(item, type, profileData) {
         var cityNorm = normalizeVietnameseText(profile.city);
         var provinceNorm = normalizeVietnameseText(item.province || '');
         if (cityNorm && provinceNorm && (provinceNorm.includes(cityNorm) || cityNorm.includes(provinceNorm))) {
-            messages.push('Địa điểm này gần với tỉnh/thành bạn đã lưu trong hồ sơ.');
+            messages.push(currentLang === 'en'
+                ? 'This place is close to the city/province saved in your profile.'
+                : 'Địa điểm này gần với tỉnh/thành bạn đã lưu trong hồ sơ.');
         }
     }
 
     if (!messages.length && type === 'festival') {
-        messages.push('Bạn có thể thêm lễ hội này vào mục yêu thích trong trang Hồ sơ để nhận gợi ý cá nhân hóa tốt hơn.');
+        messages.push(currentLang === 'en'
+            ? 'Add this festival to favorites in your Profile to get better personalized suggestions.'
+            : 'Bạn có thể thêm lễ hội này vào mục yêu thích trong trang Hồ sơ để nhận gợi ý cá nhân hóa tốt hơn.');
     }
 
     return messages.join(' ');
@@ -1666,7 +1976,7 @@ function renderPersonalizedBox(text, userName) {
         return;
     }
 
-    box.innerHTML = '<h3>Gợi ý cho ' + (userName || 'bạn') + '</h3><p>' + text + '</p>';
+    box.innerHTML = '<h3>' + t('suggest_for') + ' ' + (userName || t('you')) + '</h3><p>' + text + '</p>';
     box.classList.add('show');
 }
 
@@ -1694,28 +2004,28 @@ async function displayDetail() {
 
     if (type === 'festival') {
         item = festivals.find(f => f.id === id);
-        title = 'Lễ hội';
+        title = localizeType('festival');
     } else if (type === 'entertainment') {
         item = entertainments.find(e => e.id === id);
-        title = 'Khu vui chơi';
+        title = localizeType('entertainment');
     } else if (type === 'food') {
         item = foods.find(f => f.id === id);
-        title = 'Ẩm thực';
+        title = localizeType('food');
     } else if (type === 'hotel') {
         item = hotels.find(h => h.id === id);
-        title = 'Khách sạn';
+        title = localizeType('hotel');
     } else if (type === 'medical') {
         item = medicals.find(m => m.id === id);
-        title = 'Bệnh viện';
+        title = localizeType('medical');
     } else if (type === 'store') {
         item = stores.find(s => s.id === id);
-        title = 'Cửa hàng tiện lợi';
+        title = localizeType('store');
     }
 
     if (item) {
         if (type === 'festival') {
             var theme = getFestivalTheme(item);
-            var themeLabel = getThemeLabelVietnamese(theme);
+            var themeLabel = getThemeLabelLocalized(theme);
             var highlight = getFestivalSpecificHighlight(item.name);
             var activities = getFestivalActivities(theme);
             var tip = getFestivalTravelTip(theme);
@@ -1734,28 +2044,28 @@ async function displayDetail() {
             document.getElementById('detailContent').innerHTML = `
                 <div class="detail-hero-shell">
                     <div class="detail-hero-copy">
-                        <span class="detail-hero-kicker">Ho so le hoi</span>
+                        <span class="detail-hero-kicker">${t('hero_profile')}</span>
                         <div class="detail-top-head">
                             <h2>${item.name}</h2>
-                            <p class="detail-subtitle">${item.desc || 'Không gian lễ hội văn hóa đặc sắc'}</p>
+                            <p class="detail-subtitle">${item.desc || (currentLang === 'en' ? 'A unique cultural festival space' : 'Không gian lễ hội văn hóa đặc sắc')}</p>
                             <div class="detail-chip-row">
                                 <span class="detail-chip">${themeLabel}</span>
-                                <span class="detail-chip">Khung giờ đẹp: ${bestTime}</span>
-                                <span class="detail-chip">Địa phương: ${item.province}</span>
+                                <span class="detail-chip">${t('hero_best_time')}: ${bestTime}</span>
+                                <span class="detail-chip">${t('hero_location')}: ${item.province}</span>
                             </div>
                         </div>
                         <p class="detail-hero-intro">${highlight}</p>
                         <div class="detail-quick-grid">
                             <article class="detail-quick-card">
-                                <span class="detail-quick-label">Nen di kieu nao</span>
+                                <span class="detail-quick-label">${t('hero_style')}</span>
                                 <span class="detail-quick-value">${visitStyle}</span>
                             </article>
                             <article class="detail-quick-card">
-                                <span class="detail-quick-label">Khong khi</span>
+                                <span class="detail-quick-label">${t('hero_atmosphere')}</span>
                                 <span class="detail-quick-value">${atmosphere}</span>
                             </article>
                             <article class="detail-quick-card">
-                                <span class="detail-quick-label">Hop voi ai</span>
+                                <span class="detail-quick-label">${t('hero_fit')}</span>
                                 <span class="detail-quick-value">${whoShouldGo}</span>
                             </article>
                         </div>
@@ -1765,7 +2075,7 @@ async function displayDetail() {
                         <div class="detail-image-overlay">
                             <span class="detail-image-chip">${themeLabel}</span>
                             <span class="detail-image-chip">${item.province}</span>
-                            <span class="detail-image-chip">Nen kiem tra lich cong bo truoc khi di</span>
+                            <span class="detail-image-chip">${t('data_note_chip')}</span>
                         </div>
                     </div>
                 </div>
@@ -1774,21 +2084,21 @@ async function displayDetail() {
                 </div>
                 <div class="detail-story-band">
                     <article class="detail-story-card">
-                        <span class="detail-section-kicker">Vi sao dang den</span>
+                        <span class="detail-section-kicker">${t('why_worth')}</span>
                         <p>${activities}</p>
                     </article>
                     <article class="detail-etiquette-card">
-                        <span class="detail-section-kicker">Luu y truoc khi toi</span>
+                        <span class="detail-section-kicker">${t('before_arrive')}</span>
                         <p>${tip}</p>
                     </article>
                 </div>
                 <div class="detail-grid">
                     <article class="detail-block">
-                        <h3>Điểm đặc sắc</h3>
+                        <h3>${t('highlights')}</h3>
                         <p>${highlight}</p>
                     </article>
                     <article class="detail-block">
-                        <h3>Nghi lễ nên chờ</h3>
+                        <h3>${t('rituals')}</h3>
                         <ul class="detail-list">
                             <li>${ritualMoments[0]}</li>
                             <li>${ritualMoments[1]}</li>
@@ -1796,7 +2106,7 @@ async function displayDetail() {
                         </ul>
                     </article>
                     <article class="detail-block">
-                        <h3>Checklist khi đi lễ hội</h3>
+                        <h3>${t('checklist')}</h3>
                         <ul class="detail-list">
                             <li>${checklist[0]}</li>
                             <li>${checklist[1]}</li>
@@ -1804,7 +2114,7 @@ async function displayDetail() {
                         </ul>
                     </article>
                     <article class="detail-block">
-                        <h3>Ung xu khi tham du</h3>
+                        <h3>${t('etiquette')}</h3>
                         <ul class="detail-list">
                             <li>${etiquette[0]}</li>
                             <li>${etiquette[1]}</li>
@@ -1812,7 +2122,7 @@ async function displayDetail() {
                         </ul>
                     </article>
                     <article class="detail-block">
-                        <h3>Top trải nghiệm phải thử</h3>
+                        <h3>${t('must_try')}</h3>
                         <ul class="detail-list">
                             <li>${mustTry[0]}</li>
                             <li>${mustTry[1]}</li>
@@ -1820,7 +2130,7 @@ async function displayDetail() {
                         </ul>
                     </article>
                     <article class="detail-block">
-                        <h3>Timeline gợi ý 1 ngày</h3>
+                        <h3>${t('timeline')}</h3>
                         <ul class="detail-list">
                             <li>${timeline[0]}</li>
                             <li>${timeline[1]}</li>
@@ -1830,83 +2140,85 @@ async function displayDetail() {
                 </div>
                 <div class="detail-planner-grid">
                     <article class="detail-planner-card">
-                        <span class="detail-section-kicker">An gi gan do</span>
-                        <p>Gom chung cung diem le hoi de toi uu thoi gian di chuyen.</p>
+                        <span class="detail-section-kicker">${t('food_nearby')}</span>
+                        <p>${currentLang === 'en' ? 'Bundle nearby food stops with the festival site to optimize travel time.' : 'Gom chung cung diem le hoi de toi uu thoi gian di chuyen.'}</p>
                         <ul class="detail-mini-list">
                             <li>${support.foods.join(', ')}</li>
                         </ul>
                     </article>
                     <article class="detail-planner-card">
-                        <span class="detail-section-kicker">Choi gi sau phan le</span>
-                        <p>Neu di ca ngay, day la nhom diem de noi lich trinh cho de chiu hon.</p>
+                        <span class="detail-section-kicker">${t('after_ritual')}</span>
+                        <p>${currentLang === 'en' ? 'If you stay all day, these places help create a smoother itinerary.' : 'Neu di ca ngay, day la nhom diem de noi lich trinh cho de chiu hon.'}</p>
                         <ul class="detail-mini-list">
                             <li>${support.fun.join(', ')}</li>
                         </ul>
                     </article>
                     <article class="detail-planner-card">
-                        <span class="detail-section-kicker">Neu o lai qua dem</span>
-                        <p>Phu hop cho lich trinh 2 ngay hoac khi le hoi co dong nguoi tu sang som.</p>
+                        <span class="detail-section-kicker">${t('overnight')}</span>
+                        <p>${currentLang === 'en' ? 'Suitable for 2-day plans or when festivals get crowded early.' : 'Phu hop cho lich trinh 2 ngay hoac khi le hoi co dong nguoi tu sang som.'}</p>
                         <ul class="detail-mini-list">
                             <li>${support.stays.join(', ')}</li>
                         </ul>
                     </article>
                     <article class="detail-planner-card">
-                        <span class="detail-section-kicker">Ho tro can biet</span>
-                        <p>Luu san diem y te va mua sam nhanh de tranh bi dong luc cao diem.</p>
+                        <span class="detail-section-kicker">${t('support_need')}</span>
+                        <p>${currentLang === 'en' ? 'Save nearby medical and quick shopping spots to avoid peak-time congestion.' : 'Luu san diem y te va mua sam nhanh de tranh bi dong luc cao diem.'}</p>
                         <ul class="detail-mini-list">
-                            <li><strong>Y te:</strong> ${support.medical.join(', ')}</li>
-                            <li><strong>Do thiet yeu:</strong> ${support.stores.join(', ')}</li>
+                            <li><strong>${currentLang === 'en' ? 'Medical' : 'Y te'}:</strong> ${support.medical.join(', ')}</li>
+                            <li><strong>${currentLang === 'en' ? 'Essentials' : 'Do thiet yeu'}:</strong> ${support.stores.join(', ')}</li>
                         </ul>
                     </article>
                 </div>
                 ${buildAudienceFitHtml(getAudienceFit(null, theme))}
                 <div class="detail-note-grid">
                     <article class="detail-note-card">
-                        <h3>Đi đúng thời điểm</h3>
+                        <h3>${t('right_time')}</h3>
                         <p>${seasonAdvice}</p>
                     </article>
                     <article class="detail-note-card">
-                        <h3>Lưu ý dữ liệu</h3>
-                        <p>Lịch và quy mô lễ hội có thể thay đổi theo năm hoặc theo thông báo của địa phương. Bạn nên kiểm tra thêm trước khi đi xa.</p>
+                        <h3>${t('data_notice')}</h3>
+                        <p>${t('data_notice_text')}</p>
                     </article>
                 </div>
                 <div class="detail-meta">
-                    <div><strong>Tọa độ:</strong> ${item.lat}, ${item.lng}</div>
-                    <div><strong>Hình thức:</strong> ${themeLabel}</div>
-                    <div><strong>Gợi ý theo mùa:</strong> ${seasonAdvice}</div>
+                    <div><strong>${t('coord')}:</strong> ${item.lat}, ${item.lng}</div>
+                    <div><strong>${t('format')}:</strong> ${themeLabel}</div>
+                    <div><strong>${t('seasonal_tip')}:</strong> ${seasonAdvice}</div>
                 </div>
                 <div class="detail-actions">
-                    <button type="button" id="saveFestivalButton" class="detail-action-button secondary" onclick="toggleFestivalSaved(${item.id})">Luu vao hanh trinh</button>
+                    <button type="button" id="saveFestivalButton" class="detail-action-button secondary" onclick="toggleFestivalSaved(${item.id})">${t('save_to_trip')}</button>
                     <a href="https://www.google.com/maps/dir/?api=1&destination=${item.lat},${item.lng}" target="_blank" rel="noopener noreferrer">
-                        <button type="button" class="detail-action-button primary">Chi duong</button>
+                        <button type="button" class="detail-action-button primary">${t('directions')}</button>
                     </a>
                 </div>
             `;
             updateFestivalSaveButton(item.id);
         } else {
-            var utilityTypeLabel = getUtilityTypeLabel(type);
+            var utilityTypeLabel = currentLang === 'en' ? localizeType(type) : getUtilityTypeLabel(type);
             var utilityHighlights = getUtilityHighlights(type, item);
             var utilityChecklist = getUtilityChecklist(type);
             var utilityAudience = getUtilityAudience(type);
             var utilityBestTime = getUtilityBestTime(type);
             var utilityNearby = getUtilityNearbyBundle(type, item.province);
-            var utilityNarrative = item.detail || (item.name + ' là điểm ' + utilityTypeLabel.toLowerCase() + ' đáng chú ý tại ' + (item.province || 'khu vực này') + ', phù hợp để kết hợp trong lịch trình khám phá lễ hội.');
+            var utilityNarrative = item.detail || (currentLang === 'en'
+                ? (item.name + ' is a notable ' + utilityTypeLabel.toLowerCase() + ' in ' + (item.province || 'this area') + ', suitable to combine in your festival itinerary.')
+                : (item.name + ' là điểm ' + utilityTypeLabel.toLowerCase() + ' đáng chú ý tại ' + (item.province || 'khu vực này') + ', phù hợp để kết hợp trong lịch trình khám phá lễ hội.'));
 
             document.getElementById('detailContent').innerHTML = `
                 <div class="detail-top-head">
                     <h2>${item.name}</h2>
-                    <p class="detail-subtitle">${item.desc || (utilityTypeLabel + ' hữu ích cho hành trình của bạn')}</p>
+                    <p class="detail-subtitle">${item.desc || (currentLang === 'en' ? (utilityTypeLabel + ' useful for your journey') : (utilityTypeLabel + ' hữu ích cho hành trình của bạn'))}</p>
                     <div class="detail-chip-row">
                         <span class="detail-chip">${utilityTypeLabel}</span>
-                        <span class="detail-chip">Khung giờ phù hợp: ${utilityBestTime}</span>
-                        <span class="detail-chip">Địa phương: ${item.province || 'Đang cập nhật'}</span>
+                        <span class="detail-chip">${t('utility_best_time')}: ${utilityBestTime}</span>
+                        <span class="detail-chip">${t('utility_location')}: ${item.province || (currentLang === 'en' ? 'Updating' : 'Đang cập nhật')}</span>
                     </div>
                 </div>
                 <img src="${resolveImageUrl(item.img, type)}" alt="${item.name}" onerror="${getImageOnError(type)}">
                 <div class="detail-lead">${utilityNarrative}</div>
                 <div class="detail-grid">
                     <article class="detail-block">
-                        <h3>Điểm nổi bật</h3>
+                        <h3>${t('utility_highlights')}</h3>
                         <ul class="detail-list">
                             <li>${utilityHighlights[0]}</li>
                             <li>${utilityHighlights[1]}</li>
@@ -1914,11 +2226,11 @@ async function displayDetail() {
                         </ul>
                     </article>
                     <article class="detail-block">
-                        <h3>Phù hợp cho ai</h3>
+                        <h3>${t('utility_for_who')}</h3>
                         <p>${utilityAudience}</p>
                     </article>
                     <article class="detail-block">
-                        <h3>Mẹo sử dụng hiệu quả</h3>
+                        <h3>${t('utility_tips')}</h3>
                         <ul class="detail-list">
                             <li>${utilityChecklist[0]}</li>
                             <li>${utilityChecklist[1]}</li>
@@ -1926,22 +2238,22 @@ async function displayDetail() {
                         </ul>
                     </article>
                     <article class="detail-block">
-                        <h3>Gợi ý kết hợp gần đây</h3>
+                        <h3>${t('utility_nearby')}</h3>
                         <ul class="detail-list">
                             <li><strong>${utilityNearby.nearbyALabel}:</strong> ${utilityNearby.nearbyA.join(', ')}</li>
                             <li><strong>${utilityNearby.nearbyBLabel}:</strong> ${utilityNearby.nearbyB.join(', ')}</li>
-                            <li><strong>Mẹo nhanh:</strong> Ưu tiên gom các điểm cùng khu vực để tiết kiệm thời gian di chuyển.</li>
+                            <li><strong>${t('utility_quick_tip')}:</strong> ${t('utility_quick_tip_text')}</li>
                         </ul>
                     </article>
                 </div>
                 ${buildAudienceFitHtml(getAudienceFit(type, null))}
                 <div class="detail-meta">
-                    <div><strong>Tọa độ:</strong> ${item.lat}, ${item.lng}</div>
-                    <div><strong>Loại tiện ích:</strong> ${utilityTypeLabel}</div>
+                    <div><strong>${t('coord')}:</strong> ${item.lat}, ${item.lng}</div>
+                    <div><strong>${t('utility_type')}:</strong> ${utilityTypeLabel}</div>
                 </div>
                 <div class="detail-actions">
                     <a href="https://www.google.com/maps/dir/?api=1&destination=${item.lat},${item.lng}" target="_blank" rel="noopener noreferrer">
-                        <button type="button" class="detail-action-button primary">Chi duong</button>
+                        <button type="button" class="detail-action-button primary">${t('directions')}</button>
                     </a>
                 </div>
             `;
@@ -1950,17 +2262,18 @@ async function displayDetail() {
         var profileData = await authFetch('/api/profile', { method: 'GET' });
         if (profileData && profileData.profile) {
             var personalizedText = buildPersonalizedText(item, type, profileData);
-            renderPersonalizedBox(personalizedText, profileData.user && profileData.user.name ? profileData.user.name : 'bạn');
+            renderPersonalizedBox(personalizedText, profileData.user && profileData.user.name ? profileData.user.name : t('you'));
         }
 
         await logDetailActivity(type, item);
     } else {
-        document.getElementById('detailContent').innerHTML = '<p>Không tìm thấy thông tin.</p>';
+        document.getElementById('detailContent').innerHTML = '<p>' + t('not_found') + '</p>';
         renderPersonalizedBox('', '');
     }
 }
 
 window.onload = function() {
+    applyStaticTranslations();
     displayDetail();
 };
 
